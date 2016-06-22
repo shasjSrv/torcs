@@ -91,4 +91,4 @@ src/tools/trackgen/trackgen
 
 setup_linux.sh
 
-src/drivers/scr-client
+scr_client
