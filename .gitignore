@@ -81,3 +81,10 @@ src/tools/texmapper/.depend
 src/tools/texmapper/texmapper-bin
 src/tools/trackgen/.depend
 src/tools/trackgen/trackgen-bin
+
+src/linux/torcs
+src/tools/accc/accc
+src/tools/nfs2ac/nfs2ac
+src/tools/nfsperf/nfsperf
+src/tools/texmapper/texmapper
+src/tools/trackgen/trackgen
