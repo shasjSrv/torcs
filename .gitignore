@@ -90,3 +90,5 @@ src/tools/texmapper/texmapper
 src/tools/trackgen/trackgen
 
 setup_linux.sh
+
+src/drivers/scr-client

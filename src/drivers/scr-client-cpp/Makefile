@@ -27,7 +27,7 @@ all: $(OBJECTS) client
 
 
 client: client.cpp $(OBJECTS)
-		$(CC) $(CPPFLAGS) $(EXTFLAGS) -o client client.cpp $(OBJECTS)
+		$(CC) $(CPPFLAGS) $(EXTFLAGS) -o scr_client client.cpp $(OBJECTS)
 
 clean:
 	rm -f *.o client  
