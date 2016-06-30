@@ -5,7 +5,7 @@
     created              : Sat Mar 18 22:59:09 CET 2000
     copyright            : (C) 2000 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: Track-RWD-GrA.xml,v 1.10 2006/09/22 21:18:54 berniw Exp $                                  
+    version              : $Id: Track-RWD-GrA.xml,v 1.10.2.1 2014/03/17 19:01:19 berniw Exp $                                  
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -303,7 +303,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
     <attnum name="dynamic friction" unit="%" min="70" max="90" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.5"/>
   </section>
 
@@ -321,7 +320,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
     <attnum name="dynamic friction" unit="%" min="70" max="90" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.5"/>
   </section>
 
@@ -339,7 +337,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
     <attnum name="dynamic friction" unit="%" min="70" max="90" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.5"/>
   </section>
 
@@ -357,7 +354,6 @@
     <!-- Adherence -->
     <attnum name="stiffness" min="5.0" max="30.0" val="30.0"/>
     <attnum name="dynamic friction" unit="%" min="70" max="90" val="80"/>
-    <attnum name="rolling resistance" min="0.01" max="0.03" val="0.02"/>
     <attnum name="mu" min="0.05" max="1.8" val="1.5"/>
   </section>
 

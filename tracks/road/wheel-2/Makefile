@@ -4,7 +4,7 @@
 #    created              : Sat Mai 20 17:12:55 CET 2006
 #    copyright            : (C) 2006 by Bernhard Wymann
 #    email                : berniw@bluewin.ch
-#    version              : $Id: Makefile,v 1.1 2008/02/24 14:24:44 berniw Exp $
+#    version              : $Id: Makefile,v 1.1.2.1 2013/09/14 22:46:36 berniw Exp $
 #
 ##############################################################################
 #
@@ -25,7 +25,7 @@ DATA      = $(TRACK).xml $(TRACK).acc $(TRACK).png readme.txt \
 			rmbl.png sand.png sbridge2.png shadow2.png sign1.png sign2.png sign3.png swall2.png \
 			tirewall.png tr-barrier.png tr-barrier-tree_n.png treeg11_n.png treeline.png \
 			tree_n.png tr-spec.png truck_arbor_ctd_n.png water_green2.png wheel-2.png wheel.png \
-			barr1_n.rgb concdal.rgb shadow2.rgb texwheel.rgb torcs1.rgb truck0.rgb
+			barr1_n.rgb concdal.rgb shadow2.rgb texwheel.rgb torcs1.rgb truck0.rgb raceline.png
 
 
 data-tracks-road_PKGFILES	= $(DATA)
