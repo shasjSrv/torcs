@@ -17,6 +17,8 @@ Make-config
 config.h
 src/doc/torcsdoc.conf
 
+autom4te.cache/
+
 config.log
 config.status
 src/linux/torcs
