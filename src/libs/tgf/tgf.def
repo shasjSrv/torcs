@@ -69,3 +69,15 @@ EXPORTS
 	GfNearestPow2
 	GfCreateDir
 	GfCreateDirForFile
+	setDamageLimit
+	getDamageLimit
+	setFuelConsumption
+	getFuelConsumption
+	setLaptimeLimit
+	getLaptimeLimit
+	setTimeout
+	getTimeout
+	setNoisy
+	getNoisy
+	setVersion
+	getVersion

@@ -1,10 +1,10 @@
 ##############################################################################
 #
 #    file                 : Makefile
-#    created              : Sat Mar 18 23:53:52 CET 2000
+#    created              : Sat Mar 18 23:11:09 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
-#    version              : $Id: Makefile,v 1.12.2.1 2011/12/28 15:05:11 berniw Exp $                                  
+#    version              : $Id: Makefile,v 1.4 2002/06/30 20:20:07 torcs Exp $                                  
 #
 ##############################################################################
 #
@@ -15,38 +15,18 @@
 #
 ##############################################################################
 
-TOOLSDIR    = 
 
-TOOLSCRIPT  = torcs
+ROBOT = scr_server
 
-PROGRAM = torcs-bin
+SHIPDIR   = drivers/${ROBOT}/1
 
-SOURCES = main.cpp linuxspec.cpp
+SHIP      = car1-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)
 
-LDFLAGS = -rdynamic
+src-robots-scr_server_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
 
-SOLIBS  =  -lclient       \
-	   -lconfscreens  \
-	   -ltgf          \
-	   -ltgfclient    \
-	   -ltxml	  \
-	   -lplibul	  \
-	   -lraceengine   \
-	   -lmusicplayer  \
-	   -lracescreens  \
-	   -lrobottools   \
-	   -llearning
-
-EXPDIR  = include
-
-EXPORTS = osspec.h
-
-src_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)
-
-src_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
+src-robots-scr_server_PKGDIR	= ${PACKAGE}-${VERSION}/$(subst ${TORCS_BASE},,$(shell pwd))
 
 include ${MAKE_DEFAULT}
-
 
 
 
