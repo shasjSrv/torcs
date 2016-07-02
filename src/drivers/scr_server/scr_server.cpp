@@ -529,13 +529,22 @@ if (RESTARTING[index]==0)
     }
 #endif
 	
+    // Sending the images to the client
+    if(car->imgs!=NULL && car->imgSended==0) {
+        car->imgSended=1;
+        for(int i=0;i<car->camNum;i++) {
+            if (sendto(listenSocket[index], car->imgs[i], car->imgWidth*car->imgHeight*3 + 4, 0,
+                       (struct sockaddr *) &clientAddress[index],
+                       sizeof(clientAddress[index])) < 0)
+                std::cerr << "Error: cannot send car image" << endl;
+        }
+    }
 
     // Sending the car state to the client
     if (sendto(listenSocket[index], line, strlen(line) + 1, 0,
                (struct sockaddr *) &clientAddress[index],
                sizeof(clientAddress[index])) < 0)
         std::cerr << "Error: cannot send car state";
-
 
     // Set timeout for client answer
     FD_ZERO(&readSet);

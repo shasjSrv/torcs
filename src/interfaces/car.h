@@ -464,6 +464,12 @@ typedef struct CarElt
     struct CarElt	*next;
     int         RESTART;
     int         RESET;
+
+    unsigned char **imgs; /**< camera sensor buffer */
+    int imgWidth,imgHeight;
+    int camNum;
+    int imgSended; // image sended to client?
+
 } tCarElt;
 
 

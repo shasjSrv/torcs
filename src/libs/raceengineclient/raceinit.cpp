@@ -835,6 +835,7 @@ ReRaceCleanDrivers(void)
 {
 	int i;
 	tRobotItf *robot;
+	tCarElt *car;
 	int nCars;
 
 	nCars = ReInfo->s->_ncars;
@@ -853,6 +854,19 @@ ReRaceCleanDrivers(void)
 			GF_TAILQ_REMOVE(&(ReInfo->s->cars[i]->_penaltyList), penalty, link);
 			FREEZ(penalty);
 			penalty = GF_TAILQ_FIRST(&(ReInfo->s->cars[i]->_penaltyList));
+		}
+
+		//free image buffer
+		car = &(ReInfo->carList[i]);
+		if(car->imgs) {
+			for(int cn=0;cn<car->camNum; cn++) {
+				if(car->imgs[cn]) {
+					free(car->imgs[cn]);
+					printf("===INFO:free image buffer for car%d cam%d\n",i,cn);
+				}
+			}
+			free(car->imgs);
+			car->imgs=NULL;
 		}
 	}
 

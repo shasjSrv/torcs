@@ -12,6 +12,10 @@
 *.la
 *.a
 
+# Ctag
+.tags
+.tags_sorted_by_file
+
 ###########################
 Make-config
 config.h
@@ -94,6 +98,3 @@ src/tools/trackgen/trackgen
 setup_linux.sh
 
 scr_client
-
-.tags
-.tags_sorted_by_file

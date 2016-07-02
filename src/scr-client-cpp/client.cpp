@@ -32,7 +32,7 @@
 #include __DRIVER_INCLUDE__
 
 /*** defines for UDP *****/
-#define UDP_MSGLEN 1000
+#define UDP_MSGLEN 200*100*3 + 4 //1000
 #define UDP_CLIENT_TIMEUOT 1000000
 //#define __UDP_CLIENT_VERBOSE__
 /************************/
@@ -53,6 +53,11 @@ typedef __DRIVER_CLASS__ tDriver;
 
 
 using namespace std;
+
+//image functions
+extern void createImage(int width, int height);
+extern void releaseImage();
+extern void processImage(const char camID, const unsigned char *imgBuf, int width, int height);
 
 //void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort, char *id, unsigned int &maxEpisodes,unsigned int &maxSteps,
 //		bool &noise, double &noiseAVG, double &noiseSTD, long &seed, char *trackName, BaseDriver::tstage &stage);
@@ -210,8 +215,10 @@ int main(int argc, char *argv[])
 
         }  while(1);
 
-	unsigned long currentStep=0; 
+    //create image
+    createImage(200,100);
 
+	unsigned long currentStep=0;
         while(1)
         {
             // wait until answer comes back, for up to UDP_CLIENT_TIMEUOT micro sec
@@ -250,6 +257,17 @@ int main(int argc, char *argv[])
                     cout << "Client Restart" << endl;
                     break;
                 }
+
+                // receive image
+                if(strncmp(buf,"cam",3)==0) {
+                    //sscanf(buf+3,"%c",&camID);
+                    printf("Receive image of Camera %c, size %d\n",buf[3],numRead);
+                    //process image.
+                    // ...
+                    processImage(buf[3],(unsigned char *)(buf+4),200,100);
+                    continue;
+                }
+
                 /**************************************************
                  * Compute The Action to send to the solorace sever
                  **************************************************/
@@ -282,6 +300,9 @@ int main(int argc, char *argv[])
             }
         }
     } while(shutdownClient==false && ( (++curEpisode) != maxEpisodes) );
+
+    //release image
+    releaseImage();
 
     if (shutdownClient==false)
 	d.onShutdown();

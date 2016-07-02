@@ -345,6 +345,36 @@ void cGrScreen::update(tSituation *s, float Fps)
 	}
 	
 	//light = ssgGetLight (0);
+
+	/* add by zhu
+		Save curCam into /tmp/cam.png
+		camera is created in grCamCreateSceneCameraList()
+		default curCam is configure in graph.xml
+			<attnum name="camera" val="4"/>
+			<attnum name="camera head list" val="0"/>
+		means : cam F2 = car inside car (no car - road view)
+	*/
+	if (curCar->imgs) {
+		dispCam = (cGrPerspCamera*)GF_TAILQ_FIRST(&cams[0]);
+		for(int i=0;i<curCar->camNum;i++) {
+			glClear (GL_DEPTH_BUFFER_BIT);
+			camDraw (s);
+
+			//capture img
+			glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+			glPixelStorei(GL_PACK_ALIGNMENT, 1);
+			unsigned char *imgPos = curCar->imgs[i]+4; // camX RGB RGB ...
+			glReadPixels(scrx + (scrw - curCar->imgWidth)/2, scry + (scrh - curCar->imgHeight)/2, curCar->imgWidth, curCar->imgHeight,
+						GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)imgPos);
+			curCar->imgSended=0;
+			//save img
+			char pngName[20];
+			sprintf(pngName,"/tmp/cam%d.png",i);
+			GfImgWritePng(imgPos, pngName, curCar->imgWidth, curCar->imgHeight);
+
+			dispCam=dispCam->next();
+		}
+	}
 	
 	/* MIRROR */
 	if (mirrorFlag && curCam->isMirrorAllowed ()) {

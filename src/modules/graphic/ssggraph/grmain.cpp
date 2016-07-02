@@ -392,6 +392,24 @@ initCars(tSituation *s)
 			grScreens[grNbScreen]->setCurrentCar(elt);
 			grNbScreen++;
 		}
+
+		//add by zhu
+		// alloc image buffer
+		int camNum = (int)GfParmGetNum(hdle, idx, "camera num",   (char*)NULL, 0);
+		if(camNum > 0 && camNum < 10) {
+			elt->camNum = camNum;
+			elt->imgWidth = (int)GfParmGetNum(hdle, idx, "image width",   (char*)NULL, 0);
+			elt->imgHeight = (int)GfParmGetNum(hdle, idx, "image height",   (char*)NULL, 0);
+			if(elt->imgs == NULL) {
+				elt->imgs = (unsigned char **)calloc(camNum,sizeof(unsigned char *));
+				for(int cn=0;cn<camNum;cn++) {
+					elt->imgs[cn] = (unsigned char*)calloc(s->cars[i]->imgWidth * s->cars[i]->imgHeight * 3 + 4,sizeof(unsigned char));
+					snprintf((char *)elt->imgs[cn],4,"cam");
+					elt->imgs[cn][3]='0'+cn;
+					printf("+++INFO: malloc image buffer for car%d cam%c\n",i,elt->imgs[cn][3]);
+				}
+			}
+		}
 	}
 
 	if (grNbScreen == 0) {
