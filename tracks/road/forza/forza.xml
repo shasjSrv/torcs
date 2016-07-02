@@ -4118,5 +4118,51 @@ the Free Software Foundation; either version 2 of the License, or
       <attstr name="fov end" val="pit end"/>
     </section>
   </section>
+
+  <section name="Trafficlights">
+        <section name="trafficlight1">
+            <attstr name="segment" val="curve 1"/>
+            <attnum name="delta switch time" val="16"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight2">
+            <attstr name="segment" val="straight 1"/>
+            <attnum name="delta switch time" val="8"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight3">
+            <attstr name="segment" val="curve 2"/>
+            <attnum name="delta switch time" val="16"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight4">
+            <attstr name="segment" val="curve 3"/>
+            <attnum name="delta switch time" val="8"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight5">
+            <attstr name="segment" val="curve 4"/>
+            <attnum name="delta switch time" val="16"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight6">
+            <attstr name="segment" val="curve 5"/>
+            <attnum name="delta switch time" val="8"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+        </section>
+        <section name="trafficlight7">
+            <attstr name="segment" val="curve 9"/>
+            <attnum name="delta switch time" val="8"/>
+            <attnum name="to right" val="0"/>
+            <attnum name="to start" val="0" />
+            <attnum name="angle z" val="-60"/>
+        </section>
+  </section>  <!-- Objects -->
 </params>
 
