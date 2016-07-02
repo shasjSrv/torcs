@@ -44,6 +44,7 @@
 #include "grtrackmap.h"
 #include "grcarlight.h"
 #include <glfeatures.h>
+#include "grtrafficlight.h"
 
 int maxTextureUnits = 0;
 static double OldTime;
@@ -223,6 +224,12 @@ static void
 grSwitchMirror(void * /* dummy */)
 {
     grGetcurrentScreen()->switchMirror();
+}
+
+int initTrafficlight(tTrack * theTrack)
+{
+    if(theTrack->numberOfTrafficlight>0)
+        grInitTrafficlight(theTrack);
 }
 
 int

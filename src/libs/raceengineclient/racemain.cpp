@@ -81,6 +81,7 @@ AbortRaceHookActivate(void * /* dummy */)
 	ReInfo->_reSimItf.shutdown();
 	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
 		ReInfo->_reGraphicItf.shutdowncars();
+		ReInfo->_reGraphicItf.shutdownTrafficlight();
 		startMenuMusic();
 	}
 	ReInfo->_reGraphicItf.shutdowntrack();
@@ -322,6 +323,7 @@ static int reRaceRealStart(void)
 			/* RmLoadingScreenSetText("Loading Cars 3D Objects..."); */
 			stopMenuMusic();
 			ReInfo->_reGraphicItf.initcars(s);
+			ReInfo->_reGraphicItf.inittrafficlight(ReInfo->track);
 		}
 
 		GfuiScreenActivate(ReInfo->_reGameScreen);

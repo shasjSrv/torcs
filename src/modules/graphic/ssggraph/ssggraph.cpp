@@ -25,6 +25,7 @@
 #include <tgfclient.h>
 
 #include "grmain.h"
+#include "grtrafficlight.h"
 
 #ifdef DMALLOC
 #include "dmalloc.h"
@@ -43,6 +44,10 @@ graphInit(int /* idx */, void *pt)
     itf->shutdowntrack = shutdownTrack;
 	itf->muteformenu   = muteForMenu; 
     //itf->bendcar       = bendCar;
+
+    itf->inittrafficlight=initTrafficlight;
+    itf->shutdownTrafficlight=grShutdownTrafficlight;
+
     return 0;
 }
 

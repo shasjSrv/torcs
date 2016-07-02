@@ -38,6 +38,8 @@
 
 #include "grscreen.h"
 
+#include "grtrafficlight.h"
+
 cGrScreen::cGrScreen(int myid)
 {
 	id = myid;
@@ -290,6 +292,9 @@ void cGrScreen::camDraw(tSituation *s)
 		grDrawCar(cars[i], curCar, dispCam->getDrawCurrent(), dispCam->getDrawDriver(), s->currentTime, dispCam);
 	} 
 	STOP_PROFILE("grDrawCar*");
+
+	for (i = 0; i < numberOfTrafficlight; i++)
+		grDrawTrafficlight(i, 1, s->currentTime, dispCam);
 	
 	START_PROFILE("grDrawScene*");
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);

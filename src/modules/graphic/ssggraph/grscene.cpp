@@ -49,6 +49,7 @@
 #include "grssgext.h"
 #include "grtexture.h"
 
+#include "grtrafficlight.h"
 
 int grWrldX;
 int grWrldY;
@@ -75,6 +76,8 @@ ssgBranch *PitsAnchor = 0;
 ssgBranch *SmokeAnchor = 0;
 ssgBranch *SkidAnchor = 0;
 ssgBranch *CarlightAnchor = 0;
+
+ssgBranch *TrafficlightAnchor = 0;
 
 ssgBranch *ThePits = 0;
 ssgTransform *sun_grscene = NULL ;
@@ -137,6 +140,7 @@ grInitScene(void)
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
 	glEnable(GL_DEPTH_TEST);
  
 	if (!sun_grscene) {
@@ -203,6 +207,10 @@ grLoadScene(tTrack *track)
 	/* Car lights */
 	CarlightAnchor = new ssgBranch;
 	TheScene->addKid(CarlightAnchor);
+
+	/* Traffic light*/
+	TrafficlightAnchor = new ssgBranch;
+	TheScene->addKid(TrafficlightAnchor);
 
 	/* Cars */
 	CarsAnchor = new ssgBranch;

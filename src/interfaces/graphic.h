@@ -118,6 +118,17 @@ struct Situation;
 #define GR_VIEW_STD  0 /* full screen view */
 #define GR_VIEW_PART 1 /* partial screen view (scissor test) */
 
+
+/** @brief Load and set up Traffic light
+ *  @param[in] track Track structure
+ */
+typedef int (*tfGraphicInitTrafficlight)(tTrack *);
+
+/** @brief Shut down and release Traffic light models
+ */
+typedef void (*tfGraphicShutdownTrafficlight)(void);
+
+
 /** @brief Load and set up track model for rendering
  *  @ingroup graphicmodint
  *  @param[in] track Track structure
@@ -180,6 +191,8 @@ typedef struct {
 	tfGraphicShutdwnTrack   shutdowntrack;
 	tGraphicMuteForMenu		muteformenu;
 	//tfGraphicBendCar        bendcar;
+  tfGraphicInitTrafficlight inittrafficlight;
+  tfGraphicShutdownTrafficlight shutdownTrafficlight;
 } tGraphicItf;
 
 

@@ -909,6 +909,11 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
     const char		*segName;
     int			segId;
     tRoadCam		*curCam;
+
+    tRoadTrafficlight *curTrafficlight;
+    theTrack->theTrafficlightList=NULL;
+    theTrack->numberOfTrafficlight=0;
+
     tTrkLocPos		trkPos;
     int			found = 0;
     const char		*paramVal;
@@ -1194,6 +1199,53 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	} while (GfParmListSeekNext(TrackHandle, TRK_SECT_CAM) == 0);
     }
 
+    /*
+     * traffic light definitions
+     */
+    if (GfParmListSeekFirst(TrackHandle, TRK_SECT_TRAFFICLIGHT) == 0) {
+	do {
+        curTrafficlight= (tRoadTrafficlight*)calloc(1, sizeof(tRoadTrafficlight));
+        if (!curTrafficlight) {
+			GfFatal("ReadTrack3: Memory allocation error");
+        }
+        if (theTrack->theTrafficlightList== NULL) {
+			theTrack->theTrafficlightList= curTrafficlight;
+			curTrafficlight->next = curTrafficlight;
+		} else {
+			curTrafficlight->next = (theTrack->theTrafficlightList)->next;
+			(theTrack->theTrafficlightList)->next = curTrafficlight;
+            theTrack->theTrafficlightList= curTrafficlight;
+		}
+		curTrafficlight->name = GfParmListGetCurEltName(TrackHandle, TRK_SECT_TRAFFICLIGHT);
+		segName = GfParmGetCurStr(TrackHandle, TRK_SECT_TRAFFICLIGHT, TRK_ATT_SEGMENT, NULL);
+           if (segName == 0) {
+            GfFatal("Bad Track Definition: in Traffic light %s %s is missing\n", curTrafficlight->name, TRK_ATT_SEGMENT);
+           }
+           snprintf(path2, BUFSIZE, "%s/%s/%s", TRK_SECT_MAIN, TRK_LST_SEGMENTS, segName);
+           segId = (int)GfParmGetNum(TrackHandle, path2, TRK_ATT_ID, (char*)NULL, 0);
+           curSeg = theTrack->seg;
+           for(i=0; i<theTrack->nseg; i++)  {
+               if (curSeg->id == segId) {
+                   break;
+               }
+               curSeg = curSeg->next;
+           }
+
+           trkPos.seg = curSeg;
+           trkPos.toRight = GfParmGetCurNum(TrackHandle, TRK_SECT_TRAFFICLIGHT, TRK_ATT_TORIGHT, (char*)NULL, 0);
+           trkPos.toStart = GfParmGetCurNum(TrackHandle, TRK_SECT_TRAFFICLIGHT, TRK_ATT_TOSTART, (char*)NULL, 0);
+           TrackLocal2Global(&trkPos, &(curTrafficlight->pos.x), &(curTrafficlight->pos.y));
+           curTrafficlight->pos.z = TrackHeightL(&trkPos) +  GfParmGetCurNum(TrackHandle, TRK_SECT_TRAFFICLIGHT, TRK_ATT_HEIGHT, (char*)NULL, 0);
+        /*rotation angle z */
+        curTrafficlight->rot_angle_z=GfParmGetCurNum(TrackHandle, TRK_SECT_TRAFFICLIGHT, "angle z", (char)NULL,0);
+        /*delta switch time*/
+        curTrafficlight->delta_switch_time= GfParmGetCurNum(TrackHandle, TRK_SECT_TRAFFICLIGHT, "delta switch time", (char*)NULL, 8);
+
+        theTrack->numberOfTrafficlight++;
+
+    } while (GfParmListSeekNext(TrackHandle, TRK_SECT_TRAFFICLIGHT) == 0);
+    }
+
     /* Update the coord to be positives */
     theTrack->min.x = 0;
     theTrack->min.y = 0;
@@ -1236,6 +1288,16 @@ ReadTrack4(tTrack *theTrack, void *TrackHandle, tRoadCam **camList, int ext)
 	    curCam->pos.y -= ymin;
 	    curCam->pos.z -= zmin;
 	} while (curCam != *camList);
+    }
+
+    if (theTrack->theTrafficlightList!= NULL) {
+		curTrafficlight= theTrack->theTrafficlightList;
+		do {
+			curTrafficlight= curTrafficlight->next;
+			curTrafficlight->pos.x -= xmin;
+			curTrafficlight->pos.y -= ymin;
+			curTrafficlight->pos.z -= zmin;
+		} while (curTrafficlight!= theTrack->theTrafficlightList);
     }
 }
 

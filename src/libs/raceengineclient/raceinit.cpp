@@ -823,6 +823,7 @@ ReRaceCleanup(void)
 	ReInfo->_reSimItf.shutdown();
 	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
 		ReInfo->_reGraphicItf.shutdowncars();
+		ReInfo->_reGraphicItf.shutdownTrafficlight();
 		startMenuMusic();
 	}
 	ReStoreRaceResults(ReInfo->_reRaceName);

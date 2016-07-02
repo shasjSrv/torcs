@@ -53,6 +53,8 @@ extern void *grTrackHandle;
 extern ssgContext grContext;
 extern int grNbCars;
 
+extern int initTrafficlight(tTrack *);
+
 extern int  initView(int x, int y, int width, int height, int flag, void *screen);
 extern int  initCars(tSituation *s);
 extern int  refresh(tSituation *s);

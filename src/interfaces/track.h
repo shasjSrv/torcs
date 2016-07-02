@@ -202,6 +202,7 @@
 
 
 #define TRK_SECT_CAM		"Cameras"
+#define TRK_SECT_TRAFFICLIGHT "Trafficlights"
 
 #define TRK_ATT_SEGMENT		"segment"
 #define TRK_ATT_TORIGHT 	"to right"
@@ -230,6 +231,16 @@ typedef struct RoadCam
     t3Dd		pos;
     struct RoadCam	*next;
 } tRoadCam;
+
+/**traffic light*/
+typedef struct RoadTrafficlight
+{
+    char        *name;
+    t3Dd        pos;
+    double      rot_angle_z;   /*rotation*/
+    double      delta_switch_time;
+    struct RoadTrafficlight  *next;
+} tRoadTrafficlight;
 
 /** Extended track segment */
 typedef struct SegExt
@@ -519,6 +530,9 @@ typedef struct
     t3Dd		min;
     t3Dd		max;
     tTrackGraphicInfo	graphic;
+
+    tRoadTrafficlight *theTrafficlightList;
+    int numberOfTrafficlight;
 } tTrack;
 
 
