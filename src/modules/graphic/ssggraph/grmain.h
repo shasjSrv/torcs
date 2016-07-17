@@ -2,9 +2,9 @@
 
     file                 : grmain.h
     created              : Fri Aug 18 00:00:41 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: grmain.h,v 1.18.2.1 2010/05/15 13:16:07 berniw Exp $
+    version              : $Id: grmain.h,v 1.18.2.2 2013/09/01 10:24:22 berniw Exp $
 
  ***************************************************************************/
 
@@ -53,12 +53,15 @@ extern void *grTrackHandle;
 extern ssgContext grContext;
 extern int grNbCars;
 
+extern int initTrafficlight(tTrack *);
+
 extern int  initView(int x, int y, int width, int height, int flag, void *screen);
 extern int  initCars(tSituation *s);
 extern int  refresh(tSituation *s);
 extern void shutdownCars(void);
 extern int  initTrack(tTrack *track);
 extern void shutdownTrack(void);
+extern void muteForMenu(void);
 //extern void bendCar (int index, sgVec3 poc, sgVec3 force, int cnt);
 extern int maxTextureUnits;
 extern tdble grMaxDammage;

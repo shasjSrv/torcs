@@ -3,7 +3,7 @@
     file        : grcarlight.h
     created     : Sun Oct 26 15:15:11 CET 2003
     copyright   : (C) 2003 by Christophe Guionneau                      
-    version     : $Id: grcarlight.h,v 1.4.2.1 2008/08/24 17:07:23 berniw Exp $                                  
+    version     : $Id: grcarlight.h,v 1.4.2.2 2014/08/05 19:20:55 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -18,7 +18,7 @@
  
 /** @file    
     		
-    @version	$Id: grcarlight.h,v 1.4.2.1 2008/08/24 17:07:23 berniw Exp $
+    @version	$Id: grcarlight.h,v 1.4.2.2 2014/08/05 19:20:55 berniw Exp $
 */
 
 #ifndef _GRCARLIGHT_H_
@@ -72,7 +72,6 @@ public:
 
   virtual const char *getTypeName(void)  { return ssgVtxTable::getTypeName();}
 
-  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2) { ssgVtxTable::print(fd,indent,how_much);}
   virtual int load ( FILE *fd )  {return  ssgVtxTable::load(fd);}
   virtual int save ( FILE *fd )  {return  ssgVtxTable::save(fd);}
 

@@ -2,9 +2,9 @@
 
     file        : raceresults.h
     created     : Thu Jan  2 12:43:28 CET 2003
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann
     email       : eric.espie@torcs.org   
-    version     : $Id: raceresults.h,v 1.3.2.1 2008/12/31 03:53:55 berniw Exp $                                  
+    version     : $Id: raceresults.h,v 1.3.2.2 2014/02/04 14:02:37 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: raceresults.h,v 1.3.2.1 2008/12/31 03:53:55 berniw Exp $
+    @version	$Id: raceresults.h,v 1.3.2.2 2014/02/04 14:02:37 berniw Exp $
 */
 
 #ifndef _RACERESULTS_H_

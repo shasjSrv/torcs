@@ -2,9 +2,9 @@
 
     file                 : carstruct.h
     created              : Sun Mar 19 00:06:07 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: carstruct.h,v 1.16 2006/02/20 20:15:15 berniw Exp $
+    version              : $Id: carstruct.h,v 1.16.2.2 2014/02/10 10:06:30 berniw Exp $
 
  ***************************************************************************/
 
@@ -81,11 +81,12 @@ typedef struct
     DtShapeRef	shape;		/* for collision */
     int		blocked;		// Flag to show if the car has had already a collision in the same timestep.
     int		dammage;
-    int     fakeDammage;    
+    int     fakeDammage;
     
     tDynPt	restPos;	/* target rest position after the car is broken */
 
     int		collisionAware;
+	tdble	speed;		// total speed = sqrt(vx*vx + vy*vy + vz*vz) 
 } tCar;
 
 #if 0

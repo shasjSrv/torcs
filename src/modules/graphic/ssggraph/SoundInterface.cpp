@@ -2,9 +2,9 @@
 
     file                 : PlibSoundInterface.cpp
     created              : Thu Apr 7 04:21 CEST 2005
-    copyright            : (C) 2005 Christos Dimitrakakis
+    copyright            : (C) 2005-2013 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: SoundInterface.cpp,v 1.4 2005/09/18 21:52:22 olethros Exp $
+    version              : $Id: SoundInterface.cpp,v 1.4.2.1 2013/09/01 10:24:22 berniw Exp $
 
 ***************************************************************************/
 

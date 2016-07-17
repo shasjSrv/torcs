@@ -4,7 +4,7 @@
     created              : Mon Feb 28 22:38:31 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: rttelem.cpp,v 1.8.2.2 2011/12/28 15:00:48 berniw Exp $
+    version              : $Id: rttelem.cpp,v 1.8.2.3 2014/05/16 15:45:11 berniw Exp $
 
  ***************************************************************************/
 
@@ -17,11 +17,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#if 0
+
 /** @file	
     		This is a collection of useful functions for using telemetry in a robot.
 		You can see an example of telemetry usage in the human driver.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: rttelem.cpp,v 1.8.2.2 2011/12/28 15:00:48 berniw Exp $
+    @version	$Id: rttelem.cpp,v 1.8.2.3 2014/05/16 15:45:11 berniw Exp $
     @ingroup	robottools
 */
 
@@ -30,7 +32,9 @@
     <br>The graphs are build by gnuplot.
     @ingroup	robottools
 */
-    
+
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef WIN32

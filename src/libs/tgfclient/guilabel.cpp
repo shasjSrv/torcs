@@ -2,9 +2,9 @@
                         guilabel.cpp -- labels management                           
                              -------------------                                         
     created              : Fri Aug 13 22:22:12 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
-    version              : $Id: guilabel.cpp,v 1.2.2.4 2012/05/18 01:37:39 berniw Exp $                                  
+    version              : $Id: guilabel.cpp,v 1.2.2.5 2013/08/28 13:07:33 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     		GUI labels management.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: guilabel.cpp,v 1.2.2.4 2012/05/18 01:37:39 berniw Exp $
+    @version	$Id: guilabel.cpp,v 1.2.2.5 2013/08/28 13:07:33 berniw Exp $
     @ingroup	gui
 */
 
@@ -77,6 +77,7 @@ GfuiLabelCreateEx(void *scr, const char *text, float *fgColor, int font, int x, 
 	label = &(object->u.label);
 	label->text = (char*)calloc(maxlen+1, 1);
 	strncpy(label->text, text, maxlen);
+	label->text[maxlen] = '\0';
 	label->maxlen = maxlen;
 	
 	label->bgColor = screen->bgColor;

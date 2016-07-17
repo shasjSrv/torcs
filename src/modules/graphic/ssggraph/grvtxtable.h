@@ -3,7 +3,7 @@
     file                 : grvtxtable.h
     created              : Fri Mar 22 23:16:44 CET 2002
     copyright            : (C) 2001 by Christophe Guionneau
-    version              : $Id: grvtxtable.h,v 1.5 2005/02/01 19:08:19 berniw Exp $
+    version              : $Id: grvtxtable.h,v 1.5.2.1 2014/08/05 19:20:56 berniw Exp $
 
  ***************************************************************************/
 
@@ -168,7 +168,6 @@ public:
   virtual void setColours   ( ssgColourArray   *cl ) {  ssgVtxTable::setColours(cl);}
 
   /* the following functions doesn't work with arrays */
-  virtual void print ( FILE *fd = stderr, char *indent = "", int how_much = 2) { ssgVtxTable::print(fd,indent,how_much);}
   virtual int load ( FILE *fd )  {return  ssgVtxTable::load(fd);}
   virtual int save ( FILE *fd )  {return  ssgVtxTable::save(fd);}
 };

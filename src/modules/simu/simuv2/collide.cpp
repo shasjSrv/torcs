@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:06:19 CET 2000
     copyright            : (C) 2000-2005 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: collide.cpp,v 1.32.2.3 2012/05/20 05:10:16 berniw Exp $
+    version              : $Id: collide.cpp,v 1.32.2.5 2014/04/12 13:55:29 berniw Exp $
 
  ***************************************************************************/
 
@@ -52,8 +52,7 @@ void SimCarCollideZ(tCar *car)
 					if (getDamageLimit())
 						car->dammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
 					else
-						car->fakeDammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);
-				}
+						car->fakeDammage += (int)(wheel->trkPos.seg->surface->kDammage * fabs(dotProd) * simDammageFactor[car->carElt->_skillLevel]);				}
 			}
 		}
 	}
@@ -137,7 +136,7 @@ void SimCarCollideXYScene(tCar *car)
 		// Damage.
 		dotProd = initDotProd;
 		if (dotProd < 0.0f && (car->carElt->_state & RM_CAR_STATE_FINISH) == 0) {
-			dmg = curBarrier->surface->kDammage * (0.5f*dmgDotProd*dmgDotProd + 0.005f*fabs(1.0f-cosa)*absvel) * simDammageFactor[car->carElt->_skillLevel];
+			dmg = curBarrier->surface->kDammage * (0.5f*dmgDotProd*dmgDotProd + 0.005f*fabs(1.0f-cosa)*absvel) * rulesDamageFactor * simDammageFactor[car->carElt->_skillLevel];
 			if (getDamageLimit())
 				car->dammage += (int)dmg;
 			else
@@ -327,12 +326,11 @@ static void SimCarCollideResponse(void * /*dummy*/, DtObjectRef obj1, DtObjectRe
 
 		// Move the car for the collision lib.
 		tCarElt *carElt = car[i]->carElt;
-		sgMakeCoordMat4(carElt->pub.posMat, car[i]->DynGCg.pos.x, car[i]->DynGCg.pos.y,
+		sgMakeCoordMat4(carElt->pub.posMat, car[i]->DynGCg.pos.x - carElt->_statGC_x, car[i]->DynGCg.pos.y - carElt->_statGC_y,
 						car[i]->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
 						RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		dtSelectObject(car[i]);
 		dtLoadIdentity();
-		dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0.0f);
 		dtMultMatrixf((const float *)(carElt->_posMat));
 
 		car[i]->collision |= SEM_COLLISION_CAR;
@@ -447,12 +445,11 @@ static void SimCarWallCollideResponse(void *clientdata, DtObjectRef obj1, DtObje
 	sgCopyVec2((float*)&(car->VelColl.x), v2a);
 
 	// Move the car for the collision lib.
-	sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x, car->DynGCg.pos.y,
+	sgMakeCoordMat4(carElt->pub.posMat, car->DynGCg.pos.x - carElt->_statGC_x, car->DynGCg.pos.y - carElt->_statGC_y,
 					car->DynGCg.pos.z - carElt->_statGC_z, RAD2DEG(carElt->_yaw),
 					RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 	dtSelectObject(car);
 	dtLoadIdentity();
-	dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0.0f);
 	dtMultMatrixf((const float *)(carElt->_posMat));
 
 	car->collision |= SEM_COLLISION_CAR;
@@ -729,7 +726,6 @@ SimCarCollideCars(tSituation *s)
 		dtSelectObject(car);
 		// Fit the bounding box around the car, statGC's are the static offsets.
 		dtLoadIdentity();
-		dtTranslate(-carElt->_statGC_x, -carElt->_statGC_y, 0.0f);
 		// Place the bounding box such that it fits the car in the world.
 		dtMultMatrixf((const float *)(carElt->_posMat));
 		memset(&(car->VelColl), 0, sizeof(tPosd));

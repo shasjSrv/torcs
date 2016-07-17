@@ -7,7 +7,7 @@
     created              : Fri Dec 23 17:35:18 CET 2011
     copyright            : (C) 2011 Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: SoundStream.h,v 1.1.2.1 2011/12/28 15:11:57 berniw Exp $
+    version              : $Id: SoundStream.h,v 1.1.2.2 2014/02/05 09:54:43 berniw Exp $
 
  ***************************************************************************/
 
@@ -37,7 +37,7 @@ class SoundStream
 		virtual int getRateInHz() = 0;
 		virtual SoundFormat getSoundFormat() = 0;
 
-		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char* error) = 0;
+		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char** error) = 0;
 		virtual void rewind() = 0;
 		virtual void display() = 0;
 		// isValid is not nice, but I do not want to introduce exceptions into TORCS at this time

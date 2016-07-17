@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:07:42 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: sim.h,v 1.20.2.2 2008/12/31 03:53:56 berniw Exp $
+    version              : $Id: sim.h,v 1.20.2.3 2014/04/14 04:54:03 berniw Exp $
 
  ***************************************************************************/
 
@@ -39,7 +39,7 @@
 extern void SimConfig(tCarElt *carElt, tRmInfo* ReInfo);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
-extern void SimInit(int nbcars, tTrack* track);
+extern void SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);

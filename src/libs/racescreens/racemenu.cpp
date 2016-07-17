@@ -2,9 +2,9 @@
 
     file                 : racemenu.cpp
     created              : Thu May  2 22:02:51 CEST 2002
-    copyright            : (C) 2001 by Eric Espie
+    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
     email                : eric.espie@torcs.org
-    version              : $Id: racemenu.cpp,v 1.2.2.3 2011/12/28 14:59:10 berniw Exp $
+    version              : $Id: racemenu.cpp,v 1.2.2.4 2014/05/20 11:02:18 berniw Exp $
 
  ***************************************************************************/
 
@@ -18,10 +18,9 @@
  ***************************************************************************/
 
 /** @file   
-    		This is the race options menu.
-    @ingroup	racemantools
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racemenu.cpp,v 1.2.2.3 2011/12/28 14:59:10 berniw Exp $
+    Race options menu.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id: racemenu.cpp,v 1.2.2.4 2014/05/20 11:02:18 berniw Exp $
 */
 
 #include <stdlib.h>
@@ -37,30 +36,28 @@
 #include <racescreens.h>
 #include <portability.h>
 
-static void		*scrHandle;
-static tRmRaceParam	*rp;
-static int		rmrpDistance;
-static int		rmrpLaps;
-static int		rmrpDistId;
-static int		rmrpLapsId;
-static int		rmDispModeEditId;
-static int		rmCurDispMode;
-static const char *rmCurDispModeList[] = { RM_VAL_VISIBLE, RM_VAL_INVISIBLE};
+static void *scrHandle;
+static tRmRaceParam *rp;
+static int rmrpDistance;
+static int rmrpLaps;
+static int rmrpDistId;
+static int rmrpLapsId;
+static int rmDispModeEditId;
+static int rmCurDispMode;
+static const char *rmCurDispModeList[] = { RM_VAL_VISIBLE, RM_VAL_INVISIBLE };
 
 
-static void
-rmrpDeactivate(void *screen)
+static void rmrpDeactivate(void *screen)
 {
-    GfuiScreenRelease(scrHandle);
-    
-    if (screen) {
-	GfuiScreenActivate(screen);
-    }
+	GfuiScreenRelease(scrHandle);
+
+	if (screen) {
+		GfuiScreenActivate(screen);
+	}
 }
 
 
-static void
-rmrpUpdDist(void * /* dummy */)
+static void rmrpUpdDist(void * /* dummy */)
 {
 	char *val;
 	const int BUFSIZE = 1024;
@@ -79,8 +76,7 @@ rmrpUpdDist(void * /* dummy */)
 }
 
 
-static void
-rmrpUpdLaps(void * /* dummy */)
+static void rmrpUpdLaps(void * /* dummy */)
 {
 	char *val;
 	const int BUFSIZE = 1024;
@@ -99,8 +95,7 @@ rmrpUpdLaps(void * /* dummy */)
 }
 
 
-static void
-rmrpValidate(void * /* dummy */)
+static void rmrpValidate(void * /* dummy */)
 {
 	if (rp->confMask & RM_CONF_RACE_LEN) {
 		rmrpUpdDist(0);
@@ -117,8 +112,7 @@ rmrpValidate(void * /* dummy */)
 }
 
 
-static void
-rmrpAddKeys(void)
+static void rmrpAddKeys(void)
 {
 	GfuiAddKey(scrHandle, 27, "Cancel Modifications", rp->prevScreen, rmrpDeactivate, NULL);
 	GfuiAddSKey(scrHandle, GLUT_KEY_F1, "Help", scrHandle, GfuiHelpScreen, NULL);
@@ -127,16 +121,19 @@ rmrpAddKeys(void)
 }
 
 
-void
-rmChangeDisplayMode(void * /* dummy */)
+void rmChangeDisplayMode(void * /* dummy */)
 {
 	rmCurDispMode = 1 - rmCurDispMode;
 	GfuiLabelSetText(scrHandle, rmDispModeEditId, rmCurDispModeList[rmCurDispMode]);
 }
 
 
-void
-RmRaceParamMenu(void *vrp)
+/** @brief Race options menu
+ *  @ingroup racemantools
+ *  @param[in,out] vrp Pointer on tRmRaceParam structure (cast to void)
+ *  @note The race manager parameter set is modified in memory but not persisted.
+ */
+void RmRaceParamMenu(void *vrp)
 {
 	int y, x, x2, dy, dx;
 	const int BUFSIZE = 1024;

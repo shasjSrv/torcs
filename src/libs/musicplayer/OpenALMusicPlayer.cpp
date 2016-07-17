@@ -4,7 +4,7 @@
     created              : Fri Dec 23 17:35:18 CET 2011
     copyright            : (C) 2011 Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: OpenALMusicPlayer.cpp,v 1.1.2.2 2012/01/03 23:35:12 berniw Exp $
+    version              : $Id: OpenALMusicPlayer.cpp,v 1.1.2.3 2014/02/05 09:54:43 berniw Exp $
 
  ***************************************************************************/
 
@@ -163,7 +163,7 @@ bool OpenALMusicPlayer::streamBuffer(ALuint buffer)
 	int size = 0;
 	const char* error = '\0';
 	
-	if (!stream->read(pcm, BUFFERSIZE, &size, error)) {
+	if (!stream->read(pcm, BUFFERSIZE, &size, &error)) {
 		GfError("OpenALMusicPlayer: Stream read error: %s\n", error);
 		return false;
 	} else {

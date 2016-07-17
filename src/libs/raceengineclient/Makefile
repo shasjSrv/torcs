@@ -4,7 +4,7 @@
 #    created     : Sat Nov 16 09:38:51 CET 2002
 #    copyright   : (C) 2002, 3006 by Eric Espié, Bernhard Wymann
 #    email       : Eric.Espie@torcs.org   
-#    version     : $Id: Makefile,v 1.5 2006/10/06 20:44:51 berniw Exp $
+#    version     : $Id: Makefile,v 1.5.2.1 2013/01/12 14:24:06 berniw Exp $
 #
 ##############################################################################
 #
@@ -22,6 +22,8 @@ SOLIBDIR     = .
 
 SOURCES      = singleplayer.cpp raceinit.cpp racemain.cpp racemanmenu.cpp racestate.cpp racegl.cpp \
 	       raceengine.cpp raceresults.cpp
+
+SOLIBS      = -lracescreens -lrobottools
 
 EXPDIR       = include
 

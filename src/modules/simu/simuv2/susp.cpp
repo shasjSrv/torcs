@@ -2,9 +2,9 @@
 
     file                 : susp.cpp
     created              : Sun Mar 19 00:08:41 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2016 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: susp.cpp,v 1.10.2.1 2008/12/31 03:53:56 berniw Exp $
+    version              : $Id: susp.cpp,v 1.10.2.10 2016/03/19 14:47:05 berniw Exp $
 
  ***************************************************************************/
 
@@ -28,8 +28,8 @@ static void initDamper(tSuspension *susp)
 	tDamper *damp;
 	
 	damp = &(susp->damper);	
-	damp->bump.b2 = (damp->bump.C1 - damp->bump.C2) * damp->bump.v1 + damp->bump.b1;
-	damp->rebound.b2 = (damp->rebound.C1 - damp->rebound.C2) * damp->rebound.v1 + damp->rebound.b1;
+	damp->bump.b2 = (damp->bump.C1 - damp->bump.C2) * damp->bump.v1;
+	damp->rebound.b2 = (damp->rebound.C1 - damp->rebound.C2) * damp->rebound.v1;
 }
 
 
@@ -61,7 +61,7 @@ static tdble damperForce(tSuspension *susp)
 	
 	av = fabs(v);
 	if (av < dampdef->v1) {
-		f = (dampdef->C1 * av + dampdef->b1);
+		f = (dampdef->C1 * av);
 	} else {
 		f = (dampdef->C2 * av + dampdef->b2);
 	}
@@ -85,6 +85,7 @@ static tdble springForce(tSuspension *susp)
 	/* K is < 0 */
 	f = spring->K * (susp->x - spring->x0) + spring->F0;
 	if (f < 0.0f) {
+		// Compression spring, so the force can never change the sign.
 		f = 0.0f;
 	}
 	
@@ -98,9 +99,13 @@ void SimSuspCheckIn(tSuspension *susp)
 {
 	susp->state = 0;
 	if (susp->x < susp->spring.packers) {
+		// Packers are not scaled with susp->spring.bellcrank, because they are a hard
+		// rubber element or plate spring packs directly mounted on the piston of the
+		// damper.
 		susp->x = susp->spring.packers;
 		susp->state = SIM_SUSP_COMP;
 	}
+	
 	susp->x *= susp->spring.bellcrank;
 	if (susp->x > susp->spring.xMax) {
 		susp->x = susp->spring.xMax;
@@ -113,7 +118,17 @@ void SimSuspCheckIn(tSuspension *susp)
 
 void SimSuspUpdate(tSuspension *susp)
 {
-	susp->force = (springForce(susp) + damperForce(susp)) * susp->spring.bellcrank;
+	tdble internalForce = springForce(susp) + damperForce(susp);
+	if (internalForce <= 0.0f) {
+		// The damping can at its best cancel out the spring force. Requred because
+		// of numerical integration artefacts with (if the velocity is 0 there is no
+		// damping, so the spring accelarates the system for one time step; if the
+		// damping is set very high this can result in a counterforce larger than the
+		// spring force in the next timestep)
+		susp->force = 0.0f;
+	} else {
+		susp->force = internalForce * susp->spring.bellcrank;
+	}
 }
 
 
@@ -127,17 +142,90 @@ void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0,
 	susp->spring.packers    = GfParmGetNum(hdle, section, PRM_PACKERS, (char*)NULL, 0.0f);
 	susp->damper.bump.C1    = GfParmGetNum(hdle, section, PRM_SLOWBUMP, (char*)NULL, 0.0f);
 	susp->damper.rebound.C1 = GfParmGetNum(hdle, section, PRM_SLOWREBOUND, (char*)NULL, 0.0f);
-	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, 0.0f);
-	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, 0.0f);
-	
+	susp->damper.bump.C2    = GfParmGetNum(hdle, section, PRM_FASTBUMP, (char*)NULL, susp->damper.bump.C1);
+	susp->damper.rebound.C2 = GfParmGetNum(hdle, section, PRM_FASTREBOUND, (char*)NULL, susp->damper.rebound.C1);
+	susp->damper.bump.v1	= GfParmGetNum(hdle, section, PRM_BUMPTHRESHOLD, (char*)NULL, 0.5f);
+	susp->damper.rebound.v1	= GfParmGetNum(hdle, section, PRM_REBOUNDTHRESHOLD, (char*)NULL, 0.5f);
+
 	susp->spring.x0 = susp->spring.bellcrank * X0;
 	susp->spring.F0 = F0 / susp->spring.bellcrank;
 	susp->spring.K = - susp->spring.K;
-	susp->damper.bump.b1 = 0.0f;
-	susp->damper.rebound.b1 = 0.0f;
-	susp->damper.bump.v1 = 0.5f;
-	susp->damper.rebound.v1 = 0.5f;
 	
 	initDamper(susp);
 }
 
+
+void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0)
+{
+	// Spring
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.suspspring[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->spring.K = - v->value;	
+	}
+
+	// Packers
+	v = &car->carElt->pitcmd.setup.susppackers[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->spring.packers = v->value;
+	}
+
+	// Slow bump
+	v = &car->carElt->pitcmd.setup.suspslowbump[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.C1 = v->value;
+	}
+
+	// Slow rebound
+	v = &car->carElt->pitcmd.setup.suspslowrebound[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.C1 = v->value;
+	}
+
+	// Fast bump
+	v = &car->carElt->pitcmd.setup.suspfastbump[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.C2 = v->value;
+	}
+
+	// Fast rebound
+	v = &car->carElt->pitcmd.setup.suspfastrebound[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.C2 = v->value;
+	}
+
+	susp->spring.x0 = susp->spring.bellcrank * X0;
+	susp->spring.F0 = F0 / susp->spring.bellcrank;
+
+	initDamper(susp);
+}
+
+
+void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0)
+{
+	// Spring
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.thirdspring[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->spring.K = - v->value;
+	}
+
+	// Bump
+	v = &car->carElt->pitcmd.setup.thirdbump[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.bump.C1 = v->value;
+		susp->damper.bump.C2 = v->value;
+	}
+
+	// Rebound
+	v = &car->carElt->pitcmd.setup.thirdrebound[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		susp->damper.rebound.C1 = v->value;
+		susp->damper.rebound.C2 = v->value;
+	}
+
+	susp->spring.xMax = X0;
+
+	susp->spring.x0 = susp->spring.bellcrank * X0;
+	susp->spring.F0 = F0 / susp->spring.bellcrank;
+
+	initDamper(susp);
+}

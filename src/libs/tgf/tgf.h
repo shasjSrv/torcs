@@ -2,9 +2,9 @@
                     tgf.h -- Interface file for The Gaming Framework                                    
                              -------------------                                         
     created              : Fri Aug 13 22:32:14 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
-    version              : $Id: tgf.h,v 1.41.2.7 2012/06/04 09:33:43 berniw Exp $                                  
+    version              : $Id: tgf.h,v 1.41.2.10 2014/05/23 08:38:31 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,9 +17,9 @@
  ***************************************************************************/
 
 /** @file   
-    	The Gaming Framework API.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: tgf.h,v 1.41.2.7 2012/06/04 09:33:43 berniw Exp $
+    The Gaming Framework API.
+    @author	Bernhard Wymann, Eric Espie
+    @version $Id: tgf.h,v 1.41.2.10 2014/05/23 08:38:31 berniw Exp $
 */
 
 
@@ -274,6 +274,7 @@ extern void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserDatabool, bool
 extern void *GfParmReadFile(const char *file, int mode);
 /* parameter file write */
 extern int GfParmWriteFile(const char *file, void* handle, const char *name);
+extern int GfParmCreateDirectory(const char *file, void *parmHandle);
 
 extern char *GfParmGetName(void *handle);
 extern char *GfParmGetFileName(void *handle);
@@ -288,7 +289,7 @@ extern const char *GfParmGetCurStr(void *handle, const char *path, const char *k
 /* set string parameter value */
 extern int GfParmSetStr(void *handle, const char *path, const char *key, const char *val);
 /* set string parameter value */
-extern int GfParmSetCurStr(void *handle, char *path, char *key, char *val);
+extern int GfParmSetCurStr(void *handle, const char *path, const char *key, const char *val);
 
 /* get num parameter value */
 extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
@@ -296,6 +297,7 @@ extern tdble GfParmGetNum(void *handle, const char *path, const char *key, const
 extern tdble GfParmGetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble deflt);
 /* set num parameter value */
 extern int GfParmSetNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
+extern int GfParmSetNumEx(void *handle, const char *path, const char *key, const char *unit, tdble val, tdble min, tdble max);
 /* set num parameter value */
 extern int GfParmSetCurNum(void *handle, const char *path, const char *key, const char *unit, tdble val);
 
@@ -317,7 +319,7 @@ extern int GfParmCheckHandle(void *ref, void *tgt);
 #define GFPARM_MMODE_RELSRC	4 /**< release ref after the merge */
 #define GFPARM_MMODE_RELDST	8 /**< release tgt after the merge */
 extern void *GfParmMergeHandles(void *ref, void *tgt, int mode);
-extern int GfParmGetNumBoundaries(void *handle, char *path, char *key, tdble *min, tdble *max);
+extern int GfParmGetNumBoundaries(void *handle, const char *path, const char *key, tdble *min, tdble *max);
 
 
 extern int GfParmGetEltNb(void *handle, const char *path);
@@ -404,6 +406,8 @@ extern int GetSingleTextureMode (void);
 extern void SetSingleTextureMode (void);
 extern int GfNearestPow2 (int x);
 extern int GfCreateDir(char *path);
+extern int GfCreateDirForFile(const char *filenameandpath);
+
 
 /*
  * Copyright (c) 1991, 1993

@@ -2,9 +2,9 @@
 
     file                 : car.h
     created              : Sun Jan 30 12:00:15 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: car.h,v 1.37.2.3 2012/10/03 07:18:41 berniw Exp $
+    version              : $Id: car.h,v 1.37.2.11 2014/03/17 18:11:41 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file
     		This is the car structure.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: car.h,v 1.37.2.3 2012/10/03 07:18:41 berniw Exp $
+    @version	$Id: car.h,v 1.37.2.11 2014/03/17 18:11:41 berniw Exp $
     @ingroup	carstruct
     @note	Short cuts are to be used with the carElt structure.
 */
@@ -146,6 +146,7 @@ typedef struct {
     double		lastLapTime;
     double		curTime;
     tdble		topSpeed;
+	tdble		currentMinSpeedForLap;	// Min speed on current lap, reset on start line crossing
     int			laps;
     int			nbPitStops;
     int			remainingLaps;
@@ -160,6 +161,7 @@ typedef struct {
     tTrackOwnPit 	*pit;
     int			event;
     tCarPenaltyHead	penaltyList;	/**< List of current penalties */
+	tdble penaltyTime;
 } tCarRaceInfo;
 /* structure access */
 #define _bestLapTime		race.bestLapTime
@@ -169,6 +171,7 @@ typedef struct {
 #define _curTime		race.curTime
 #define _lastLapTime		race.lastLapTime
 #define _topSpeed		race.topSpeed
+#define _currentMinSpeedForLap	race.currentMinSpeedForLap
 #define _laps			race.laps
 #define _nbPitStops		race.nbPitStops
 #define _remainingLaps		race.remainingLaps
@@ -183,11 +186,13 @@ typedef struct {
 #define _scheduledEventTime	race.scheduledEventTime
 #define _event			race.event
 #define _penaltyList		race.penaltyList
+#define _penaltyTime	race.penaltyTime
 
 /** Public info on the cars */
 typedef struct {
     tDynPt	DynGC;		/**< GC data (car axis) */    
-    tDynPt	DynGCg;		/**< GC data (world axis) */    
+    tDynPt	DynGCg;		/**< GC data (world axis) */
+	tdble	speed;		// total speed, sqrt(vx*vx + vy*vy + vz*vz)
     sgMat4	posMat;		/**< position matrix */
     tTrkLocPos	trkPos;		/**< current track position. The segment is the track segment (not sides)*/
     int		state;	    	/**< state of the car.
@@ -290,8 +295,6 @@ typedef struct {
     tPosd	corner[4];	/**< car's corners position */
     int		gear;	    	/**< current gear */
     tdble	fuel;	    	/**< remaining fuel (liters) */
-	tdble   fuel_consumption_total; // l
-	tdble   fuel_consumption_instant; // l/100km (>100 means infinity)
     tdble	enginerpm;
     tdble	enginerpmRedLine;
     tdble	enginerpmMax;
@@ -309,14 +312,12 @@ typedef struct {
 	float   smoke;
     t3Dd	normal;
     t3Dd	collpos;        /**< Collision position, useful for sound*/
-    int     fakeDammage;    
+    int     fakeDammage;
     int		dammage;
     int		debug;
 	tCollisionState collision_state; /**< collision state */
 } tPrivCar;
 /* structure access */
-#define _fuelTotal priv.fuel_consumption_total
-#define _fuelInstant priv.fuel_consumption_instant
 #define _driverIndex	priv.driverIndex
 #define _paramsHandle	priv.paramsHandle
 #define _carHandle	priv.carHandle
@@ -375,6 +376,63 @@ typedef struct {
 
 struct RobotItf;
 
+typedef struct 
+{
+	tdble value;
+	tdble min;
+	tdble max;
+} tCarPitSetupValue;
+
+
+
+typedef struct 
+{
+	// Steer
+	tCarPitSetupValue steerLock;
+	
+	//Wheel
+	tCarPitSetupValue wheelcamber[4];
+	tCarPitSetupValue wheeltoe[4];
+	tCarPitSetupValue wheelrideheight[4];
+
+	// Brake
+	tCarPitSetupValue brakePressure;
+	tCarPitSetupValue brakeRepartition;
+
+	//Suspension
+	tCarPitSetupValue suspspring[4];
+	tCarPitSetupValue susppackers[4];
+	tCarPitSetupValue suspslowbump[4];
+	tCarPitSetupValue suspslowrebound[4];
+	tCarPitSetupValue suspfastbump[4];
+	tCarPitSetupValue suspfastrebound[4];
+
+	// Anti-rollbar
+	tCarPitSetupValue arbspring[2];
+
+	// Third element
+	tCarPitSetupValue thirdspring[2];
+	tCarPitSetupValue thirdbump[2];
+	tCarPitSetupValue thirdrebound[2];
+	tCarPitSetupValue thirdX0[2];
+
+	// Gears [1-8]
+	tCarPitSetupValue gearsratio[MAX_GEARS - 2];	// without reverse/neutral
+
+	// Wings
+	tCarPitSetupValue wingangle[2];
+
+	// Differential
+	tCarPitSetupValue diffratio[3];
+	tCarPitSetupValue diffmintqbias[3];
+	tCarPitSetupValue diffmaxtqbias[3];
+	tCarPitSetupValue diffslipbias[3];
+	tCarPitSetupValue difflockinginputtq[3];
+	tCarPitSetupValue difflockinginputbraketq[3];
+	enum TDiffType { NONE = 0, SPOOL = 1, FREE = 2, LIMITED_SLIP = 3, VISCOUS_COUPLER = 4};
+	TDiffType diffType[3];
+} tCarPitSetup;
+
 /** Command issued by the car during pit stop */
 typedef struct 
 {
@@ -383,6 +441,7 @@ typedef struct
 #define RM_PIT_REPAIR		0
 #define RM_PIT_STOPANDGO	1
     int			stopType;
+	tCarPitSetup setup;
 } tCarPitCmd;
 #define _pitFuel	pitcmd.fuel
 #define _pitRepair	pitcmd.repair
@@ -404,7 +463,13 @@ typedef struct CarElt
     struct RobotItf	*robot;	/**< private */
     struct CarElt	*next;
     int         RESTART;
-    int         RESET;    
+    int         RESET;
+
+    unsigned char **imgs; /**< camera sensor buffer */
+    int imgWidth,imgHeight;
+    int camNum;
+    int imgSended; // image sended to client?
+
 } tCarElt;
 
 
@@ -475,7 +540,6 @@ typedef struct CarElt
 #define PRM_TIREWIDTH		"tire width"
 #define PRM_TIRERATIO		"tire height-width ratio"
 #define PRM_RIDEHEIGHT		"ride height"
-#define PRM_ROLLINGRESIST	"rolling resistance"
 #define PRM_TOE			"toe"
 #define PRM_CAMBER		"camber"
 #define PRM_CA			"stiffness"
@@ -495,6 +559,8 @@ typedef struct CarElt
 #define PRM_SLOWREBOUND		"slow rebound"
 #define PRM_FASTBUMP		"fast bump"
 #define PRM_FASTREBOUND		"fast rebound"
+#define PRM_BUMPTHRESHOLD	"fast bump threshold"
+#define PRM_REBOUNDTHRESHOLD	"fast rebound threshold"
 
 #define PRM_XPOS		"xpos"
 #define PRM_YPOS		"ypos"
@@ -551,6 +617,7 @@ typedef struct CarElt
 #define PRM_MAX_TQ_BIAS		"max torque bias"
 #define PRM_MAX_SLIP_BIAS	"max slip bias"
 #define PRM_LOCKING_TQ		"locking input torque"
+#define PRM_LOCKINGBRAKE_TQ		"locking brake input torque"
 #define PRM_VISCOSITY_FACTOR	"viscosity factor"
 
 

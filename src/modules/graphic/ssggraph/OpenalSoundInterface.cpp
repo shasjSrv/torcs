@@ -4,7 +4,7 @@
     created              : Thu Apr 7 04:21 CEST 2005
     copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: OpenalSoundInterface.cpp,v 1.11.2.1 2012/02/16 15:09:03 berniw Exp $
+    version              : $Id: OpenalSoundInterface.cpp,v 1.11.2.2 2013/09/01 10:24:22 berniw Exp $
 
 ***************************************************************************/
 
@@ -363,7 +363,12 @@ void OpenalSoundInterface::update(CarSoundData** car_sound_data, int n_cars, sgV
 			gear_change_sound->start();
 		}
 	}
+}
 
+
+void OpenalSoundInterface::muteForMenu()
+{
+	alListenerf(AL_GAIN, 0.0f);
 }
 
 

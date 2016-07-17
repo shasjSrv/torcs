@@ -2,9 +2,9 @@
 
     file                 : grsound.cpp
     created              : Thu Aug 17 23:57:10 CEST 2000
-    copyright            : (C) 2000-2003 by Eric Espie, Christos Dimitrakakis
+    copyright            : (C) 2000-2013 by Eric Espie, Christos Dimitrakakis, Bernhard Wymann
     email                : torcs@free.fr, dimitrak@idiap.ch
-    version              : $Id: grsound.cpp,v 1.31.2.6 2012/06/08 10:57:35 berniw Exp $
+    version              : $Id: grsound.cpp,v 1.31.2.9 2014/01/12 11:35:35 berniw Exp $
 
 ***************************************************************************/
 
@@ -85,6 +85,7 @@ void grInitSound(tSituation* s, int ncars)
 		sound_interface = new PlibSoundInterface(44100, 32);
 		break;
 	case DISABLED:
+		sound_interface = 0;
 		return;
 	default:
 		GfOut (" -- Unknown sound mode %d\n", sound_mode);
@@ -189,6 +190,7 @@ grShutdownSound(int ncars)
     soundInitialized = 0;
 
 	delete sound_interface;
+	sound_interface = 0;
 
     if (__slPendingError) {
 		GfOut("!!! error ignored: %s\n", __slPendingError);
@@ -242,4 +244,13 @@ grRefreshSound(tSituation *s, cGrCamera	*camera)
 
 	}
 	return 0.0f;
+}
+
+
+void grMuteForMenu(void)
+{
+	if (sound_interface != 0 && sound_mode != DISABLED) {
+		sound_interface->muteForMenu();
+	}
+
 }

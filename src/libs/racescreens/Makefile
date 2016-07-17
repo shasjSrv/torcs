@@ -4,7 +4,7 @@
 #    created              : Sat Mar 18 23:32:07 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
-#    version              : $Id: Makefile,v 1.2 2003/06/24 21:02:24 torcs Exp $                                  
+#    version              : $Id: Makefile,v 1.2.2.1 2013/08/25 15:53:15 berniw Exp $                                  
 #
 ##############################################################################
 #
@@ -20,7 +20,7 @@ SOLIBRARY = libracescreens.so
 
 SOLIBDIR  = .
 
-SOURCES   = trackselect.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp fileselect.cpp
+SOURCES   = trackselect.cpp driverselect.cpp results.cpp pitmenu.cpp loadingscreen.cpp racemenu.cpp miscscreens.cpp fileselect.cpp carsetupscreen.cpp
 
 EXPDIR    = include
 

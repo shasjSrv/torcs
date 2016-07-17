@@ -4,7 +4,7 @@
 	created              : Thu Sep 21 20:37:54 CET 2006
 	copyright            : (C) 2006 by Bernhard Wymann
 	email                : berniw@bluewin.ch
-	version              : $Id: default.xml,v 1.1.2.1 2008/05/20 18:51:05 berniw Exp $
+	version              : $Id: default.xml,v 1.1.2.2 2014/03/13 10:48:10 berniw Exp $
 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -111,8 +111,6 @@
 	
 	<section name="Front Right Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.07"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="0.9"/>
 		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
@@ -122,8 +120,6 @@
 	
 	<section name="Front Left Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.07"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="0.9"/>
 		<attnum name="packers" unit="mm" min="0" max="50" val="10"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="500"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="300"/>
@@ -133,8 +129,6 @@
 	
 	<section name="Rear Right Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
 		<attnum name="packers" unit="mm" min="0" max="50" val="0"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="500"/>
@@ -144,8 +138,6 @@
 	
 	<section name="Rear Left Suspension">
 		<attnum name="spring" unit="lbs/in" min="0" max="10000" val="5500"/>
-		<attnum name="suspension course" unit="m" min="0" max="0.2" val="0.13"/>
-		<attnum name="bellcrank" min="0.1" max="5" val="1.1"/>
 		<attnum name="packers" unit="mm" min="0" max="50" val="0"/>
 		<attnum name="slow bump" unit="lbs/in/s" min="0" max="1000" val="400"/>
 		<attnum name="slow rebound" unit="lbs/in/s" min="0" max="1000" val="500"/>

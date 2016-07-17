@@ -2,9 +2,9 @@
                              guibutton.cpp                             
                              -------------------                                         
     created              : Fri Aug 13 22:18:21 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2013 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
-    version              : $Id: guibutton.cpp,v 1.3.2.2 2008/12/31 03:53:55 berniw Exp $                                  
+    version              : $Id: guibutton.cpp,v 1.3.2.6 2013/08/28 13:07:33 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,7 +20,7 @@
 /** @file   
     		GUI Buttons Management.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: guibutton.cpp,v 1.3.2.2 2008/12/31 03:53:55 berniw Exp $
+    @version	$Id: guibutton.cpp,v 1.3.2.6 2013/08/28 13:07:33 berniw Exp $
     @ingroup	gui
 */
 
@@ -287,6 +287,7 @@ GfuiButtonCreate(void *scr, const char *text, int font, int x, int y, int width,
 	label = &(button->label);
 	label->text = (char*)calloc(1, 100);
 	strncpy(label->text, text, 100);
+	label->text[99] = '\0';
 	label->font = gfuiFont[font];
 	label->maxlen = 99;
 	if (width == 0) {
@@ -325,6 +326,25 @@ GfuiButtonCreate(void *scr, const char *text, int font, int x, int y, int width,
 
 	gfuiAddObject(screen, object);
 	return object->id;
+}
+
+
+int GfuiLeanButtonCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
+				 void *userDataOnPush, tfuiCallback onPush, 
+				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
+{
+	int id = GfuiButtonCreate(scr, text, font, x, y, width, align, mouse,
+		userDataOnPush, onPush, userDataOnFocus, onFocus, onFocusLost);
+	tGfuiObject *o = gfuiGetObject(scr, id);
+	if (o->widget == GFUI_BUTTON) {
+		// Undo margins 
+		o->xmax -= HORIZ_MARGIN;
+		o->xmin += HORIZ_MARGIN;
+	
+		tGfuiButton	*button = &(o->u.button);
+		button->bgColor[1] = &(GfuiColor[GFUI_BGBTNFOCUS][0]);
+	}
+	return id;
 }
 
 /** Change the label of a button.
@@ -388,42 +408,45 @@ GfuiButtonGetFocused(void)
 void
 gfuiDrawButton(tGfuiObject *obj)
 {
-    tGfuiLabel	*label;
-    tGfuiButton	*button;
-    float	*fgColor;
-    float	*bgColor;
+	tGfuiLabel *label;
+	tGfuiButton	*button;
+	float *fgColor;
+	float *bgColor;
 
-    button = &(obj->u.button);
-    if (obj->state == GFUI_DISABLE) {
-	button->state = GFUI_BTN_DISABLE;
-    }
-    if (obj->focus) {
-	fgColor = button->fgFocusColor[button->state];
-	bgColor = button->bgFocusColor[button->state];
-    } else {
-	fgColor = button->fgColor[button->state];
-	bgColor = button->bgColor[button->state];
-    }
-    if (bgColor[3] != 0.0) {
-	glColor4fv(bgColor);
-	glBegin(GL_QUADS);
-	glVertex2i(obj->xmin, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymin);
-	glEnd();
+	button = &(obj->u.button);
+	if (obj->state == GFUI_DISABLE) {
+		button->state = GFUI_BTN_DISABLE;
+	} else if (obj->state == GFUI_ENABLE && button->state == GFUI_BTN_DISABLE) {
+		button->state = GFUI_BTN_RELEASED;
+	}
+
+	if (obj->focus) {
+		fgColor = button->fgFocusColor[button->state];
+		bgColor = button->bgFocusColor[button->state];
+	} else {
+		fgColor = button->fgColor[button->state];
+		bgColor = button->bgColor[button->state];
+	}
+	if (bgColor[3] != 0.0) {
+		glColor4fv(bgColor);
+		glBegin(GL_QUADS);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glEnd();
+		glColor4fv(fgColor);
+		glBegin(GL_LINE_STRIP);
+		glVertex2i(obj->xmin, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymax);
+		glVertex2i(obj->xmax, obj->ymin);
+		glVertex2i(obj->xmin, obj->ymin);
+		glEnd();	
+	}
+	label = &(button->label);
 	glColor4fv(fgColor);
-	glBegin(GL_LINE_STRIP);
-	glVertex2i(obj->xmin, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymax);
-	glVertex2i(obj->xmax, obj->ymin);
-	glVertex2i(obj->xmin, obj->ymin);
-	glEnd();	
-    }
-    label = &(button->label);
-    glColor4fv(fgColor);
-    gfuiPrintString(label->x, label->y, label->font, label->text);
+	gfuiPrintString(label->x, label->y, label->font, label->text);
 }
 
 void
@@ -452,8 +475,12 @@ gfuiDrawGrButton(tGfuiObject *obj)
 void
 gfuiGrButtonAction(int action)
 {
-    tGfuiGrButton	*button;
+	tGfuiObject	*object = GfuiScreen->hasFocus;
+	if (object->state == GFUI_DISABLE) {
+		return;
+	}
 
+	tGfuiGrButton	*button;
     button = &(GfuiScreen->hasFocus->u.grbutton);
 
     switch (button->buttonType) {
@@ -523,8 +550,12 @@ gfuiGrButtonAction(int action)
 void
 gfuiButtonAction(int action)
 {
-    tGfuiButton	*button;
+	tGfuiObject	*object = GfuiScreen->hasFocus;
+	if (object->state == GFUI_DISABLE) {
+		return;
+	}
 
+	tGfuiButton	*button;
     button = &(GfuiScreen->hasFocus->u.button);
 
     switch (button->buttonType) {

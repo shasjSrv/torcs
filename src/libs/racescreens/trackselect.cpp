@@ -2,9 +2,9 @@
                   trackselect.cpp -- interactive track selection
                              -------------------
     created              : Mon Aug 16 21:43:00 CEST 1999
-    copyright            : (C) 1999 by Eric Espie
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: trackselect.cpp,v 1.5.2.4 2012/06/04 10:49:17 berniw Exp $
+    version              : $Id: trackselect.cpp,v 1.5.2.7 2014/05/20 09:57:25 berniw Exp $
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,9 +17,8 @@
  ***************************************************************************/
 
 /** @file
-    @ingroup	racemantools
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: trackselect.cpp,v 1.5.2.4 2012/06/04 10:49:17 berniw Exp $
+    @author Bernhard Wymann, Eric Espie
+    @version $Id: trackselect.cpp,v 1.5.2.7 2014/05/20 09:57:25 berniw Exp $
 */
 
 
@@ -184,14 +183,15 @@ static void rmtsAddKeys(void)
 }
 
 
-/** Get the track name
-    @param	category	track category directory
-    @param	trackName	track name for file
-    @return	Long track name
-    @ingroup	racemantools
+/** @brief Get the track name defined in the parameters
+ *  @ingroup racemantools
+ *  @param[in] category Track category directory
+ *  @param[in] trackName Track file name
+ *  @return Long track name on success
+ *  <br>Empty string on failure
+ *  @note The returned string is allocated on the heap and must be released by the caller at some point
  */
-char *
-RmGetTrackName(char *category, char *trackName)
+char* RmGetTrackName(char *category, char *trackName)
 {
 	void *trackHandle;
 	char *name;
@@ -213,13 +213,14 @@ RmGetTrackName(char *category, char *trackName)
 }
 
 
-/** Get the track category name from the directory name
-    @param	category	track category directory
-    @return	category display name
-    @ingroup	racemantools
-*/
-char *
-RmGetCategoryName(char *category)
+/** @brief Get the track category name from the track category file
+ *  @ingroup racemantools
+ *  @param[in] category Track category file
+ *  @return Category display name on success
+ *  <br>Empty string on failure
+ *  @note The returned string is allocated on the heap and must be released by the caller at some point   
+ */
+char* RmGetCategoryName(char *category)
 {
 	void *categoryHandle;
 	char *name;
@@ -241,14 +242,12 @@ RmGetCategoryName(char *category)
 }
 
 
-
-/** Interactive track selection
-    @param	vs	Pointer on a tRmTrackSelect structure (cast to void *)
-    @warning	The race manager's parameters are updated but not saved.
-    @ingroup	racemantools
+/** @brief Track selection, the race manager parameter set is handed over in vs, tRmTrackSelect.param
+ *  @ingroup racemantools
+ *  @param[in,out] vs Pointer on a tRmTrackSelect structure (cast to void *)
+ *  @note The race manager parameter set is modified in memory but not persisted.
  */
-void
-RmTrackSelect(void *vs)
+void RmTrackSelect(void *vs)
 {
 	const char *defaultTrack;
 	const char *defaultCategory;
@@ -379,8 +378,10 @@ RmTrackSelect(void *vs)
 			(void*)1, rmtsPrevNext,
 			NULL, (tfuiCallback)NULL, (tfuiCallback)NULL);
 
+	int scrw, scrh, vw, vh;
+	GfScrGetSize(&scrw, &scrh, &vw, &vh);
 	MapId = GfuiStaticImageCreate(scrHandle,
-				320, 100, 260, 195,
+				320, 100, (int) (vh*260.0f/vw), 195,
 				rmGetMapName(buf, BUFSIZE));
 
 	GfuiButtonCreate(scrHandle, "Accept", GFUI_FONT_LARGE, 210, 40, 150, GFUI_ALIGN_HC_VB, GFUI_MOUSE_UP,

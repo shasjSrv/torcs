@@ -4,7 +4,7 @@
     created     : Thu Dec 12 15:12:07 CET 2004
     copyright   : (C) 2004 Eric Espi�, Bernhard Wymann, baseed on simuconfig.cpp
     email       : berniw@bluewin.ch
-    version     : $Id: soundconfig.cpp,v 1.6.2.4 2011/12/29 16:14:20 berniw Exp $
+    version     : $Id: soundconfig.cpp,v 1.6.2.5 2013/09/01 11:45:54 berniw Exp $
 
  ***************************************************************************/
 
@@ -19,7 +19,7 @@
 
 /** @file   
     		
-    @version	$Id: soundconfig.cpp,v 1.6.2.4 2011/12/29 16:14:20 berniw Exp $
+    @version	$Id: soundconfig.cpp,v 1.6.2.5 2013/09/01 11:45:54 berniw Exp $
 */
 
 #include <stdio.h>
@@ -37,7 +37,7 @@ static float LabelColor[] = {1.0, 0.0, 1.0, 1.0};
 // list of options.
 static const char *soundOptionList[] = {
 	GR_ATT_SOUND_STATE_OPENAL,
-	GR_ATT_SOUND_STATE_PLIB,
+	//GR_ATT_SOUND_STATE_PLIB,
 	GR_ATT_SOUND_STATE_DISABLED
 };
 

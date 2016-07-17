@@ -16,6 +16,9 @@
 				<attnum name="blue" val="0.500000"/>
 				<attstr name="type" val="human"/>
 				<attstr name="skill level" val="rookie"/>
+				<attnum name="image width" val="200"/>
+				<attnum name="image height" val="100"/>
+				<attnum name="camera num" val="2"/>
 			</section>
 			
 		</section>

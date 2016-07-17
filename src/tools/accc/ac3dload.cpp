@@ -3,7 +3,7 @@
     file        : ac3dload.cpp
     created     : Fri Apr 18 23:00:28 CEST 2003
     copyright   : (C) 2003 by Christophe Guionneau
-    version     : $Id: ac3dload.cpp,v 1.13.2.9 2012/09/10 00:20:50 berniw Exp $
+    version     : $Id: ac3dload.cpp,v 1.13.2.10 2013/01/30 20:28:21 berniw Exp $
 
 ***************************************************************************/
 
@@ -19,7 +19,7 @@
 /** @file
 
 @author	Christophe Guionneau
-@version	$Id: ac3dload.cpp,v 1.13.2.9 2012/09/10 00:20:50 berniw Exp $
+@version	$Id: ac3dload.cpp,v 1.13.2.10 2013/01/30 20:28:21 berniw Exp $
 */
 
 #include <stdio.h>
@@ -531,7 +531,7 @@ int splitOb (ob_t **object)
 	pttmp = (point_t *) calloc(4 * num, sizeof(point_t));
 	oldva = (int *) calloc(4 * num, sizeof(int));
 	snorm = (point_t *) calloc(4 * num, sizeof(point_t));
-	text  = (double *) calloc(3 * num, sizeof(double));
+	text  = (double *) calloc(6 * num, sizeof(double));
 
 
 	while (mustcontinue==1) {

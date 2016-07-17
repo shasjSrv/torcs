@@ -2,9 +2,9 @@
 
     file                 : human.cpp
     created              : Sat Mar 18 23:16:38 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: human.cpp,v 1.45.2.10 2012/05/31 23:16:57 berniw Exp $
+    version              : $Id: human.cpp,v 1.45.2.18 2014/05/22 11:51:24 berniw Exp $
 
  ***************************************************************************/
 
@@ -17,10 +17,10 @@
  *                                                                         *
  ***************************************************************************/
 
-/** @file   
-    		
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: human.cpp,v 1.45.2.10 2012/05/31 23:16:57 berniw Exp $
+/** @file
+	Human driver
+	@author	Bernhard Wymann, Eric Espie
+	@version	$Id: human.cpp,v 1.45.2.18 2014/05/22 11:51:24 berniw Exp $
 */
 
 
@@ -59,11 +59,7 @@ static int  pitcmd(int index, tCarElt* car, tSituation *s);
 
 int joyPresent = 0;
 
-//static char	sstring[1024];
-//static char	buf[1024];
-
 static tTrack	*curTrack;
-//static void	*DrvInfo;
 
 static float color[] = {0.0, 0.0, 1.0, 1.0};
 
@@ -90,7 +86,7 @@ static tKeyInfo skeyInfo[256];
 static int currentKey[256];
 static int currentSKey[256];
 
-static tdble lastKeyUpdate = -10.0;
+static double lastKeyUpdate = -10.0;
 
 static int	firstTime = 0;
 
@@ -105,13 +101,11 @@ BOOL WINAPI DllEntryPoint (HINSTANCE hDLL, DWORD dwReason, LPVOID Reserved)
 static void
 shutdown(int index)
 {
-	//static int	firstTime = 1;
-	int		idx = index - 1;
+	int	idx = index - 1;
 
 	free (HCtx[idx]);
 
 	if (firstTime) {
-		//GfParmReleaseHandle(DrvInfo);
 		GfParmReleaseHandle(PrefHdle);
 		GfctrlJoyRelease(joyInfo);
 		GfctrlMouseRelease(mouseInfo);
@@ -151,7 +145,6 @@ InitFuncPt(int index, void *pt)
 
 	if (firstTime < 1) {
 		firstTime = 1;
-		//DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 		joyInfo = GfctrlJoyInit();
 		if (joyInfo) {
 			joyPresent = 1;
@@ -262,28 +255,15 @@ human(tModInfo *modInfo)
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
 {
 	const char *carname;
-	char *s1, *s2;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	char sstring[BUFSIZE];
-	
-	const int TRACKNAMESIZE = 256;
-	char trackname[TRACKNAMESIZE];
 	tdble fuel;
 	int idx = index - 1;
 
 	curTrack = track;
-	s1 = strrchr(track->filename, '/') + 1;
-	s2 = strchr(s1, '.');
-	if (s2-s1 < TRACKNAMESIZE) {
-		strncpy(trackname, s1, s2-s1);
-		trackname[s2-s1] = 0;
-	} else {
-		trackname[0] = 0;
-		GfError("human.cpp, initTrack, filename too long");
-	}
-	snprintf(sstring, BUFSIZE, "Robots/index/%d", index);
 
+	snprintf(sstring, BUFSIZE, "Robots/index/%d", index);
 	snprintf(buf, BUFSIZE, "%sdrivers/human/human.xml", GetLocalDir());
 	void *DrvInfo = GfParmReadFile(buf, GFPARM_RMODE_REREAD | GFPARM_RMODE_CREAT);
 	carname = "";
@@ -291,35 +271,30 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		carname = GfParmGetStr(DrvInfo, sstring, "car name", "");
 	}
 
-	snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s-%d.xml", GetLocalDir(), trackname, carname, index);
-	*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-	if (*carParmHandle != NULL) {
-		GfOut("Player: %s Loaded\n", sstring);
-	} else {
-		snprintf(sstring, BUFSIZE, "%sdrivers/human/tracks/%s/car-%s.xml", GetLocalDir(), trackname, carname);
-		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-		if (*carParmHandle != NULL) {
-			GfOut("Player: %s Loaded\n", sstring);
-		} else {
-			snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s-%d.xml", GetLocalDir(), carname, index);
-			*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-			if (*carParmHandle != NULL) {
-				GfOut("Player: %s Loaded\n", sstring);
-			} else {
-				snprintf(sstring, BUFSIZE, "%sdrivers/human/car-%s.xml", GetLocalDir(), carname);
-				*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-				if (*carParmHandle != NULL) {
-					GfOut("Player: %s Loaded\n", sstring);
-				} else {
-					snprintf(sstring, BUFSIZE, "%sdrivers/human/car.xml", GetLocalDir ());
-					*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
-					if (*carParmHandle != NULL) {
-						GfOut("Player: %s Loaded\n", sstring);
-					}
-				}
-			}
-		}
+	*carParmHandle = NULL;
+	// If session type is "race" and we have a race setup use it
+	if (s->_raceType == RM_TYPE_RACE) {
+		*carParmHandle = RtParmReadSetup(RACE, "human", index, track->internalname, carname);
 	}
+
+	// If session type is "qualifying" and we have a qualifying setup use it, use qualifying setup as 
+	// fallback if not race setup is available
+	if (s->_raceType == RM_TYPE_QUALIF || (*carParmHandle == NULL && s->_raceType == RM_TYPE_RACE)) {
+		*carParmHandle = RtParmReadSetup(QUALIFYING, "human", index, track->internalname, carname);
+	}
+
+	// If we have not yet loaded a setup we have not found a fitting one or want to use the practice setup,
+	// so try to load this
+	if (*carParmHandle == NULL) {
+		*carParmHandle = RtParmReadSetup(PRACTICE, "human", index, track->internalname, carname);
+	}
+
+	// Absolute fallback, nothing found
+	if (*carParmHandle == NULL) {
+		snprintf(sstring, BUFSIZE, "%sdrivers/human/car.xml", GetLocalDir ());
+		*carParmHandle = GfParmReadFile(sstring, GFPARM_RMODE_REREAD);
+	}
+
 
 	if (curTrack->pits.type != TR_PIT_NONE) {
 		snprintf(sstring, BUFSIZE, "%s/%s/%d", HM_SECT_PREF, HM_LIST_DRV, index);
@@ -329,7 +304,9 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		HCtx[idx]->NbPitStopProg = 0;
 	}
 	fuel = 0.0008 * curTrack->length * (s->_totLaps + 1) / (1.0 + ((tdble)HCtx[idx]->NbPitStopProg)) + 20.0;
-	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+	if (*carParmHandle) {
+		GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, fuel);
+	}
 	Vtarget = curTrack->pits.speedLimit;
 	if (DrvInfo != NULL) {
 		GfParmReleaseHandle(DrvInfo);
@@ -353,17 +330,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 
 void newrace(int index, tCarElt* car, tSituation *s)
 {
-	int i;
 	int idx = index - 1;
-
-	for (i = 0; i < MAX_GEARS; i++) {
-		if (car->_gearRatio[i] != 0) {
-			HCtx[idx]->shiftThld[i] = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.85 / car->_gearRatio[i];
-			GfOut("Gear %d: Spd %f\n", i, HCtx[idx]->shiftThld[i] * 3.6);
-		} else {
-	    	HCtx[idx]->shiftThld[i] = 10000.0;
-		}
-	}
 
 	if (HCtx[idx]->MouseControlUsed) {
 		GfctrlMouseCenter();
@@ -591,7 +558,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 			
 			// normalize ax0 to -1..0
 			ax0 = (ax0 - cmd[CMD_LEFTSTEER].max) / (cmd[CMD_LEFTSTEER].max - cmd[CMD_LEFTSTEER].min);
-			leftSteer = -SIGN(ax0) * cmd[CMD_LEFTSTEER].pow * pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->_speed_x);
+			leftSteer = -SIGN(ax0) * cmd[CMD_LEFTSTEER].pow * pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->pub.speed);
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
 			ax0 = mouseInfo->ax[cmd[CMD_LEFTSTEER].val] - cmd[CMD_LEFTSTEER].deadZone; //FIXME: correct?
@@ -601,7 +568,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 				ax0 = cmd[CMD_LEFTSTEER].min;
 			}
 			ax0 = ax0 * cmd[CMD_LEFTSTEER].pow;
-			leftSteer = pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->_speed_x / 10.0);
+			leftSteer = pow(fabs(ax0), cmd[CMD_LEFTSTEER].sens) / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->pub.speed / 10.0);
 			break;
 		case GFCTRL_TYPE_KEYBOARD:
 		case GFCTRL_TYPE_SKEYBOARD:
@@ -617,7 +584,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 				HCtx[idx]->prevLeftSteer = leftSteer = 0;
 			} else {
 				ax0 = 2 * ax0 - 1;
-				leftSteer = HCtx[idx]->prevLeftSteer + ax0 * cmd[CMD_LEFTSTEER].sens * s->deltaTime / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->_speed_x / 10.0);
+				leftSteer = HCtx[idx]->prevLeftSteer + ax0 * cmd[CMD_LEFTSTEER].sens * s->deltaTime / (1.0 + cmd[CMD_LEFTSTEER].spdSens * car->pub.speed / 10.0);
 				if (leftSteer > 1.0) leftSteer = 1.0;
 				if (leftSteer < 0.0) leftSteer = 0.0;
 				HCtx[idx]->prevLeftSteer = leftSteer;
@@ -639,7 +606,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 			
 			// normalize ax to 0..1
 			ax0 = (ax0 - cmd[CMD_RIGHTSTEER].min) / (cmd[CMD_RIGHTSTEER].max - cmd[CMD_RIGHTSTEER].min);
-			rightSteer = -SIGN(ax0) * cmd[CMD_RIGHTSTEER].pow * pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->_speed_x);
+			rightSteer = -SIGN(ax0) * cmd[CMD_RIGHTSTEER].pow * pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->pub.speed);
 			break;
 		case GFCTRL_TYPE_MOUSE_AXIS:
 			ax0 = mouseInfo->ax[cmd[CMD_RIGHTSTEER].val] - cmd[CMD_RIGHTSTEER].deadZone;
@@ -649,7 +616,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 				ax0 = cmd[CMD_RIGHTSTEER].min;
 			}
 			ax0 = ax0 * cmd[CMD_RIGHTSTEER].pow;
-			rightSteer = - pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->_speed_x / 10.0);
+			rightSteer = - pow(fabs(ax0), cmd[CMD_RIGHTSTEER].sens) / (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->pub.speed / 10.0);
 			break;
 		case GFCTRL_TYPE_KEYBOARD:
 		case GFCTRL_TYPE_SKEYBOARD:
@@ -665,7 +632,7 @@ static void common_drive(int index, tCarElt* car, tSituation *s)
 				HCtx[idx]->prevRightSteer = rightSteer = 0;
 			} else {
 				ax0 = 2 * ax0 - 1;
-				rightSteer = HCtx[idx]->prevRightSteer - ax0 * cmd[CMD_RIGHTSTEER].sens * s->deltaTime/ (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->_speed_x / 10.0);
+				rightSteer = HCtx[idx]->prevRightSteer - ax0 * cmd[CMD_RIGHTSTEER].sens * s->deltaTime/ (1.0 + cmd[CMD_RIGHTSTEER].spdSens * car->pub.speed / 10.0);
 				if (rightSteer > 0.0) rightSteer = 0.0;
 				if (rightSteer < -1.0) rightSteer = -1.0;
 				HCtx[idx]->prevRightSteer = rightSteer;
@@ -1130,11 +1097,20 @@ static void drive_at(int index, tCarElt* car, tSituation *s)
 
 	/* auto shift */
 	if (!HCtx[idx]->manual && !HCtx[idx]->AutoReverseEngaged) {
-		if (car->_speed_x > HCtx[idx]->shiftThld[gear]) {
-			car->_gearCmd++;
-		} else if ((car->_gearCmd > 1) && (car->_speed_x < (HCtx[idx]->shiftThld[gear-1] - 4.0))) {
-			car->_gearCmd--;
+		tdble omega = car->_enginerpmRedLine * car->_wheelRadius(2) * 0.95;
+		tdble shiftThld = 10000.0f;
+		if (car->_gearRatio[gear] != 0) {
+			shiftThld = omega / car->_gearRatio[gear];			
 		}
+
+		if (car->pub.speed > shiftThld) {
+			car->_gearCmd++;
+		} else if (car->_gearCmd > 1) {
+			if (car->pub.speed < (omega / car->_gearRatio[gear-1] - 4.0)) {
+				car->_gearCmd--;
+			}
+		}
+
 		if (car->_gearCmd <= 0) {
 			car->_gearCmd++;
 		}

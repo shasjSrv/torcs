@@ -2,9 +2,9 @@
                         directory.cpp -- directory management                       
                              -------------------                                         
     created              : Fri Aug 13 21:58:55 CEST 1999
-    copyright            : (C) 1999 by                          
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                       
     email                : torcs@free.fr   
-    version              : $Id: directory.cpp,v 1.7.2.2 2012/06/04 09:33:43 berniw Exp $                                  
+    version              : $Id: directory.cpp,v 1.7.2.5 2014/05/20 14:07:09 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,10 +17,9 @@
  ***************************************************************************/
 
 /** @file
-    		This is used for directory manipulation.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: directory.cpp,v 1.7.2.2 2012/06/04 09:33:43 berniw Exp $
-    @ingroup	dir
+    Directory API.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id: directory.cpp,v 1.7.2.5 2014/05/20 14:07:09 berniw Exp $
 */
 
 #include <stdlib.h>
@@ -51,9 +50,10 @@ tFList * GfDirGetList(const char *dir)
 }
 
 
-/** Get the list of files of a given directory
+/** Get the list of files with matching suffix of a given directory
     @ingroup	dir
     @param	dir	directory name
+    @param	suffix suffix (without dot)
     @return	The list of files
  */
 tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
@@ -69,6 +69,8 @@ tFList * GfDirGetListFiltered(const char *dir, const char *suffix)
     @ingroup	dir
     @param	list	List of files
     @param	freeUserData	User function used to free the user data
+    @param	freename	If true name gets freed too
+    @param  freedispname	If true display name gets freed too
     @return	none
 */
 void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, bool freedispname)
@@ -91,7 +93,5 @@ void GfDirFreeList(tFList *list, tfDirfreeUserData freeUserData, bool freename, 
 			free(tmp);
 		} while (rl != list);
 	}
-
-	list = NULL;
 }
 

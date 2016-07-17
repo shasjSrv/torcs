@@ -2,9 +2,9 @@
 
     file                 : grmain.cpp
     created              : Thu Aug 17 23:23:49 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: grmain.cpp,v 1.60.2.6 2012/06/10 09:22:03 berniw Exp $
+    version              : $Id: grmain.cpp,v 1.60.2.7 2013/09/01 10:24:22 berniw Exp $
 
  ***************************************************************************/
 
@@ -44,6 +44,7 @@
 #include "grtrackmap.h"
 #include "grcarlight.h"
 #include <glfeatures.h>
+#include "grtrafficlight.h"
 
 int maxTextureUnits = 0;
 static double OldTime;
@@ -225,6 +226,12 @@ grSwitchMirror(void * /* dummy */)
     grGetcurrentScreen()->switchMirror();
 }
 
+int initTrafficlight(tTrack * theTrack)
+{
+    if(theTrack->numberOfTrafficlight>0)
+        grInitTrafficlight(theTrack);
+}
+
 int
 initView(int x, int y, int width, int height, int /* flag */, void *screen)
 {
@@ -392,6 +399,24 @@ initCars(tSituation *s)
 			grScreens[grNbScreen]->setCurrentCar(elt);
 			grNbScreen++;
 		}
+
+		//add by zhu
+		// alloc image buffer
+		int camNum = (int)GfParmGetNum(hdle, idx, "camera num",   (char*)NULL, 0);
+		if(camNum > 0 && camNum < 10) {
+			elt->camNum = camNum;
+			elt->imgWidth = (int)GfParmGetNum(hdle, idx, "image width",   (char*)NULL, 0);
+			elt->imgHeight = (int)GfParmGetNum(hdle, idx, "image height",   (char*)NULL, 0);
+			if(elt->imgs == NULL) {
+				elt->imgs = (unsigned char **)calloc(camNum,sizeof(unsigned char *));
+				for(int cn=0;cn<camNum;cn++) {
+					elt->imgs[cn] = (unsigned char*)calloc(s->cars[i]->imgWidth * s->cars[i]->imgHeight * 3 + 4,sizeof(unsigned char));
+					snprintf((char *)elt->imgs[cn],4,"cam");
+					elt->imgs[cn][3]='0'+cn;
+					printf("+++INFO: malloc image buffer for car%d cam%c\n",i,elt->imgs[cn][3]);
+				}
+			}
+		}
 	}
 
 	if (grNbScreen == 0) {
@@ -491,3 +516,10 @@ shutdownTrack(void)
 	if (grCarInfo) 
 		grPropagateDamage (grCarInfo[index].carEntity, poc, force, cnt);
 }*/
+
+
+void muteForMenu(void)
+{
+	grMuteForMenu();
+}
+

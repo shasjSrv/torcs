@@ -2,9 +2,9 @@
 
     file        : raceinit.cpp
     created     : Sat Nov 16 10:34:35 CET 2002
-    copyright   : (C) 2002 by Eric Espi�                       
+    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann                
     email       : eric.espie@torcs.org   
-    version     : $Id: raceinit.cpp,v 1.18.2.10 2012/06/11 11:28:01 berniw Exp $                                  
+    version     : $Id: raceinit.cpp,v 1.18.2.16 2014/05/20 09:09:08 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceinit.cpp,v 1.18.2.10 2012/06/11 11:28:01 berniw Exp $
+    @version	$Id: raceinit.cpp,v 1.18.2.16 2014/05/20 09:09:08 berniw Exp $
 */
 
 
@@ -630,6 +630,7 @@ ReInitCars(void)
 						elt->_category[MAX_NAME_LEN - 1] = '\0';
 
 						/* Read Car Category specifications */
+						// TODO: eventually use new Rt function
 						snprintf(buf, BUFSIZE, "categories/%s.xml", category);
 						GfOut("Category Specification: %s\n", buf);
 						cathdle = GfParmReadFile(buf, GFPARM_RMODE_STD | GFPARM_RMODE_CREAT);
@@ -651,7 +652,7 @@ ReInitCars(void)
 							handle = carhdle;
 						}
 						elt->_carHandle = handle;
-						//GfParmWriteFile("toto.xml", handle, "toto");
+						RtInitCarPitSetup(handle, &(elt->pitcmd.setup), false);
 					} else {
 						elt->_category[0] = '\0';
 						GfTrace("Bad Car category for driver %s\n", elt->_name);
@@ -685,7 +686,7 @@ ReInitCars(void)
 	// I stuff for now anything into one call because collision detection works with the same
 	// library on all objects, so it is a bit dangerous to distribute the handling to various
 	// locations (because the library maintains global state like a default collision handler etc.).
-    ReInfo->_reSimItf.init(nCars, ReInfo->track);
+    ReInfo->_reSimItf.init(nCars, ReInfo->track, ReInfo->raceRules.fuelFactor, ReInfo->raceRules.damageFactor);
 
     initStartingGrid();
 
@@ -697,7 +698,6 @@ ReInitCars(void)
 /** Dump the track segments on screen
     @param	track	track to dump
     @param	verbose	if set to 1 all the segments are described (long)
-    @ingroup	racemantools
  */
 static void
 reDumpTrack(tTrack *track, int verbose)
@@ -823,6 +823,7 @@ ReRaceCleanup(void)
 	ReInfo->_reSimItf.shutdown();
 	if (ReInfo->_displayMode == RM_DISP_MODE_NORMAL) {
 		ReInfo->_reGraphicItf.shutdowncars();
+		ReInfo->_reGraphicItf.shutdownTrafficlight();
 		startMenuMusic();
 	}
 	ReStoreRaceResults(ReInfo->_reRaceName);
@@ -835,6 +836,7 @@ ReRaceCleanDrivers(void)
 {
 	int i;
 	tRobotItf *robot;
+	tCarElt *car;
 	int nCars;
 
 	nCars = ReInfo->s->_ncars;
@@ -846,6 +848,27 @@ ReRaceCleanDrivers(void)
 		GfParmReleaseHandle(ReInfo->s->cars[i]->_paramsHandle);
 		GfParmReleaseHandle(ReInfo->s->cars[i]->_carHandle);
 		free(robot);
+
+		// Release penalties
+		tCarPenalty *penalty = GF_TAILQ_FIRST(&(ReInfo->s->cars[i]->_penaltyList));
+		while (penalty) {
+			GF_TAILQ_REMOVE(&(ReInfo->s->cars[i]->_penaltyList), penalty, link);
+			FREEZ(penalty);
+			penalty = GF_TAILQ_FIRST(&(ReInfo->s->cars[i]->_penaltyList));
+		}
+
+		//free image buffer
+		car = &(ReInfo->carList[i]);
+		if(car->imgs) {
+			for(int cn=0;cn<car->camNum; cn++) {
+				if(car->imgs[cn]) {
+					free(car->imgs[cn]);
+					printf("===INFO:free image buffer for car%d cam%d\n",i,cn);
+				}
+			}
+			free(car->imgs);
+			car->imgs=NULL;
+		}
 	}
 
 	FREEZ(ReInfo->s->cars);

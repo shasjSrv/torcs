@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:25:06 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: guiobject.cpp,v 1.3.2.2 2008/11/09 17:50:22 berniw Exp $                                  
+    version              : $Id: guiobject.cpp,v 1.3.2.3 2013/08/27 14:26:58 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -200,6 +200,10 @@ GfuiUnSelectCurrent(void)
 static void
 gfuiLoseFocus(tGfuiObject *obj)
 {
+	if (obj->state == GFUI_DISABLE) {
+		return;
+	}
+
     tGfuiButton		*button;
     tGfuiEditbox	*editbox;
     tGfuiGrButton	*grbutton;
@@ -234,7 +238,11 @@ gfuiLoseFocus(tGfuiObject *obj)
 static void
 gfuiSetFocus(tGfuiObject *obj)
 {
-    tGfuiButton		*button;
+	if (obj->state == GFUI_DISABLE) {
+		return;
+	}
+
+	tGfuiButton		*button;
     tGfuiEditbox	*editbox;
     tGfuiGrButton	*grbutton;
     
@@ -452,20 +460,24 @@ gfuiMouseAction(void *vaction)
 
     curObject = GfuiScreen->hasFocus;
     if (curObject != NULL) {
-	switch (curObject->widget) {
-	case GFUI_BUTTON:
-	    gfuiButtonAction((int)action);
-	    break;
-	case GFUI_GRBUTTON:
-	    gfuiGrButtonAction((int)action);
-	    break;
-	case GFUI_SCROLLIST:
-	    gfuiScrollListAction((int)action);
-	    break;
-	case GFUI_EDITBOX:
-	    gfuiEditboxAction((int)action);
-	    break;
-	}
+		if (curObject->state == GFUI_DISABLE) {
+			return;
+		}
+		
+		switch (curObject->widget) {
+		case GFUI_BUTTON:
+			gfuiButtonAction((int)action);
+			break;
+		case GFUI_GRBUTTON:
+			gfuiGrButtonAction((int)action);
+			break;
+		case GFUI_SCROLLIST:
+			gfuiScrollListAction((int)action);
+			break;
+		case GFUI_EDITBOX:
+			gfuiEditboxAction((int)action);
+			break;
+		}
     }
 }
 

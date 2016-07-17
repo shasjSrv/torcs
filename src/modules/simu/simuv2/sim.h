@@ -2,9 +2,9 @@
 
     file                 : sim.h
     created              : Sun Mar 19 00:07:42 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: sim.h,v 1.15.2.3 2010/01/09 15:56:18 berniw Exp $
+    version              : $Id: sim.h,v 1.15.2.12 2014/04/12 13:55:30 berniw Exp $
 
  ***************************************************************************/
 
@@ -39,10 +39,11 @@
 extern void SimConfig(tCarElt *carElt, RmInfo *);
 extern void SimReConfig(tCarElt *carElt);
 extern void SimUpdate(tSituation*, double deltaTime, int telemetry);
-extern void SimInit(int nbcars, tTrack* track);
+extern void SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor);
 extern void SimShutdown(void);
 
 extern void SimAxleConfig(tCar *car, int index);
+extern void SimAxleReConfig(tCar *car, int index);
 extern void SimAxleUpdate(tCar *car, int index);
 
 extern void SimCarConfig(tCar *car);
@@ -52,8 +53,11 @@ extern void SimCarUpdate2(tCar *car, tSituation*);
 extern void SimSuspCheckIn(tSuspension *susp);
 extern void SimSuspUpdate(tSuspension *susp);
 extern void SimSuspConfig(void *hdle, const char *section, tSuspension *susp, tdble F0, tdble X0);
+extern void SimSuspReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0);
+extern void SimSuspThirdReConfig(tCar* car, int index, tSuspension *susp, tdble F0, tdble X0);
 
 extern void SimWheelConfig(tCar *car, int index);
+extern void SimWheelReConfig(tCar *car, int index);
 extern void SimWheelUpdateRide(tCar *car, int index);
 extern void SimWheelUpdateForce(tCar *car, int index);
 extern void SimWheelUpdateRotation(tCar *car);
@@ -61,25 +65,30 @@ extern void SimUpdateFreeWheels(tCar *car, int axlenb);
 
 
 extern void SimSteerConfig(tCar *car);
+extern void SimSteerReConfig(tCar *car);
 extern void SimSteerUpdate(tCar *car);
 
 extern void SimBrakeConfig(void *hdle, const char *section, tBrake *brake);
 extern void SimBrakeUpdate(tCar *car, tWheel *wheel, tBrake *brake);
 extern void SimBrakeSystemConfig(tCar *car);
+extern void SimBrakeSystemReConfig(tCar *car);
 extern void SimBrakeSystemUpdate(tCar *car);
 
 extern void SimAeroConfig(tCar *car);
 extern void SimAeroUpdate(tCar *car, tSituation *s);
 extern void SimWingConfig(tCar *car, int index);
+extern void SimWingReConfig(tCar *car, int index);
 extern void SimWingUpdate(tCar *car, int index, tSituation *s);
 
 extern void SimCarUpdateWheelPos(tCar *car);
 
 extern void SimTransmissionConfig(tCar *car);
+extern void SimTransmissionReConfig(tCar *car);
 extern void SimTransmissionUpdate(tCar *car);
 extern void SimGearboxUpdate(tCar *car);
 
 extern void SimDifferentialConfig(void *hdle, const char *section, tDifferential *differential);
+extern void SimDifferentialReConfig(tCar* car, int index);
 extern void SimDifferentialUpdate(tCar *car, tDifferential *differential, int first);
 
 extern void SimEngineConfig(tCar *car);
@@ -95,11 +104,13 @@ extern void SimCarCollideShutdown(int nbcars);
 extern void SimCarCollideInit(tTrack *track);
 extern void SimCollideRemoveCar(tCar *car, int nbcars);
 
+extern bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v);
+
 extern tdble SimDeltaTime;
 extern int SimTelemetry;
 extern tCar *SimCarTable;
-extern t3Dd vectStart[];
-extern t3Dd vectEnd[];
+extern tdble rulesFuelFactor;
+extern tdble rulesDamageFactor;
 
 extern tdble simDammageFactor[];
 extern tdble simSkidFactor[];

@@ -5,7 +5,7 @@
     copyright            : (C) 2001-2005 by Christophe Guionneau
                                             Christos Dimitrakakis
                                             Bernhard Wymann
-    version              : $Id: grskidmarks.cpp,v 1.30.2.1 2008/12/31 03:53:56 berniw Exp $
+    version              : $Id: grskidmarks.cpp,v 1.30.2.2 2014/02/10 11:09:36 berniw Exp $
 
  ***************************************************************************/
 
@@ -215,7 +215,7 @@ void grUpdateSkidmarks(tCarElt *car, double t)
 			continue;
 		}
 
-		if ((car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y) > 1.0f) {
+		if (car->pub.speed > 1.0f) {
 	    	if (cur_clr[3] > 0.1f) {
                 
 				basevtx = new ssgVertexArray(4 * 2 + 1);

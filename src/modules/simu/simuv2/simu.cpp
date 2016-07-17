@@ -2,9 +2,9 @@
 
     file                 : simu.cpp
     created              : Sun Mar 19 00:07:53 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: simu.cpp,v 1.36.2.3 2012/10/03 07:18:49 berniw Exp $
+    version              : $Id: simu.cpp,v 1.36.2.15 2014/04/12 13:55:30 berniw Exp $
 
  ***************************************************************************/
 
@@ -32,19 +32,12 @@
 #include "sim.h"
 
 tCar *SimCarTable = 0;
-
 tdble SimDeltaTime;
-
 int SimTelemetry;
-
 static int SimNbCars = 0;
 
-t3Dd vectStart[16];
-t3Dd vectEnd[16];
-
-#define MEANNB 0
-#define MEANW  1
-
+tdble rulesFuelFactor = 1.0f;
+tdble rulesDamageFactor = 1.0f;
 
 /*
  * Check the input control from robots
@@ -61,13 +54,11 @@ ctrlCheck(tCar *car)
     if (isnan(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
     if (isnan(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
     if (isnan(car->ctrl->steer)) car->ctrl->steer = 0;
-    if (isnan(car->ctrl->gear)) car->ctrl->gear = 0;
 #else
     if (isnan(car->ctrl->accelCmd) || isinf(car->ctrl->accelCmd)) car->ctrl->accelCmd = 0;
     if (isnan(car->ctrl->brakeCmd) || isinf(car->ctrl->brakeCmd)) car->ctrl->brakeCmd = 0;
     if (isnan(car->ctrl->clutchCmd) || isinf(car->ctrl->clutchCmd)) car->ctrl->clutchCmd = 0;
     if (isnan(car->ctrl->steer) || isinf(car->ctrl->steer)) car->ctrl->steer = 0;
-    if (isnan(car->ctrl->gear) || isinf(car->ctrl->gear)) car->ctrl->gear = 0;
 #endif
 
     /* When the car is broken try to send it on the track side */
@@ -139,23 +130,38 @@ SimConfig(tCarElt *carElt, RmInfo *info)
     SimCarConfig(car);
 
     SimCarCollideConfig(car, info->track);
-    sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+    sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 		    RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 }
 
 /* After pit stop */
-void
-SimReConfig(tCarElt *carElt)
+void SimReConfig(tCarElt *carElt)
 {
-    tCar *car = &(SimCarTable[carElt->index]);
-    if (carElt->pitcmd.fuel > 0) {
-	car->fuel += carElt->pitcmd.fuel;
-	if (car->fuel > car->tank) car->fuel = car->tank;
-    }
-    if (carElt->pitcmd.repair > 0) {
-	car->dammage -= carElt->pitcmd.repair;
-	if (car->dammage < 0) car->dammage = 0;
-    }
+	tCar *car = &(SimCarTable[carElt->index]);
+	if (carElt->pitcmd.fuel > 0) {
+		car->fuel += carElt->pitcmd.fuel;
+		if (car->fuel > car->tank) car->fuel = car->tank;
+	}
+
+	if (carElt->pitcmd.repair > 0) {
+		car->dammage -= carElt->pitcmd.repair;
+		if (car->dammage < 0) car->dammage = 0;
+	}
+
+	int i;
+	SimSteerReConfig(car);
+	SimBrakeSystemReConfig(car);
+	
+	for (i = 0; i < 2; i++) {
+		SimWingReConfig(car, i);
+		SimAxleReConfig(car, i);
+	}
+
+	for (i = 0; i < 4; i++) {
+		SimWheelReConfig(car, i);
+	}
+
+	SimTransmissionReConfig(car);
 }
 
 
@@ -179,13 +185,12 @@ RemoveCar(tCar *car, tSituation *s)
 		carElt->_yaw += car->restPos.vel.az * SimDeltaTime;
 		carElt->_roll += car->restPos.vel.ax * SimDeltaTime;
 		carElt->_pitch += car->restPos.vel.ay * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if (carElt->_pos_Z > (car->restPos.pos.z + PULL_Z_OFFSET)) {
 			carElt->_state &= ~RM_CAR_STATE_PULLUP;
 			carElt->_state |= RM_CAR_STATE_PULLSIDE;
-
 			// Moved pullside velocity computation down due to floating point error accumulation.
 		}
 		return;
@@ -204,7 +209,7 @@ RemoveCar(tCar *car, tSituation *s)
 
 		carElt->_pos_X += car->restPos.vel.x * SimDeltaTime;
 		carElt->_pos_Y += car->restPos.vel.y * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if ((fabs(car->restPos.pos.x - carElt->_pos_X) < 0.5) && (fabs(car->restPos.pos.y - carElt->_pos_Y) < 0.5)) {
@@ -217,7 +222,7 @@ RemoveCar(tCar *car, tSituation *s)
 
 	if (carElt->_state & RM_CAR_STATE_PULLDN) {
 		carElt->_pos_Z -= car->restPos.vel.z * SimDeltaTime;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 			RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 
 		if (carElt->_pos_Z < car->restPos.pos.z) {
@@ -410,7 +415,8 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 	
 		carElt->pub.DynGC = car->DynGC;
 		carElt->pub.DynGCg = car->DynGCg;
-		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X, carElt->_pos_Y, carElt->_pos_Z - carElt->_statGC_z,
+		carElt->pub.speed = car->speed;
+		sgMakeCoordMat4(carElt->pub.posMat, carElt->_pos_X - carElt->_statGC_x, carElt->_pos_Y - carElt->_statGC_y, carElt->_pos_Z - carElt->_statGC_z,
 				RAD2DEG(carElt->_yaw), RAD2DEG(carElt->_roll), RAD2DEG(carElt->_pitch));
 		carElt->_trkPos = car->trkPos;
 		for (i = 0; i < 4; i++) {
@@ -425,14 +431,16 @@ SimUpdate(tSituation *s, double deltaTime, int telemetry)
 		carElt->priv.collision |= car->collision;
 		carElt->priv.simcollision = car->collision;
 		carElt->_dammage = car->dammage;
-		carElt->_fakeDammage = car->fakeDammage;		
+		carElt->_fakeDammage = car->fakeDammage;
 	}
 }
 
 
 void
-SimInit(int nbcars, tTrack* track)
+SimInit(int nbcars, tTrack* track, tdble fuelFactor, tdble damageFactor)
 {
+	rulesFuelFactor = fuelFactor;
+	rulesDamageFactor = damageFactor;
     SimNbCars = nbcars;
     SimCarTable = (tCar*)calloc(nbcars, sizeof(tCar));
     SimCarCollideInit(track);
@@ -455,3 +463,20 @@ SimShutdown(void)
     }
 }
 
+
+bool SimAdjustPitCarSetupParam(tCarPitSetupValue* v)
+{
+	// If min == max there is nothing to adjust
+	if (fabs(v->max - v->min) >= 0.0001f) {
+		// Ensure that value is in intended borders
+		if (v->value > v->max) {
+			v->value = v->max;
+		} else if (v->value < v->min) {
+			v->value = v->min;
+		}
+		return true;
+	}
+
+	v->value = v->max;
+	return false;
+}

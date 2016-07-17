@@ -2,9 +2,9 @@
 
     file        : raceresults.cpp
     created     : Thu Jan  2 12:43:10 CET 2003
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002, 2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
-    version     : $Id: raceresults.cpp,v 1.9.2.9 2012/06/09 14:58:48 berniw Exp $                                  
+    version     : $Id: raceresults.cpp,v 1.9.2.15 2014/05/23 08:38:31 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -18,9 +18,9 @@
  ***************************************************************************/
 
 /** @file   
-    		
-    @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceresults.cpp,v 1.9.2.9 2012/06/09 14:58:48 berniw Exp $
+    Processing of race results		
+    @author	Bernhard Wymann, Eric Espie
+    @version $Id: raceresults.cpp,v 1.9.2.15 2014/05/23 08:38:31 berniw Exp $
 */
 
 #include <stdlib.h>
@@ -47,6 +47,125 @@ typedef struct
 	int		drvIdx;
 	int		points;
 } tReStandings;
+
+
+/*
+	Applies pending penalties after the race:
+	- Time penalties
+	- Pending stop & go (can happen if penalty is given within the last 5 laps)
+	- Pending drive through (dito)
+
+	I assume that the average track speed is 300km/h (v0), and that the pit entry
+	and exit costs 10s. We call the pit speed limit v1, and the length of the pit
+	lane s. So the time lost with driving through the pit lane is
+	dt = s*(v0-v1)/(v0*v1). We assume that stopping costs additional 6 seconds.  
+	
+	Drive through: 10 + dt [s]
+	Stop & Go: 10 + 6 + dt [s]
+
+	Applying time penalties with cars in different laps is problematic, picture
+	this situation: We have 3 cars running, pos 1 car is right behind the pos 3
+	car (so it will overlap in a moment), pos 3 car is right behind pos 2 car,
+	and pos 2 car has a 30s penalty pending. Now right before the finish line the
+	pos 1 car passes (overlaps) the pos 3 car, so the race is done for pos 1 car,
+	and a moment later for the pos 3 car. But the pos 2 car can finish its last
+	lap, although it has a 30s penalty pending, which would have thrown it behind
+	the pos 3 car, if the overlapping not had happened.
+
+	So just adding times is not enough (btw. the FIA does just add times... weird).
+	
+	All time penalties are added up and then applied to the ranking like this:
+	We "pump up" the result of the opponents with less laps up to our laps
+	with a simple linear model: opponent_race_time/opponent_laps*our_race_laps, so
+	we are worse when:
+	our_race_time + our_penalty_time > 
+	opponent_race_time/opponent_laps*our_race_laps + opponent_penalty_time
+	
+	This works as well for opponents in the same lap, opponent_laps*our_race_laps is
+	then 1. The calculation requires that at least one full lap has been driven by
+	the drivers which are compared.
+
+	Wrecked cars are considered worse than a penalty.
+*/
+static void ReApplyRaceTimePenalties(void)
+{
+	// First update all penalty times, apply pending drive through/stop and go
+	int i;
+	tSituation *s = ReInfo->s;
+	tCarPenalty *penalty;
+	tCarElt* car;
+
+	if (ReInfo->track->pits.type == TR_PIT_ON_TRACK_SIDE) {
+		const tdble drivethrough = 10.0f;
+		const tdble stopandgo = 6.0f + drivethrough;
+
+		const tdble v0 = 84.0f;
+		tdble v1 = ReInfo->track->pits.speedLimit;
+		tdble dv = v0 - v1;
+		tdble dt = 0.0;
+
+		if (dv > 1.0f && v1 > 1.0f) {
+			dt = (ReInfo->track->pits.nMaxPits*ReInfo->track->pits.len)*dv/(v0*v1);
+		}
+
+		for (i = 0; i < s->_ncars; i++) {
+			car = s->cars[i];
+			penalty = GF_TAILQ_FIRST(&(car->_penaltyList));
+			while (penalty) {
+				if (penalty->penalty == RM_PENALTY_DRIVETHROUGH) {
+					car->_penaltyTime += dt + drivethrough;
+				} else if (penalty->penalty == RM_PENALTY_STOPANDGO) {
+					car->_penaltyTime += dt + stopandgo;
+				} else {
+					GfError("Unknown penalty.");
+				}
+				penalty = GF_TAILQ_NEXT(penalty, link);
+			}		
+		}
+	}
+
+	// Now sort the cars taking into account the penalties
+	int j;
+	for (i = 1; i < s->_ncars; i++) {
+		j = i;
+		while (j > 0) {
+			// Order without penalties is already ok, so if there is no penalty we do not move down
+			if (s->cars[j-1]->_penaltyTime > 0.0f) {
+				int l1 = MIN(s->cars[j-1]->_laps, s->_totLaps + 1) - 1;
+				int l2 = MIN(s->cars[j]->_laps, s->_totLaps + 1) - 1;
+				// If the drivers did not at least complete one lap we cannot apply the rule, check.
+				// If the cars are wrecked we do not care about penalties.
+				if (
+					l1 < 1 ||
+					l2 < 1 ||
+					(s->raceInfo.maxDammage < s->cars[j-1]->_dammage) ||
+					(s->raceInfo.maxDammage < s->cars[j]->_dammage))
+				{
+					// Because the cars came already presorted, all following cars must be even worse,
+					// so we can break the iteration here.
+					i = s->_ncars;	// Break outer loop
+					break;			// Break inner loop
+				}
+				
+				tdble t1 = s->cars[j-1]->_curTime + s->cars[j-1]->_penaltyTime;
+				tdble t2 = s->cars[j]->_curTime*tdble(l1)/tdble(l2) + s->cars[j]->_penaltyTime;
+
+				if (t1 > t2) {
+					// Swap
+					car = s->cars[j];
+					s->cars[j] = s->cars[j-1];
+					s->cars[j-1] = car;
+					s->cars[j]->_pos = j+1;
+					s->cars[j-1]->_pos = j;
+					j--;
+					continue;
+				}
+			}
+			j = 0;
+		}
+	}
+}
+
 
 void
 ReInitResults(void)
@@ -197,12 +316,12 @@ ReUpdateStandings(void)
 	snprintf(str2, BUFSIZE, "<?xml-stylesheet type=\"text/xsl\" href=\"file:///%sconfig/style.xsl\"?>", GetDataDir());
 	
 	GfParmSetDTD (results, str1, str2);
+	GfParmCreateDirectory(0, results);
 	GfParmWriteFile(0, results, "Results");
 }
 
 
-void
-ReStoreRaceResults(const char *race)
+void ReStoreRaceResults(const char *race)
 {
 	int i;
 	int nCars;
@@ -225,6 +344,8 @@ ReStoreRaceResults(const char *race)
 			GfParmListClean(results, path);
 			GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
 			
+			ReApplyRaceTimePenalties();
+
 			for (i = 0; i < s->_ncars; i++) {
 				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 				car = s->cars[i];
@@ -240,7 +361,8 @@ ReStoreRaceResults(const char *race)
 				GfParmSetNum(results, path, RE_ATTR_INDEX, NULL, car->index);
 			
 				GfParmSetNum(results, path, RE_ATTR_LAPS, NULL, car->_laps - 1);
-				GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime);
+				GfParmSetNum(results, path, RE_ATTR_TIME, NULL, car->_curTime + car->_penaltyTime);
+				GfParmSetNum(results, path, RE_ATTR_PENALTYTIME, NULL, car->_penaltyTime);
 				GfParmSetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, car->_bestLapTime);
 				GfParmSetNum(results, path, RE_ATTR_TOP_SPEED, NULL, car->_topSpeed);
 				GfParmSetNum(results, path, RE_ATTR_DAMMAGES, NULL, car->_dammage);
@@ -310,6 +432,7 @@ ReStoreRaceResults(const char *race)
 	}
 }
 
+
 void
 ReUpdateQualifCurRes(tCarElt *car)
 {
@@ -323,8 +446,9 @@ ReUpdateQualifCurRes(tCarElt *car)
 	void *results = ReInfo->results;
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE], path[BUFSIZE];
-	char *str;
-
+	const int TIMEFMTSIZE = 256;
+	char timefmt[TIMEFMTSIZE];
+	
 	ReResEraseScreen();
 	maxLines = ReResGetLines();
 	
@@ -343,25 +467,21 @@ ReUpdateQualifCurRes(tCarElt *car)
 		snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i);
 		if (!printed) {
 			if ((car->_bestLapTime != 0.0) && (car->_bestLapTime < GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0))) {
-				str = GfTime2Str(car->_bestLapTime, 0);
-				snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, str, car->_name, carName);
+				GfTime2Str(timefmt, TIMEFMTSIZE, car->_bestLapTime, 0);
+				snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, timefmt, car->_name, carName);
 				ReResScreenSetText(buf, i - 1, 1);
-				free(str);
 				printed = 1;
 			}
 		}
-		str = GfTime2Str(GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
-		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i + printed, str,
-		GfParmGetStr(results, path, RE_ATTR_NAME, ""), GfParmGetStr(results, path, RE_ATTR_CAR, ""));
+		GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_BEST_LAP_TIME, NULL, 0), 0);
+		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i + printed, timefmt, GfParmGetStr(results, path, RE_ATTR_NAME, ""), GfParmGetStr(results, path, RE_ATTR_CAR, ""));
 		ReResScreenSetText(buf, i - 1 + printed, 0);
-		free(str);
 	}
 
 	if (!printed) {
-		str = GfTime2Str(car->_bestLapTime, 0);
-		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, str, car->_name, carName);
+		GfTime2Str(timefmt, TIMEFMTSIZE, car->_bestLapTime, 0);
+		snprintf(buf, BUFSIZE, "%d - %s - %s (%s)", i, timefmt, car->_name, carName);
 		ReResScreenSetText(buf, i - 1, 1);
-		free(str);
 	}
 
 	GfParmReleaseHandle(carparam);

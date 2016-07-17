@@ -2,9 +2,9 @@
 
     file        : racestate.cpp
     created     : Sat Nov 16 12:00:42 CET 2002
-    copyright   : (C) 2002 by Eric Espié                        
+    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann                        
     email       : eric.espie@torcs.org   
-    version     : $Id: racestate.cpp,v 1.5.2.4 2012/06/11 11:28:01 berniw Exp $                                  
+    version     : $Id: racestate.cpp,v 1.5.2.5 2014/02/04 14:03:03 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racestate.cpp,v 1.5.2.4 2012/06/11 11:28:01 berniw Exp $
+    @version	$Id: racestate.cpp,v 1.5.2.5 2014/02/04 14:03:03 berniw Exp $
 */
 
 /* The Race Engine State Automaton */

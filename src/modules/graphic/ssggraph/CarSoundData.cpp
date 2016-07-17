@@ -2,9 +2,9 @@
 /***************************************************************************
     file                 : CarSoundData.cpp
     created              : Tue Apr 5 19:57:35 CEST 2005
-    copyright            : (C) 2005 Christos Dimitrakakis
+    copyright            : (C) 2005-2014 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: CarSoundData.cpp,v 1.7.2.3 2012/06/01 09:25:47 berniw Exp $
+    version              : $Id: CarSoundData.cpp,v 1.7.2.4 2014/02/10 11:16:18 berniw Exp $
 
 ***************************************************************************/
 
@@ -202,7 +202,6 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
     grass.f = 1.0f;
     road.a = 0.0;
     road.f = 0.0f;
-    float car_speed2 = car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y;
     bool flag = false;
     int i;
     for (i = 0; i<4; i++) {
@@ -222,7 +221,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
     
 	if (
 		(car->_state & RM_CAR_STATE_NO_SIMU) || 
-		(((car->_speed_x*car->_speed_x + car->_speed_y*car->_speed_y) < 0.1f) &&
+		((car->pub.speed < 0.3f) &&
 		(flag == false))
 	) {
 		return;
@@ -233,7 +232,7 @@ void CarSoundData::calculateTyreSound(tCarElt* car)
         tdble roughness = 0.0f;
         tdble roughnessFreq = 1.0f;
         float ride  = 0.0001f;
-        float tmpvol = sqrt(car_speed2)*0.01f;
+        float tmpvol = car->pub.speed*0.01f;
         if (car==NULL) {
             fprintf (stderr, "Error: (grsound.c) no car\n");
             continue;
@@ -369,7 +368,7 @@ void CarSoundData::calculateCollisionSound (tCarElt* car)
     int collision  = car->priv.collision;
     if (collision) {
         if (collision & 1) {
-            skid_metal.a = sqrt(car->_speed_x * car->_speed_x + car->_speed_y * car->_speed_y)*0.01;
+            skid_metal.a = car->pub.speed*0.01;
             skid_metal.f = .5+0.5*skid_metal.a;
             drag_collision.f = skid_metal.f;
         } else {

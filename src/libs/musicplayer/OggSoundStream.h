@@ -7,7 +7,7 @@
     created              : Fri Dec 23 17:35:18 CET 2011
     copyright            : (C) 2011 Bernhard Wymann
     email                : berniw@bluewin.ch
-    version              : $Id: OggSoundStream.h,v 1.1.2.2 2011/12/29 09:23:24 berniw Exp $
+    version              : $Id: OggSoundStream.h,v 1.1.2.3 2014/02/05 09:54:43 berniw Exp $
 
  ***************************************************************************/
 
@@ -36,7 +36,7 @@ class OggSoundStream : public SoundStream
 		virtual int getRateInHz() { return rateInHz; }
 		virtual SoundFormat getSoundFormat() { return format; }
 		
-		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char* error);
+		virtual bool read(char* buffer, const int bufferSize, int* resultSize, const char** error);
 		virtual void rewind();
 		virtual void display();
 		virtual bool isValid() { return valid; }

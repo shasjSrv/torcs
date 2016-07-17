@@ -2,9 +2,9 @@
 
     file                 : raceman.h
     created              : Sun Jan 30 22:59:17 CET 2000
-    copyright            : (C) 2000,2002 by Eric Espie
+    copyright            : (C) 2000,2002-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: raceman.h,v 1.28.2.2 2012/02/14 23:42:20 berniw Exp $
+    version              : $Id: raceman.h,v 1.28.2.7 2014/04/15 09:34:19 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file
     		This is the race information structures.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: raceman.h,v 1.28.2.2 2012/02/14 23:42:20 berniw Exp $
+    @version	$Id: raceman.h,v 1.28.2.7 2014/04/15 09:34:19 berniw Exp $
     @ingroup	raceinfo
 */
  
@@ -176,6 +176,22 @@ typedef struct
 #define RM_PNST_SPD		0x00010000
 #define RM_PNST_STNGO		0x00020000
 
+typedef struct RmRaceRules
+{
+	enum RmRuleFlags {
+		CORNER_CUTTING_TIME_INVALIDATE = 1,
+		WALL_HIT_TIME_INVALIDATE = 2,
+		CORNER_CUTTING_TIME_PENALTY = 4
+	};
+
+	int enabled;
+	tdble fuelFactor;
+	tdble damageFactor;
+	tdble refuelFuelFlow;
+	tdble damageRepairFactor;
+	tdble pitstopBaseTime;
+} tRmRaceRules;
+
 typedef struct RmCarRules
 {
     int			ruleState;
@@ -208,6 +224,7 @@ typedef struct RmInfo
     tRmCarRules		*rules;		/**< by car rules */
     tRaceEngineInfo	raceEngineInfo;
     tRmMovieCapture	movieCapture;
+	tRmRaceRules raceRules;
 } tRmInfo;
 
 /*
@@ -227,13 +244,11 @@ typedef struct RmInfo
 #define RM_ATTR_CUR_CONF	"current configuration"
 #define RM_ATTR_START_ORDER	"starting order"
 #define RM_ATTR_ALLOW_RESTART	"restart"
-#define RM_ATTR_MUST_COMPLETE	"must complete"
 #define RM_ATTR_SPLASH_MENU	"splash menu"
 #define RM_ATTR_DISP_START_GRID	"display starting grid"
 
 #define RM_ATTR_MAXNUM		"maximum number"
 #define RM_ATTR_MAX_DRV		"maximum drivers"
-#define RM_ATTR_CAR		"car"
 
 #define RM_ATTR_PRIO		"priority"
 #define RM_ATTR_NAME		"name"
@@ -251,8 +266,6 @@ typedef struct RmInfo
 #define RM_ATTR_DISPMODE	"display mode"
 #define RM_ATTR_DISPRES		"display results"
 
-#define RM_ATTR_TIMESTEP	"time step"
-
 #define RM_ATTR_TYPE		"type"
 #define RM_ATTR_RACE		"race"
 #define RM_ATTR_ROWS		"rows"
@@ -261,13 +274,21 @@ typedef struct RmInfo
 #define RM_ATTR_COLOFFSET	"offset within a column"
 #define RM_ATTR_INITSPEED	"initial speed"
 #define RM_ATTR_INITHEIGHT	"initial height"
-#define RM_ATTR_SHOW_RACE	"show race"
 #define RM_ATTR_MAX_DMG		"maximum dammage"
 #define RM_ATTR_DISTANCE	"distance"
 #define RM_ATTR_LAPS		"laps"
-#define RM_ATTR_QUAL_LAPS	"Qualification laps"
 #define RM_ATTR_POLE		"pole position side"
 #define RM_ATTR_CARSPERPIT	"cars per pit"
+
+#define RM_ATTR_INVALIDATE_BEST_LAP_WALL_TOUCH "invalidate best lap on wall touch"
+#define RM_ATTR_INVALIDATE_BEST_LAP_CORNER_CUT "invalidate best lap on corner cutting"
+#define RM_ATTR_CORNER_CUT_TIME_PENALTY "corner cutting time penalty"
+#define RM_ATTR_DAMAGE_FACTOR "damage factor"
+#define RM_ATTR_FUEL_FACTOR "fuel consumption factor"
+#define RM_ATTR_PIT_SPEED_LIMIT "pit speed limit"
+#define RM_ATTR_REFUEL_FUEL_FLOW "refuel fuel flow"
+#define RM_ATTR_DAMAGE_REPAIR_FACTOR "damage repair factor"
+#define RM_ATTR_PITSTOP_BASE_TIME "pitstop base time"
 
 #define RM_ATTR_POINTS		"points"
 
@@ -302,27 +323,17 @@ typedef struct RmInfo
 
 #define RE_SECT_HEADER		"Header"
 #define RE_ATTR_DATE		"date"
-#define RE_ATTR_TYPE		"race"
 
 #define RE_SECT_CURRENT		"Current"
 #define RE_ATTR_CUR_RACE	"current race"
 #define RE_ATTR_CUR_TRACK	"current track"
 #define RE_ATTR_CUR_DRIVER	"current driver"
 
-#define RE_SECT_DRIVERS		"Drivers"
-#define RE_SECT_DRIVER		"Driver"
 #define RE_ATTR_DLL_NAME	"dll name"
 #define RE_ATTR_INDEX		"index"
 
 #define RE_SECT_STANDINGS	"Standings"
-
 #define RE_SECT_RESULTS		"Results"
-#define RE_SECT_STARTINGGRID	"Starting Grid"
-
-#define RE_SECT_QUALIF		"Qualifications"
-
-#define RE_SECT_FINAL		"Final"
-
 #define RE_SECT_RANK		"Rank"		
 
 #define RE_ATTR_NAME		"name"
@@ -337,6 +348,7 @@ typedef struct RmInfo
 #define RE_ATTR_DAMMAGES	"dammages"
 #define RE_ATTR_NB_PIT_STOPS	"pits stops"
 #define RE_ATTR_POINTS		"points"
+#define RE_ATTR_PENALTYTIME	"penaltytime"
 
 #endif /* _RACEMANV1_H_ */ 
 

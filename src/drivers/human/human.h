@@ -4,7 +4,7 @@
     created     : Sat May 10 19:12:46 CEST 2003
     copyright   : (C) 2003 by Eric Espi�                        
     email       : eric.espie@torcs.org   
-    version     : $Id: human.h,v 1.3.2.1 2008/06/01 07:42:14 berniw Exp $                                  
+    version     : $Id: human.h,v 1.3.2.3 2013/08/29 20:03:44 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: human.h,v 1.3.2.1 2008/06/01 07:42:14 berniw Exp $
+    @version	$Id: human.h,v 1.3.2.3 2013/08/29 20:03:44 berniw Exp $
 */
 
 #ifndef _HUMAN_H_
@@ -31,7 +31,6 @@ typedef struct HumanContext
 	int		NbPitStops;
 	int		LastPitStopLap;
 	int 	AutoReverseEngaged;
-	tdble	shiftThld[MAX_GEARS+1];
 	tdble	Gear;
 	tdble	distToStart;
 	tdble	clutchtime;

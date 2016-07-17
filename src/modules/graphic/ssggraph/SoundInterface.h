@@ -4,7 +4,7 @@
     created              : Tue Apr 5 19:57:35 CEST 2005
     copyright            : (C) 2005 Christos Dimitrakakis, Bernhard Wymann
     email                : dimitrak@idiap.ch
-    version              : $Id: SoundInterface.h,v 1.7.2.1 2008/12/31 03:53:56 berniw Exp $
+    version              : $Id: SoundInterface.h,v 1.7.2.2 2013/09/01 10:24:23 berniw Exp $
 
 ***************************************************************************/
 
@@ -221,6 +221,8 @@ class SoundInterface {
 	{
 		// do nothing
 	}
+
+	virtual void muteForMenu() {}
 	virtual float getGlobalGain() {return 1.0f;}
 	virtual void setGlobalGain(float g) 
 	{
@@ -297,6 +299,7 @@ class OpenalSoundInterface : public SoundInterface {
 				       int flags = (ACTIVE_VOLUME|ACTIVE_PITCH),
 				       bool loop = false, bool static_pool = true);
 	virtual void update(CarSoundData** car_sound_data, int n_cars, sgVec3 p_obs, sgVec3 u_obs, sgVec3 c_obs, sgVec3 a_obs);
+	virtual void muteForMenu();
 	virtual float getGlobalGain() { return global_gain; }
 	virtual void initSharedSourcePool();
 	virtual void setGlobalGain(float g)

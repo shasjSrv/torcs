@@ -42,6 +42,8 @@ extern ssgBranch *SmokeAnchor;
 extern ssgBranch *SkidAnchor;
 extern ssgBranch *CarlightAnchor;
 
+extern ssgBranch *TrafficlightAnchor;
+
 extern ssgBranch *ThePits;
 
 extern int grInitScene(void);

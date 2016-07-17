@@ -34,7 +34,7 @@ init_args(int argc, char **argv, const char **raceconfig)
 {
 	int i;
 	char *buf;
-    
+
     setNoisy(false);
     setVersion("2013");
 
@@ -98,14 +98,14 @@ init_args(int argc, char **argv, const char **raceconfig)
 		} else if (strncmp(argv[i], "-ver", 4) == 0) {
 		    i++;
 		    if (i < argc) {
-					setVersion(argv[i]);
-		    		printf("Set version: \"%s\"\n",getVersion());
-		    		i++;
+				setVersion(argv[i]);
+				printf("Set version: \"%s\"\n",getVersion());
+				i++;
 		    }
 		} else if (strncmp(argv[i], "-nolaptime", 10) == 0) {
 		    i++;
 		    setLaptimeLimit(false);
-		    printf("Laptime limit disabled!\n");   
+		    printf("Laptime limit disabled!\n");
 		} else if(strncmp(argv[i], "-k", 2) == 0) {
 			i++;
 			// Keep modules in memory (for valgrind)

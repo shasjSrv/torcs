@@ -2,9 +2,9 @@
 
     file                 : ssggraph.cpp
     created              : Thu Aug 17 23:19:19 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: ssggraph.cpp,v 1.12.2.1 2008/12/31 03:53:56 berniw Exp $
+    version              : $Id: ssggraph.cpp,v 1.12.2.2 2013/09/01 10:24:23 berniw Exp $
 
  ***************************************************************************/
 
@@ -25,6 +25,7 @@
 #include <tgfclient.h>
 
 #include "grmain.h"
+#include "grtrafficlight.h"
 
 #ifdef DMALLOC
 #include "dmalloc.h"
@@ -41,7 +42,12 @@ graphInit(int /* idx */, void *pt)
     itf->refresh       = refresh;
     itf->shutdowncars  = shutdownCars;
     itf->shutdowntrack = shutdownTrack;
+	itf->muteformenu   = muteForMenu; 
     //itf->bendcar       = bendCar;
+
+    itf->inittrafficlight=initTrafficlight;
+    itf->shutdownTrafficlight=grShutdownTrafficlight;
+
     return 0;
 }
 

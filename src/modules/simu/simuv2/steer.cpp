@@ -2,9 +2,9 @@
 
     file                 : steer.cpp
     created              : Sun Mar 19 00:08:20 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: steer.cpp,v 1.8 2005/08/30 09:47:45 berniw Exp $
+    version              : $Id: steer.cpp,v 1.8.2.1 2013/08/27 16:35:30 berniw Exp $
 
  ***************************************************************************/
 
@@ -19,8 +19,7 @@
 
 #include "sim.h"
 
-void 
-SimSteerConfig(tCar *car)
+void SimSteerConfig(tCar *car)
 {
 	void *hdle = car->params;
 
@@ -29,6 +28,15 @@ SimSteerConfig(tCar *car)
 	car->carElt->_steerLock = car->steer.steerLock;
 }
 
+
+void SimSteerReConfig(tCar *car)
+{
+	tCarPitSetupValue* steerLock = &car->carElt->pitcmd.setup.steerLock;
+	if (SimAdjustPitCarSetupParam(steerLock)) {
+		car->steer.steerLock = steerLock->value;
+		car->carElt->_steerLock = steerLock->value;
+	}
+}
 
 void
 SimSteerUpdate(tCar *car)
@@ -58,5 +66,3 @@ SimSteerUpdate(tCar *car)
 		car->wheel[FRNT_LFT].steer = -steer2;
 	}
 }
-
-

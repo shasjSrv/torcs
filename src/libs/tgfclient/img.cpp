@@ -2,9 +2,9 @@
                           img.cpp -- Images manipulation
                              -------------------
     created              : Tue Aug 17 20:13:08 CEST 1999
-    copyright            : (C) 1999 by Eric Espie
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: img.cpp,v 1.5.2.3 2011/12/29 19:01:45 berniw Exp $
+    version              : $Id: img.cpp,v 1.5.2.4 2014/05/20 14:07:09 berniw Exp $
  ***************************************************************************/
 
 /***************************************************************************
@@ -17,11 +17,11 @@
  ***************************************************************************/
 
 /** @file   
-    		Images manipulation tools.
-		Load and store png images with easy interface.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: img.cpp,v 1.5.2.3 2011/12/29 19:01:45 berniw Exp $
-    @ingroup	img		
+    Image management API.
+
+    Load and store png images.
+    @author Bernhard Wymann, Eric Espie
+    @version $Id: img.cpp,v 1.5.2.4 2014/05/20 14:07:09 berniw Exp $
 */
 
 #ifdef WIN32

@@ -2,9 +2,9 @@
 
     file                 : playerpref.h
     created              : Wed Mar 21 21:50:23 CET 2001
-    copyright            : (C) 2001 by Eric Espié
+    copyright            : (C) 2001-2014 by Eric Espie, Bernhard Wymann
     email                : Eric.Espie@torcs.org
-    version              : $Id: playerpref.h,v 1.10 2004/10/07 17:05:04 olethros Exp $
+    version              : $Id: playerpref.h,v 1.10.2.3 2015/04/18 11:04:55 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: playerpref.h,v 1.10 2004/10/07 17:05:04 olethros Exp $
+    @version	$Id: playerpref.h,v 1.10.2.3 2015/04/18 11:04:55 berniw Exp $
 */
 
 #ifndef _PLAYERPREF_H_
@@ -34,8 +34,6 @@
 #define	HM_SECT_KEYBPREF	"keyboard"
 
 #define HM_SECT_DRVPREF		"Preferences/Drivers"
-
-#define HM_ATT_CONTROL		"control"
 
 #define HM_ATT_UP_SHFT		"up shift"
 #define HM_ATT_DN_SHFT		"down shift"
@@ -108,6 +106,8 @@
 #define HM_ATT_ABS	"ABS on"
 #define HM_ATT_ASR	"ASR on"
 #define HM_ATT_NBPITS	"programmed pit stops"
+
+#define HM_ATT_EVENTBLACKLIST "blacklisted events"
 
 #define HM_VAL_AUTO	"auto"
 #define HM_VAL_MANUAL	"manual"

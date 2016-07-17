@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:09:18 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: wheel.h,v 1.7 2007/10/30 21:45:23 berniw Exp $
+    version              : $Id: wheel.h,v 1.7.2.1 2013/08/04 11:20:57 berniw Exp $
 
  ***************************************************************************/
 
@@ -44,8 +44,7 @@ typedef struct
     tdble  	prespinVel;   	/* spin velocity */
     int     	state;     	/* wheel state */
     /* 1 and 2 are for suspension state */
-#define SIM_WH_SPINNING 4	/* the wheel is spinning */
-#define SIM_WH_LOCKED   8	/* the wheel is locked */
+#define SIM_WH_ONAIR 4	/* the wheel has no contact to the ground although the suspension is not fully extended */
     tdble	axleFz;		/* force from axle (anti-roll bar) */
     tTrkLocPos	trkPos;		/* current track position */
     tPosd	relPos;		/* relative pos / GC */

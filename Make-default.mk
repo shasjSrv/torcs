@@ -4,7 +4,7 @@
 #    created              : Sat Mar 18 23:53:11 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
-#    version              : $Id: Make-default.mk,v 1.33 2003/09/07 08:13:56 torcs Exp $                                  
+#    version              : $Id: Make-default.mk,v 1.33.2.1 2013/01/12 14:25:08 berniw Exp $                                  
 #
 ##############################################################################
 #
@@ -162,7 +162,7 @@ win32start:
 
 
 win32end:
-	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
+	@sed -e "s:${TORCS_BASE}:\.:g"  -e 's/$$//' ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
 	@sed -e "s:/src/linux/:/src/windows/:g" ${INIT_WIN32} > ${INIT_WIN32}.eee
 	@mv ${INIT_WIN32}.eee ${INIT_WIN32}
@@ -478,7 +478,7 @@ endif
 ifdef SOLIBRARY
 
 ${SOLIBRARY}: ${OBJECTS}
-	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${LDFLAGS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
+	${CXX} -shared -o ${SOLIBRARY} ${OBJECTS} ${SOLIBS} ${LDFLAGS} ${LIBSPATH} ${LIBS} ${DEBUG_LIBS}
 	@D=`pwd` ; \
 	createdir="${EXPORTBASE}/lib" ; \
 	$(mkinstalldirs) $$createdir ; \

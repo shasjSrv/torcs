@@ -2,9 +2,9 @@
                            screen.cpp -- screen init
                              -------------------
     created              : Fri Aug 13 22:29:56 CEST 1999
-    copyright            : (C) 1999, 2004 by Eric Espie, Bernhard Wymann
+    copyright            : (C) 1999, 2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: screen.cpp,v 1.23.2.9 2012/06/10 09:32:23 berniw Exp $
+    version              : $Id: screen.cpp,v 1.23.2.11 2014/05/23 08:38:32 berniw Exp $
 ***************************************************************************/
 
 /***************************************************************************
@@ -18,9 +18,8 @@
 
 /** @file
     Screen management.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: screen.cpp,v 1.23.2.9 2012/06/10 09:32:23 berniw Exp $
-    @ingroup	screen
+    @author bernhard Wymann, Eric Espie
+    @version $Id: screen.cpp,v 1.23.2.11 2014/05/23 08:38:32 berniw Exp $
 */
 
 #include <stdio.h>
@@ -503,7 +502,7 @@ GfScrReinit(void * /* dummy */)
     saveParams();
 
 #ifdef WIN32
-	snprintf(cmd, CMDSIZE, "%swtorcs.exe", GetLocalDir());
+	snprintf(cmd, CMDSIZE, "%swtorcs.exe", GetLibDir());
     int i;
 	for (i = 0; i < CMDSIZE && cmd[i] != NULL; i++) {
 		if (cmd[i] == '/') {
@@ -512,7 +511,7 @@ GfScrReinit(void * /* dummy */)
 	}
 	
 	char cmdarg[CMDSIZE];
-	snprintf(cmdarg, CMDSIZE, "\"%swtorcs.exe\"", GetLocalDir());
+	snprintf(cmdarg, CMDSIZE, "\"%swtorcs.exe\"", GetLibDir());
 	for (i = 0; i < CMDSIZE && cmdarg[i] != NULL; i++) {
 		if (cmdarg[i] == '/') {
 			cmdarg[i] = '\\';

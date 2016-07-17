@@ -4,7 +4,7 @@
     created              : Fri Aug 13 22:01:33 CEST 1999
     copyright            : (C) 1999 by Eric Espie                         
     email                : torcs@free.fr   
-    version              : $Id: gui.cpp,v 1.7.2.6 2011/12/29 16:14:21 berniw Exp $                                  
+    version              : $Id: gui.cpp,v 1.7.2.8 2014/02/10 18:31:28 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file
     		This API is used to manage all the menu screens.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: gui.cpp,v 1.7.2.6 2011/12/29 16:14:21 berniw Exp $
+    @version	$Id: gui.cpp,v 1.7.2.8 2014/02/10 18:31:28 berniw Exp $
     @ingroup	gui
 */
 
@@ -162,7 +162,7 @@ GfuiDisplay(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	if (GfuiScreen->bgImage != 0) {
+	if (glIsTexture(GfuiScreen->bgImage) == GL_TRUE) {
 		GLfloat tx1 = 0.0f, tx2 = 1.0f, ty1 = 0.0f, ty2 = 1.0f;
 		
 		// All background images are 16:10 images which are stored as quadratic images.
@@ -507,8 +507,6 @@ GfuiScreenReplace(void *screen)
 {
 	tGfuiScreen	*oldScreen = GfuiScreen;
 
-	//GfuiScreenActivate(screen);
-
 	if (oldScreen) {
 		GfuiScreenRelease(oldScreen);
 	}
@@ -557,8 +555,6 @@ GfuiScreenCreate(void)
 		screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
 	}
 
-
-	// screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
 	screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
 	screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
 	screen->mouseAllowed = 1;
@@ -600,16 +596,7 @@ GfuiScreenCreateEx(float *bgColor,
 			screen->bgColor[i] = GfuiColor[GFUI_BGCOLOR][i];
 		}
 	}
-	
-	/*
-	if (bgColor != NULL) {
-		screen->bgColor = (float*)calloc(4, sizeof(float));
-		for(i = 0; i < 4; i++) {
-			screen->bgColor[i] = bgColor[i];
-		}
-	} else {
-		screen->bgColor = &(GfuiColor[GFUI_BGCOLOR][0]);
-	}*/
+
 	screen->mouseColor[0] = &(GfuiColor[GFUI_MOUSECOLOR1][0]);
 	screen->mouseColor[1] = &(GfuiColor[GFUI_MOUSECOLOR2][0]);
 	screen->onActivate = onActivate;
@@ -640,7 +627,7 @@ GfuiScreenRelease(void *scr)
 		GfuiScreenDeactivate();
 	}
 
-	if (screen->bgImage != 0) {
+	if (glIsTexture(screen->bgImage) == GL_TRUE) {
 		glDeleteTextures(1, &screen->bgImage);
 	}
 
@@ -981,7 +968,7 @@ GfuiScreenAddBgImg(void *scr, const char *filename)
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 	
-	if (screen->bgImage != 0) {
+	if (glIsTexture(screen->bgImage) == GL_TRUE) {
 		glDeleteTextures(1, &screen->bgImage);
 	}
 

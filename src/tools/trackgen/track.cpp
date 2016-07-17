@@ -4,7 +4,7 @@
     created      : Sun Dec 24 12:14:18 CET 2000
     copyright    : (C) 2000 by Eric Espie
     email        : eric.espie@torcs.org
-    version      : $Id: track.cpp,v 1.22.2.16 2012/09/27 09:52:16 berniw Exp $
+    version      : $Id: track.cpp,v 1.22.2.17 2013/06/06 12:03:32 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file
 
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: track.cpp,v 1.22.2.16 2012/09/27 09:52:16 berniw Exp $
+    @version	$Id: track.cpp,v 1.22.2.17 2013/06/06 12:03:32 berniw Exp $
 */
 
 #include <stdio.h>
@@ -1835,13 +1835,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 				newDispList(1, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
 			} else {
 				curBarrier = mseg->barrier[0];
-				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, 0, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
+				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, mseg->lgfromstart, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
 
 				if (!curTexLink) {
 					curTexSeg = 0;
 				} else {
 					curTexSeg = mseg->lgfromstart;
 				}
+				curTexSeg += curTexOffset;
 				texLen = curTexSeg / curTexSize;
 				if (mseg->rside) {
 					seg = mseg->rside;
@@ -2105,13 +2106,14 @@ int InitScene(tTrack *Track, void *TrackHandle, int bump, int raceline)
 				newDispList(1, bump, nbvert, startNeeded, sname, i, &theCurDispElt, curTexElt);
 			} else {
 				curBarrier = mseg->barrier[1];
-				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, 0, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
+				checkDispList(Track, TrackHandle, curBarrier->surface->material, sname, i, mseg->lgfromstart, bump, nbvert, &texList, &curTexElt, &theCurDispElt, curTexId, prevTexId, startNeeded, curTexType, curTexLink, curTexOffset, curTexSize);
 
 				if (!curTexLink) {
 					curTexSeg = 0;
 				} else {
 					curTexSeg = mseg->lgfromstart;
 				}
+				curTexSeg += curTexOffset;
 				texLen = curTexSeg / curTexSize;
 				if (mseg->lside) {
 					seg = mseg->lside;

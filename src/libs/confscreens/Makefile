@@ -4,7 +4,7 @@
 #    created              : Sat Mar 18 23:32:07 CET 2000
 #    copyright            : (C) 2000 by Eric Espie                         
 #    email                : torcs@free.fr   
-#    version              : $Id: Makefile,v 1.5.2.1 2012/01/02 16:39:05 berniw Exp $                                  
+#    version              : $Id: Makefile,v 1.5.2.2 2014/05/20 10:40:48 berniw Exp $                                  
 #
 ##############################################################################
 #
@@ -25,7 +25,7 @@ SOURCES   = controlconfig.cpp  graphconfig.cpp mouseconfig.cpp driverconfig.cpp 
 
 EXPDIR    = include
 
-EXPORTS   = confscreens.h driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h\
+EXPORTS   = driverconfig.h joystickconfig.h mouseconfig.h controlconfig.h graphconfig.h\
 			simuconfig.h soundconfig.h openglconfig.h
 
 LIBS      = -lplibjs

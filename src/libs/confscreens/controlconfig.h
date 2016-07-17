@@ -2,9 +2,9 @@
 
     file        : controlconfig.h
     created     : Wed Mar 12 22:09:01 CET 2003
-    copyright   : (C) 2003 by Eric Espi�                        
+    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                   
     email       : eric.espie@torcs.org   
-    version     : $Id: controlconfig.h,v 1.3.2.1 2008/12/31 03:53:55 berniw Exp $                                  
+    version     : $Id: controlconfig.h,v 1.3.2.2 2014/02/14 10:39:12 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file    
     		
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: controlconfig.h,v 1.3.2.1 2008/12/31 03:53:55 berniw Exp $
+    @version	$Id: controlconfig.h,v 1.3.2.2 2014/02/14 10:39:12 berniw Exp $
 */
 
 #ifndef _CONTROLCONFIG_H_

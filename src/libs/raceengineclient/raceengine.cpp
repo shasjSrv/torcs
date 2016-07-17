@@ -2,9 +2,9 @@
 
     file        : raceengine.cpp
     created     : Sat Nov 23 09:05:23 CET 2002
-    copyright   : (C) 2002 by Eric Espié 
+    copyright   : (C) 2002-2014 by Eric Espie, Bernhard Wymann 
     email       : eric.espie@torcs.org 
-    version     : $Id: raceengine.cpp,v 1.19.2.10 2012/10/03 07:18:49 berniw Exp $
+    version     : $Id: raceengine.cpp,v 1.19.2.23 2014/08/05 23:05:06 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: raceengine.cpp,v 1.19.2.10 2012/10/03 07:18:49 berniw Exp $
+    @version	$Id: raceengine.cpp,v 1.19.2.23 2014/08/05 23:05:06 berniw Exp $
 */
 
 #include <stdlib.h>
@@ -58,8 +58,16 @@ ReUpdtPitTime(tCarElt *car)
 
 	switch (car->_pitStopType) {
 		case RM_PIT_REPAIR:
-			info->totalPitTime = 2.0f + fabs((double)(car->_pitFuel)) / 8.0f + (tdble)(fabs((double)(car->_pitRepair))) * 0.007f;
+			info->totalPitTime = ReInfo->raceRules.pitstopBaseTime + fabs((double)(car->_pitFuel)) / ReInfo->raceRules.refuelFuelFlow + (tdble)(fabs((double)(car->_pitRepair))) * ReInfo->raceRules.damageRepairFactor + car->_penaltyTime;
+			if (ReInfo->s->raceInfo.type == RM_TYPE_PRACTICE || ReInfo->s->raceInfo.type == RM_TYPE_QUALIF) { 
+				// Ensure that the right min/max values are in the setup structure (could have been modified by the robot))
+				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), true);
+			} else {
+				// In case of the race no modifications are allowed, so completely reload the structure
+				RtInitCarPitSetup(car->_carHandle, &(car->pitcmd.setup), false);
+			}
 			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
+			car->_penaltyTime = 0.0f;
 			ReInfo->_reSimItf.reconfig(car);
 			for (i=0; i<4; i++) {
 				car->_tyreCondition(i) = 1.01;
@@ -69,8 +77,9 @@ ReUpdtPitTime(tCarElt *car)
 			}
 			break;
 		case RM_PIT_STOPANDGO:
-			info->totalPitTime = 0.0;
-			car->_scheduledEventTime = s->currentTime;
+			info->totalPitTime = car->_penaltyTime;
+			car->_scheduledEventTime = s->currentTime + info->totalPitTime;
+			car->_penaltyTime = 0.0f;
 			break;
 	}
 }
@@ -82,7 +91,6 @@ ReUpdtPitCmd(void *pvcar)
 	tCarElt *car = (tCarElt*)pvcar;
 
 	ReUpdtPitTime(car);
-	//ReStart(); /* resynchro */
 	GfuiScreenActivate(ReInfo->_reGameScreen);
 }
 
@@ -98,7 +106,7 @@ ReRaceMsgUpdate(void)
 }
 
 static void
-ReRaceMsgSet(char *msg, double life)
+ReRaceMsgSet(const char *msg, double life)
 {
 	if ((ReInfo->_displayMode != RM_DISP_MODE_NONE) && (ReInfo->_displayMode != RM_DISP_MODE_CONSOLE)) {
 		ReSetRaceMsg(msg);
@@ -141,6 +149,7 @@ ReManage(tCarElt *car)
 	
 	if (car->_speed_x < info->botSpd) {
 		info->botSpd = car->_speed_x;
+		car->_currentMinSpeedForLap = car->_speed_x;
 	}
 	
 	// Pitstop.
@@ -220,7 +229,7 @@ ReManage(tCarElt *car)
 					if (car->robot->rbPitCmd(car->robot->index, car, s) == ROB_PIT_MENU) {
 						// the pit cmd is modified by menu.
 						ReStop();
-						RmPitMenuStart(car, (void*)car, ReUpdtPitCmd);
+						RmPitMenuStart(car, ReInfo, (void*)car, ReUpdtPitCmd);
 					} else {
 						ReUpdtPitTime(car);
 					}
@@ -269,15 +278,14 @@ ReManage(tCarElt *car)
 							case RM_TYPE_PRACTICE:
 								if (ReInfo->_displayMode == RM_DISP_MODE_NONE) {
 									ReInfo->_refreshDisplay = 1;
-									char *t1, *t2;
-									t1 = GfTime2Str(car->_lastLapTime, 0);
-									t2 = GfTime2Str(car->_bestLapTime, 0);
+									const int TIMEFMTSIZE=256;
+									char t1[TIMEFMTSIZE], t2[TIMEFMTSIZE];
+									GfTime2Str(t1, TIMEFMTSIZE, car->_lastLapTime, 0);
+									GfTime2Str(t2, TIMEFMTSIZE, car->_bestLapTime, 0);
 									snprintf(buf, BUFSIZE, "lap: %02d   time: %s  best: %s  top spd: %.2f    min spd: %.2f    damage: %d",
 										car->_laps - 1, t1, t2,
 										info->topSpd * 3.6, info->botSpd * 3.6, car->_dammage);
 									ReResScreenAddText(buf);
-									free(t1);
-									free(t2);
 								}
 								/* save the lap result */
 								ReSavePracticeLap(car);
@@ -297,6 +305,7 @@ ReManage(tCarElt *car)
 			
 					info->topSpd = car->_speed_x;
 					info->botSpd = car->_speed_x;
+					car->_currentMinSpeedForLap = car->_speed_x;
 					if ((car->_remainingLaps < 0) || (s->_raceState == RM_RACE_FINISHING)) {
 						car->_state |= RM_CAR_STATE_FINISH;
 						s->_raceState = RM_RACE_FINISHING;
@@ -352,50 +361,51 @@ ReManage(tCarElt *car)
 	car->_distRaced = (car->_laps - (info->lapFlag + 1)) * ReInfo->track->length + car->_distFromStartLine;
 }
 
-static void 
-ReSortCars(void)
+
+static void ReSortCars(void)
 {
-    int		i,j;
-    tCarElt	*car;
-    int		allfinish;
-    tSituation	*s = ReInfo->s;
-    const int BUFSIZE = 1024;
+	int i, j;
+	tCarElt	*car;
+	int	allfinish;
+	tSituation *s = ReInfo->s;
+	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
 
-    if ((s->cars[0]->_state & RM_CAR_STATE_FINISH) == 0) {
-	allfinish = 0;
-    } else {
-	allfinish = 1;
-    }
-    
-    for (i = 1; i < s->_ncars; i++) {
-	j = i;
-	while (j > 0) {
-	    if ((s->cars[j]->_state & RM_CAR_STATE_FINISH) == 0) {
+	if ((s->cars[0]->_state & RM_CAR_STATE_FINISH) == 0) {
 		allfinish = 0;
-		if (s->cars[j]->_distRaced > s->cars[j-1]->_distRaced) {
-		    car = s->cars[j];
-		    s->cars[j] = s->cars[j-1];
-		    s->cars[j-1] = car;
-		    s->cars[j]->_pos = j+1;
-		    s->cars[j-1]->_pos = j;
-		    j--;
-		    continue;
-		}
-	    }
-	    j = 0;
+	} else {
+		allfinish = 1;
 	}
-    }
-    if (allfinish) {
-	ReInfo->s->_raceState = RM_RACE_ENDED;
-    }
+
+	for (i = 1; i < s->_ncars; i++) {
+		j = i;
+		while (j > 0) {
+			if ((s->cars[j]->_state & RM_CAR_STATE_FINISH) == 0) {
+				allfinish = 0;
+				if (s->cars[j]->_distRaced > s->cars[j-1]->_distRaced) {
+					car = s->cars[j];
+					s->cars[j] = s->cars[j-1];
+					s->cars[j-1] = car;
+					s->cars[j]->_pos = j+1;
+					s->cars[j-1]->_pos = j;
+					j--;
+					continue;
+				}
+			}
+			j = 0;
+		}
+	}
+
+	if (allfinish) {
+		ReInfo->s->_raceState = RM_RACE_ENDED;
+	}
 
     for  (i = 0; i < s->_ncars; i++)
     {
 		if (s->cars[i]->RESET==1)
 		{
 			//printf("******* RESETTING *****\n");
-			ReInfo->_reSimItf.config(s->cars[i], ReInfo);		
+			ReInfo->_reSimItf.config(s->cars[i], ReInfo);
 			s->cars[i]->RESET=0;
 			sprintf(buf, "RELOADING");
 			ReRaceMsgSet(buf, 4);
@@ -441,23 +451,31 @@ ReRaceRules(tCarElt *car)
 
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
-	
-	if (ReInfo->s->_raceType == RM_TYPE_QUALIF || ReInfo->s->_raceType == RM_TYPE_PRACTICE) {
+
+	// Ignore some rules after the car has finished the race
+	if ((car->pub.state & RM_CAR_STATE_FINISH) == 0) {
+
 		// If a car hits the track wall the lap time is invalidated, because of tracks where this behaviour allows much faster laps (e.g. alpine-2)
 		// Invalidation and message is just shown on the first hit
-		if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE)) {
-			car->_commitBestLapTime = false;
-			snprintf(buf, BUFSIZE, "%s hit wall, laptime invalidated", car->_name);
-			ReRaceMsgSet(buf, 5);
+		if (ReInfo->raceRules.enabled & RmRaceRules::WALL_HIT_TIME_INVALIDATE) {
+			if (car->_commitBestLapTime && (car->priv.simcollision & SEM_COLLISION_XYSCENE)) {
+				car->_commitBestLapTime = false;
+				if (ReInfo->s->_raceType != RM_TYPE_RACE) {
+					ReRaceMsgSet("Hit wall, laptime invalidated", 5);
+				}
+			}
 		}
-		
+			
 		// If the car cuts a corner the lap time is invalidated. Cutting a corner means: the center of gravity is more than 0.7 times the car width
-		// away from the main track segment on the inside of a turn. The rule does not apply on the outside and on straights.
+		// away from the main track segment on the inside of a turn. The rule does not apply on the outside and on straights, pit entry and exit
+		// count as well as track.
 		tTrackSeg *mainseg = car->_trkPos.seg;
-		
-		if (car->_commitBestLapTime && (mainseg->type != TR_STR)) {
-			tTrackPitInfo pitInfo = track->pits;
-			bool pit = false;
+		bool pit = false;
+		tTrackPitInfo pitInfo = track->pits;
+		tdble toborder = 0.0f;
+		tdble minradius = 1.0f;
+
+		if (mainseg->type != TR_STR) {
 			if (track->pits.type == TR_PIT_ON_TRACK_SIDE) {
 				if (pitInfo.pitEntry->id < pitInfo.pitExit->id) {
 					if ((mainseg->id >= pitInfo.pitEntry->id) && (mainseg->id <= pitInfo.pitExit->id)) {
@@ -469,30 +487,38 @@ ReRaceRules(tCarElt *car)
 					}
 				}
 			}
-			
-			tdble toborder = 0.0f;
+
 			if (mainseg->type == TR_LFT) {
-				toborder = car->_trkPos.toLeft;
-				if (pit && (pitInfo.side == TR_LFT)) {
-					toborder = 0.0f;
+				if (!(pit && (pitInfo.side == TR_LFT))) {
+					toborder = car->_trkPos.toLeft;
+					minradius = mainseg->radiusl;
 				}
 			} else if (mainseg->type == TR_RGT) {
-				toborder = car->_trkPos.toRight;
-				if (pit && (pitInfo.side == TR_RGT)) {
-					toborder = 0.0f;
+				if (!(pit && (pitInfo.side == TR_RGT))) {
+					toborder = car->_trkPos.toRight;
+					minradius = mainseg->radiusr;
 				}
 			}
+		}
 
-			if (toborder < -car->_dimension_y*0.7) {
+		tdble cuttinglimit = car->_dimension_y*0.7f;
+		if (toborder < -cuttinglimit) {
+			if (ReInfo->raceRules.enabled & RmRaceRules::CORNER_CUTTING_TIME_INVALIDATE) {
+				if (ReInfo->s->_raceType != RM_TYPE_RACE && car->_commitBestLapTime) {
+					ReRaceMsgSet("Cut corner, laptime invalidated", 5);
+				}
 				car->_commitBestLapTime = false;
-				snprintf(buf, BUFSIZE, "%s cut corner, laptime invalidated", car->_name);
-				ReRaceMsgSet(buf, 5);
 			}
-			
-			//TODO: if this happens often in the race, add penalty in pro mode.
+			if (ReInfo->s->_raceType == RM_TYPE_RACE && ReInfo->raceRules.enabled & RmRaceRules::CORNER_CUTTING_TIME_PENALTY) {
+				// In race, apply additionally corner cutting time penalty
+				minradius -= cuttinglimit;
+				if (minradius > 1.0f) {
+					car->_penaltyTime += car->pub.speed*RCM_MAX_DT_SIMU*(-toborder-cuttinglimit)/minradius;
+				}			
+			}
 		}
 	}
-	
+
 	if (car->_skillLevel < 3) {
 		/* only for the pros */
 		return;
@@ -675,6 +701,7 @@ ReStart(void)
 void
 ReStop(void)
 {
+	ReInfo->_reGraphicItf.muteformenu();
     ReInfo->_reRunning = 0;
 }
 

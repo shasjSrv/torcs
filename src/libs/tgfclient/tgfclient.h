@@ -2,9 +2,9 @@
                     tgfclient.h -- Interface file for The Gaming Framework                                    
                              -------------------                                         
     created              : Fri Aug 13 22:32:14 CEST 1999
-    copyright            : (C) 1999 by Eric Espie                         
+    copyright            : (C) 1999-2014 by Eric Espie, Bernhard Wymann                         
     email                : torcs@free.fr   
-    version              : $Id: tgfclient.h,v 1.3.2.3 2012/01/02 16:39:05 berniw Exp $                                  
+    version              : $Id: tgfclient.h,v 1.3.2.7 2015/04/18 11:04:54 berniw Exp $                                  
  ***************************************************************************/
 
 /***************************************************************************
@@ -19,7 +19,7 @@
 /** @file   
     	The Gaming Framework API (client part).
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: tgfclient.h,v 1.3.2.3 2012/01/02 16:39:05 berniw Exp $
+    @version	$Id: tgfclient.h,v 1.3.2.7 2015/04/18 11:04:54 berniw Exp $
 */
 
 
@@ -48,7 +48,7 @@ extern GLuint GfImgReadTex(char *filename);
 extern void GfScrInit(int argc, char *argv[]);
 extern void GfScrShutdown(void);
 extern void *GfScrMenuInit(void *precMenu);
-extern char *GfTime2Str(tdble sec, int sgn);
+extern void GfTime2Str(char *result, int resultSize, tdble sec, int sgn);
 extern void GfScrGetSize(int *ScrW, int *ScrH, int *ViewW, int *ViewH);
 extern void GfScrReinit(void*);
 
@@ -194,6 +194,10 @@ extern int GfuiButtonCreate(void *scr, const char *text, int font,
 			    int x, int y, int width, int align, int mouse,
 			    void *userDataOnPush, tfuiCallback onPush, 
 			    void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
+extern int GfuiLeanButtonCreate(void *scr, const char *text, int font,
+							int x, int y, int width, int align, int mouse,
+							void *userDataOnPush, tfuiCallback onPush, 
+							void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
 extern int GfuiButtonStateCreate(void *scr, const char *text, int font, int x, int y, int width, int align, int mouse,
 				 void *userDataOnPush, tfuiCallback onPush, 
 				 void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
@@ -207,7 +211,7 @@ extern int GfuiButtonGetFocused(void);
 
 /* Edit Box */
 extern int GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
-			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost);
+			     void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost, int margin = 10);
 extern int GfuiEditboxGetFocused(void);
 extern char *GfuiEditboxGetString(void *scr, int id);
 extern void GfuiEditboxSetString(void *scr, int id, const char *text);
@@ -247,18 +251,20 @@ extern int   GfuiMenuBackQuitButtonCreate(void *menu, const char *text, const ch
  * Control interface *
  *********************/
 
-#define GFCTRL_TYPE_NOT_AFFECTED	0
-#define GFCTRL_TYPE_JOY_AXIS		1
-#define GFCTRL_TYPE_JOY_BUT		2
-#define GFCTRL_TYPE_KEYBOARD		3
-#define GFCTRL_TYPE_MOUSE_BUT		4
-#define GFCTRL_TYPE_MOUSE_AXIS		5
-#define GFCTRL_TYPE_SKEYBOARD		6
+typedef enum {
+	GFCTRL_TYPE_NOT_AFFECTED = 0,
+	GFCTRL_TYPE_JOY_AXIS = 1,
+	GFCTRL_TYPE_JOY_BUT = 2,
+	GFCTRL_TYPE_KEYBOARD = 3,
+	GFCTRL_TYPE_MOUSE_BUT = 4,
+	GFCTRL_TYPE_MOUSE_AXIS = 5,
+	GFCTRL_TYPE_SKEYBOARD = 6
+} GfCtrlType;
 
 typedef struct
 {
-    int		index;
-    int		type;
+    int index;
+    GfCtrlType type;
 } tCtrlRef;
 
 
@@ -298,8 +304,10 @@ extern int GfctrlMouseGetCurrent(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseRelease(tCtrlMouseInfo *mouseInfo);
 extern void GfctrlMouseCenter(void);
 extern void GfctrlMouseInitCenter(void);
-extern tCtrlRef *GfctrlGetRefByName(const char *name);
-extern const char *GfctrlGetNameByRef(int type, int index);
+extern void GfctrlGetRefByName(const char *name, tCtrlRef* ref);
+extern const char *GfctrlGetNameByRef(GfCtrlType type, int index);
+extern const char *GfctrlGetDefaultSection(GfCtrlType type);
+extern bool GfctrlIsEventBlacklisted(void *parmHandle, const char* driversSection, const char* event);
 
 extern int GfuiGlutExtensionSupported(const char *str);
 

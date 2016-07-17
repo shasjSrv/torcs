@@ -463,6 +463,48 @@ class cGrCarCamInsideFixedCar : public cGrPerspCamera
     }
 };
 
+class cGrCarCamBackInsideFixedCar : public cGrPerspCamera
+{
+ public:
+    cGrCarCamBackInsideFixedCar(class cGrScreen *myscreen, int id, int drawCurr, int drawBG,
+			    float myfovy, float myfovymin, float myfovymax,
+			    float myfnear, float myffar = 1500.0,
+			    float myfogstart = 1400.0, float myfogend = 1500.0)
+	: cGrPerspCamera(myscreen, id, drawCurr, 1, drawBG, 1,
+			 myfovy, myfovymin, myfovymax,
+			 myfnear, myffar, myfogstart, myfogend) {
+    }
+
+    void update(tCarElt *car, tSituation *s) {
+	sgVec3 P, p;
+
+	p[0] = car->_bonnetPos_x;
+	p[1] = car->_bonnetPos_y;
+	p[2] = car->_bonnetPos_z;
+	sgXformPnt3(p, car->_posMat);
+
+	eye[0] = p[0];
+	eye[1] = p[1];
+	eye[2] = p[2];
+
+	P[0] = car->_bonnetPos_x - 30.0;
+	P[1] = car->_bonnetPos_y;
+	P[2] = car->_bonnetPos_z;
+	sgXformPnt3(P, car->_posMat);
+
+	center[0] = P[0];
+	center[1] = P[1];
+	center[2] = P[2];
+
+	up[0] = car->_posMat[2][0];
+	up[1] = car->_posMat[2][1];
+	up[2] = car->_posMat[2][2];
+
+	speed[0] =car->pub.DynGCg.vel.x;
+	speed[1] =car->pub.DynGCg.vel.y;
+	speed[2] =car->pub.DynGCg.vel.z;
+    }
+};
 
 class cGrCarCamBehind : public cGrPerspCamera
 {
@@ -1301,7 +1343,39 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
     /* F2 */
     GF_TAILQ_INIT(&cams[c]);
     id = 0;
-    
+
+    /* sensor 0: cam F2 = car inside car (no car - road view) */
+    cam = new cGrCarCamInsideFixedCar(myscreen,
+				      id,
+				      0,	/* drawCurr */
+				      1,	/* drawBG  */
+				      67.5,	/* fovy */
+				      50.0,	/* fovymin */
+				      95.0,	/* fovymax */
+				      0.3,	/* near */
+				      600.0 * fovFactor,	/* far */
+				      300.0 * fovFactor,	/* fog */
+				      600.0 * fovFactor	/* fog */
+				      );
+    cam->add(&cams[c]);
+    id++;
+
+    /* sensor 1: cam F2 = car back inside car (no car - road view) */
+    cam = new cGrCarCamBackInsideFixedCar(myscreen,
+				      id,
+				      0,	/* drawCurr */
+				      1,	/* drawBG  */
+				      67.5,	/* fovy */
+				      50.0,	/* fovymin */
+				      95.0,	/* fovymax */
+				      0.3,	/* near */
+				      600.0 * fovFactor,	/* far */
+				      300.0 * fovFactor,	/* fog */
+				      600.0 * fovFactor	/* fog */
+				      );
+    cam->add(&cams[c]);
+    id++;
+
     /* cam F2 = behind very near */
     cam = new cGrCarCamBehind(myscreen,
 			      id,
@@ -1371,19 +1445,19 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
     id++;
 
     /* cam F2 = car inside car (no car - road view) */
-    cam = new cGrCarCamInsideFixedCar(myscreen,
-				      id,
-				      0,	/* drawCurr */
-				      1,	/* drawBG  */
-				      67.5,	/* fovy */
-				      50.0,	/* fovymin */
-				      95.0,	/* fovymax */
-				      0.3,	/* near */
-				      600.0 * fovFactor,	/* far */
-				      300.0 * fovFactor,	/* fog */
-				      600.0 * fovFactor	/* fog */
-				      );
-    cam->add(&cams[c]);
+//    cam = new cGrCarCamInsideFixedCar(myscreen,
+//				      id,
+//				      0,	/* drawCurr */
+//				      1,	/* drawBG  */
+//				      67.5,	/* fovy */
+//				      50.0,	/* fovymin */
+//				      95.0,	/* fovymax */
+//				      0.3,	/* near */
+//				      600.0 * fovFactor,	/* far */
+//				      300.0 * fovFactor,	/* fog */
+//				      600.0 * fovFactor	/* fog */
+//				      );
+//    cam->add(&cams[c]);
 
     /* F3 */
     c++;

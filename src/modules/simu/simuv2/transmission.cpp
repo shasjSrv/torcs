@@ -2,9 +2,9 @@
 
     file                 : transmission.cpp
     created              : Sun Mar 19 00:07:19 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: transmission.cpp,v 1.24.2.3 2012/02/09 22:36:25 berniw Exp $
+    version              : $Id: transmission.cpp,v 1.24.2.6 2013/09/01 13:33:52 berniw Exp $
 
  ***************************************************************************/
 
@@ -22,8 +22,7 @@
 
 static const char *gearname[MAX_GEARS] = {"r", "n", "1", "2", "3", "4", "5", "6", "7", "8"};
 
-void
-SimTransmissionConfig(tCar *car)
+void SimTransmissionConfig(tCar *car)
 {
 	void *hdle = car->params;
 	tCarElt *carElt = car->carElt;
@@ -83,21 +82,21 @@ SimTransmissionConfig(tCar *car)
 	trans->gearbox.gearMax = 0;
 	for (i = MAX_GEARS - 1; i >= 0; i--) {
 		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
-		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0);
-		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0)) {
+		gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0f);
+		if ((trans->gearbox.gearMax == 0) && (gRatio != 0.0f)) {
 			trans->gearbox.gearMax = i - 1;
 		}
-		if (gRatio == 0.0) {
-			carElt->priv.gearRatio[i] = trans->overallRatio[i] = 0;
+		if (gRatio == 0.0f) {
+			carElt->priv.gearRatio[i] = trans->overallRatio[i] = 0.0f;
 			trans->freeI[i] = trans->driveI[i] = 0;
 			trans->gearEff[i] = 1.0;
 			continue;
 		}
 		carElt->priv.gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
-		gEff = GfParmGetNum(hdle, path, PRM_EFFICIENCY, (char*)NULL, 1.0);
-		if (gEff > 1.0) gEff = 1.0;
-		if (gEff < 0.0) gEff = 0.0;
-		gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0);
+		gEff = GfParmGetNum(hdle, path, PRM_EFFICIENCY, (char*)NULL, 1.0f);
+		if (gEff > 1.0f) gEff = 1.0f;
+		if (gEff < 0.0f) gEff = 0.0f;
+		gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0f);
 		trans->driveI[i] = (car->engine.I + gearI) * (gRatio * gRatio * fRatio * fRatio);
 		trans->freeI[i] = gearI * (gRatio * gRatio * fRatio * fRatio);
 		trans->gearEff[i] = gEff;
@@ -155,8 +154,65 @@ SimTransmissionConfig(tCar *car)
 	
 }
 
-void
-SimGearboxUpdate(tCar *car)
+
+static void setupGear(void* hdle, tCar *car, tCarElt *carElt, tTransmission *trans, tdble gRatio, tdble fRatio, int i)
+{
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
+
+	carElt->priv.gearRatio[i] = trans->overallRatio[i] = gRatio * fRatio;
+	snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[i]);
+
+	tdble gearI = GfParmGetNum(hdle, path, PRM_INERTIA, (char*)NULL, 0.0f);
+	trans->driveI[i] = (car->engine.I + gearI) * (gRatio * gRatio * fRatio * fRatio);
+	trans->freeI[i] = gearI * (gRatio * gRatio * fRatio * fRatio);
+}
+
+
+void SimTransmissionReConfig(tCar *car)
+{
+	void *hdle = car->params;
+	tCarElt *carElt = car->carElt;
+	tTransmission *trans = &(car->transmission);
+	int i;
+	tdble fRatio = 0.0f;
+	const int BUFSIZE = 256;
+	char path[BUFSIZE];
+
+	if (trans->type == TRANS_RWD) {
+		SimDifferentialReConfig(car, TRANS_REAR_DIFF);
+		fRatio = trans->differential[TRANS_REAR_DIFF].ratio;
+	} else if (trans->type == TRANS_FWD) {
+		SimDifferentialReConfig(car, TRANS_FRONT_DIFF);
+		fRatio = trans->differential[TRANS_FRONT_DIFF].ratio;
+	} else if (trans->type == TRANS_4WD) {
+		SimDifferentialReConfig(car, TRANS_FRONT_DIFF);
+		SimDifferentialReConfig(car, TRANS_REAR_DIFF);
+		SimDifferentialReConfig(car, TRANS_CENTRAL_DIFF);
+		fRatio = trans->differential[TRANS_CENTRAL_DIFF].ratio;
+	}
+	
+	for (i = MAX_GEARS - 1; i - 2 >= 0; i--) {
+		if (trans->overallRatio[i] > 0.0f) {
+			tCarPitSetupValue* v = &car->carElt->pitcmd.setup.gearsratio[i-2];
+			SimAdjustPitCarSetupParam(v);
+			tdble gRatio = v->value;
+			setupGear(hdle, car, carElt, trans, gRatio, fRatio, i);
+		}
+	}
+
+	// Handle reverse gear
+	if (trans->overallRatio[0] != 0.0f) {
+		snprintf(path, BUFSIZE, "%s/%s/%s", SECT_GEARBOX, ARR_GEARS, gearname[0]);
+		tdble gRatio = GfParmGetNum(hdle, path, PRM_RATIO, (char*)NULL, 0.0f);
+		setupGear(hdle, car, carElt, trans, gRatio, fRatio, 0);
+	}
+
+	trans->gearbox.gear = 0;
+}
+
+
+void SimGearboxUpdate(tCar *car)
 {
 	/* manages gear change */
 	tTransmission *trans = &(car->transmission);

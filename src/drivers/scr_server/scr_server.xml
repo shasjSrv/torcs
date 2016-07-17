@@ -24,6 +24,10 @@
 	<attnum name="red" val="1.0"></attnum>
 	<attnum name="green" val="1.0"></attnum>
 	<attnum name="blue" val="1.0"></attnum>
+	<attnum name="image width" val="200"/>
+	<attnum name="image height" val="100"/>
+	<attnum name="camera num" val="2"/>
+
       </section>
       <section name="1">
 	<attstr name="name" val="scr_server 2"></attstr>

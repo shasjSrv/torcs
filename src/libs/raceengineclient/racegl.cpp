@@ -2,9 +2,9 @@
 
     file        : racegl.cpp
     created     : Sat Nov 16 18:22:00 CET 2002
-    copyright   : (C) 2002 by Eric Espi�                        
+    copyright   : (C) 2002-2013 by Eric Espie, Bernhard Wymann                 
     email       : eric.espie@torcs.org   
-    version     : $Id: racegl.cpp,v 1.7.2.3 2012/05/18 01:35:57 berniw Exp $                                  
+    version     : $Id: racegl.cpp,v 1.7.2.4 2013/09/01 10:24:23 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racegl.cpp,v 1.7.2.3 2012/05/18 01:35:57 berniw Exp $
+    @version	$Id: racegl.cpp,v 1.7.2.4 2013/09/01 10:24:23 berniw Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>

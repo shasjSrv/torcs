@@ -2,9 +2,9 @@
 
     file                 : aero.cpp
     created              : Sun Mar 19 00:04:50 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2013 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: aero.cpp,v 1.14.2.3 2010/01/24 02:27:29 berniw Exp $
+    version              : $Id: aero.cpp,v 1.14.2.5 2014/02/10 10:06:30 berniw Exp $
 
  ***************************************************************************/
 
@@ -21,8 +21,7 @@
 
 #include "sim.h"
 
-void 
-SimAeroConfig(tCar *car)
+void SimAeroConfig(tCar *car)
 {
 	void *hdle = car->params;
 	tdble Cx, FrntArea;
@@ -36,8 +35,7 @@ SimAeroConfig(tCar *car)
 }
 
 
-void 
-SimAeroUpdate(tCar *car, tSituation *s)
+void  SimAeroUpdate(tCar *car, tSituation *s)
 {
 	tdble hm;
 	int i;    
@@ -89,11 +87,9 @@ SimAeroUpdate(tCar *car, tSituation *s)
 	tdble v2 = car->airSpeed2;
 	
 	// simulate ground effect drop off caused by non-frontal airflow (diffusor stops working etc.)
-	tdble speed = sqrt(car->DynGC.vel.x*car->DynGC.vel.x + car->DynGC.vel.y*car->DynGC.vel.y);
-	tdble cosa = 1.0f;
-	
-	if (speed > 1.0f) {
-		cosa = car->DynGC.vel.x/speed;
+	tdble cosa = 1.0f;	
+	if (car->speed > 1.0f) {
+		cosa = car->DynGC.vel.x/car->speed;
 	}
 	
 	if (cosa < 0.0f) {
@@ -112,8 +108,7 @@ SimAeroUpdate(tCar *car, tSituation *s)
 
 static const char *WingSect[2] = {SECT_FRNTWING, SECT_REARWING};
 
-void
-SimWingConfig(tCar *car, int index)
+void SimWingConfig(tCar *car, int index)
 {
 	void *hdle = car->params;
 	tWing *wing = &(car->wing[index]);
@@ -134,8 +129,23 @@ SimWingConfig(tCar *car, int index)
 }
 
 
-void
-SimWingUpdate(tCar *car, int index, tSituation* s)
+void SimWingReConfig(tCar *car, int index)
+{
+	tCarPitSetupValue* v = &car->carElt->pitcmd.setup.wingangle[index];
+	if (SimAdjustPitCarSetupParam(v)) {
+		tWing *wing = &(car->wing[index]);
+		tdble oldCd = wing->Kx*sin(wing->angle);
+		wing->angle = v->value;
+		
+		if (index == 1) {
+			car->aero.Cd += oldCd;
+			car->aero.Cd -= wing->Kx*sin(wing->angle);
+		}
+	}
+}
+
+
+void SimWingUpdate(tCar *car, int index, tSituation* s)
 {
 	tWing  *wing = &(car->wing[index]);
 	tdble vt2 = car->airSpeed2;
@@ -152,4 +162,3 @@ SimWingUpdate(tCar *car, int index, tSituation* s)
 		wing->forces.x = wing->forces.z = 0.0f;
 	}
 }
-

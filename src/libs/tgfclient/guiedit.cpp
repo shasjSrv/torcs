@@ -2,9 +2,9 @@
 
     file                 : guiedit.cpp
     created              : Mon Apr 24 10:23:28 CEST 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: guiedit.cpp,v 1.2.2.2 2008/12/31 03:53:55 berniw Exp $
+    version              : $Id: guiedit.cpp,v 1.2.2.6 2014/04/28 10:29:39 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		GUI Edit Box Management.
     @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: guiedit.cpp,v 1.2.2.2 2008/12/31 03:53:55 berniw Exp $
+    @version	$Id: guiedit.cpp,v 1.2.2.6 2014/04/28 10:29:39 berniw Exp $
     @ingroup	gui
 */
 
@@ -49,12 +49,13 @@ gfuiEditboxInit(void)
     @param	userDataOnFocus	Parameter to the Focus (and lost) callback
     @param	onFocus		Focus callback function
     @param	onFocusLost	Focus Lost callback function
+    @param	margin		Margin adjustment, default is 10 pixels
     @return	Editbox Id
 		<br>-1 Error
  */
 int
 GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width, int maxlen,
-		  void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost)
+		  void *userDataOnFocus, tfuiCallback onFocus, tfuiCallback onFocusLost, int margin)
 {
 	tGfuiEditbox *editbox;
 	tGfuiLabel *label;
@@ -94,7 +95,8 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 	label = &(editbox->label);
 	if (maxlen == 0) maxlen = strlen(text);
 	label->text = (char*)calloc(1, maxlen+1);
-	strncpy(label->text, text, maxlen+1);
+	strncpy(label->text, text, maxlen);
+	label->text[maxlen] = '\0';
 	label->font = gfuiFont[font];
 	label->maxlen = maxlen;
 
@@ -102,7 +104,7 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 		char *buf;
 		int  i;
 		buf = (char*)malloc(maxlen+1);
-		if (buf == NULL) return -1;
+		if (buf == NULL) return -1;	// Memory leak does not matter, this must not happen
 		for (i = 0; i < maxlen; i++) buf[i] = 'W';
 		buf[i] = '\0';
 		width = gfuiFont[font]->getWidth((const char *)buf);
@@ -119,9 +121,8 @@ GfuiEditboxCreate(void *scr, const char *text, int font, int x, int y, int width
 	editbox->cursory2 = object->ymax - 2;
 	editbox->cursorx = label->x;
 	
-#define HORIZ_MARGIN 10
-	object->xmin -= HORIZ_MARGIN;
-	object->xmax += HORIZ_MARGIN;
+	object->xmin -= margin;
+	object->xmax += margin;
 
 	gfuiAddObject(screen, object);
 	return object->id;
@@ -395,6 +396,7 @@ void GfuiEditboxSetString(void *scr, int id, const char *text)
 	label = &(editbox->label);
 	
 	strncpy(label->text, text, label->maxlen);
+	label->text[label->maxlen] = '\0';
 }
 
 

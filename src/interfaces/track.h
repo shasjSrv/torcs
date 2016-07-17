@@ -2,9 +2,9 @@
 
     file                 : track.h
     created              : Sun Jan 30 23:00:06 CET 2000
-    copyright            : (C) 2000 by Eric Espie
+    copyright            : (C) 2000-2014 by Eric Espie, Bernhard Wymann
     email                : torcs@free.fr
-    version              : $Id: track.h,v 1.22.2.3 2012/09/05 16:08:13 berniw Exp $
+    version              : $Id: track.h,v 1.22.2.5 2014/05/19 15:43:36 berniw Exp $
 
  ***************************************************************************/
 
@@ -18,12 +18,18 @@
  ***************************************************************************/
 
 /** @file
-    		This is the track structure.
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: track.h,v 1.22.2.3 2012/09/05 16:08:13 berniw Exp $
-    @ingroup	trackstruct
+    Track Structure and Track Loader Module Definition.
+    @author	<a href=mailto:torcs@free.fr>Bernhard Wymann, Eric Espie</a>
+    @version	$Id: track.h,v 1.22.2.5 2014/05/19 15:43:36 berniw Exp $
+    @ingroup trackstruct
+    @ingroup trackmodint
 */
 
+/**
+   @defgroup trackmodint Track Loader Module Interface
+   @brief Interface for track loader modules, the track loader module is discovered and loaded during runtime.   
+   @ingroup	modint
+*/
  
 #ifndef _TRACKV1_H_
 #define _TRACKV1_H_
@@ -196,6 +202,7 @@
 
 
 #define TRK_SECT_CAM		"Cameras"
+#define TRK_SECT_TRAFFICLIGHT "Trafficlights"
 
 #define TRK_ATT_SEGMENT		"segment"
 #define TRK_ATT_TORIGHT 	"to right"
@@ -224,6 +231,16 @@ typedef struct RoadCam
     t3Dd		pos;
     struct RoadCam	*next;
 } tRoadCam;
+
+/**traffic light*/
+typedef struct RoadTrafficlight
+{
+    char        *name;
+    t3Dd        pos;
+    double      rot_angle_z;   /*rotation*/
+    double      delta_switch_time;
+    struct RoadTrafficlight  *next;
+} tRoadTrafficlight;
 
 /** Extended track segment */
 typedef struct SegExt
@@ -513,29 +530,101 @@ typedef struct
     t3Dd		min;
     t3Dd		max;
     tTrackGraphicInfo	graphic;
+
+    tRoadTrafficlight *theTrafficlightList;
+    int numberOfTrafficlight;
 } tTrack;
 
 
+/** @brief Read given track from @e filename into tTrack struct.
+ *  @ingroup trackmodint
+ *  @param[in] filename filename including path to file
+ *  @return tTrack structure on success
+ *  @note The given file must exist and must be correct
+ */ 
+typedef tTrack*(*tfTrackBuild)(char* filename);
 
-typedef tTrack*(*tfTrackBuild)(char*);
-typedef tdble(*tfTrackHeightG)(tTrackSeg*, tdble, tdble);
-typedef tdble(*tfTrackHeightL)(tTrkLocPos*);
-typedef void(*tfTrackGlobal2Local)(tTrackSeg* /*seg*/, tdble /*X*/, tdble /*Y*/, tTrkLocPos* /*pos*/, int /*sides*/);
-typedef void(*tfTrackLocal2Global)(tTrkLocPos*, tdble *, tdble *);
-typedef void(*tfTrackSideNormal)(tTrackSeg*, tdble, tdble, int, t3Dd*);
-typedef void(*tfTrackSurfaceNormal)(tTrkLocPos *, t3Dd*);
+/** @brief Returns the absolute height in meters of the road at the given global position.
+ *  @ingroup trackmodint 
+ *  @param[in] seg Segment tTrackSeg to start search for coordinates
+ *  @param[in] X Global X coordinate
+ *  @param[in] Y Global Y coordinate
+ *  @return Height in meters
+ *  @see RtTrackHeightG
+ *  @see RtTrackHeightL
+ */
+typedef tdble(*tfTrackHeightG)(tTrackSeg* seg, tdble X, tdble Y);
+
+/** @brief Returns the absolute height in meters of the road at the local position
+ *  @ingroup trackmodint
+ *  @param[in] pos tTrkLocPos containing the loacal position
+ *  @return Height in meters
+ *  @see RtTrackHeightL
+ */
+typedef tdble(*tfTrackHeightL)(tTrkLocPos* pos);
+
+/** @brief Convert a global position (segment, X, Y) into a local position (segment, toRight, toStart)
+ *  @ingroup trackmodint
+ *  @param[in] seg	Segment tTrackSeg to start search for coordinates
+ *  @param[in] X Global X coordinate
+ *  @param[in] Y Global Y coordinate
+ *  @param[in,out] pos tTrkLocPos passed from the caller to fill in the local position
+ *  @param[in] type Type of local position desired:
+ *  - #TR_LPOS_MAIN Relative to the main segment
+ *  - #TR_LPOS_SEGMENT If the point is on a side, relative to this side
+ *  - #TR_LPOS_TRACK Local position includes all the track width (distance to barrier)
+ *  @see RtTrackGlobal2Local
+ */ 
+typedef void(*tfTrackGlobal2Local)(tTrackSeg* seg, tdble X, tdble Y, tTrkLocPos* pos, int type);
+
+/** @brief Convert a local position (segment, toRight, toStart) into a global one (X, Y)
+ *  @ingroup trackmodint
+ *  @param[in] pos Local position
+ *  @param[in,out] X Pointer to tdble passed by the caller to fill in X position
+ *  @param[in,out] Y Pointer to tdble passed by the caller to fill in Y position
+ *  @see RtTrackLocal2Global
+ */
+typedef void(*tfTrackLocal2Global)(tTrkLocPos* pos, tdble* X, tdble* Y);
+
+/** @brief Get the normal vector (in global coordinate system) of the border of the track including the sides.
+ *  @ingroup trackmodint
+ *  @param[in] seg Current segment
+ *  @param[in] X Global X position
+ *  @param[in] Y Global Y position
+ *  @param[in] side Side where the normal is wanted
+ *  - #TR_LFT for left side
+ *  - #TR_RGT for right side
+ *  @param[in,out] norm t3Dd passed from the caller to fill in the normalized side normal vector
+ *  @see RtTrackSideNormalG
+ */
+typedef void(*tfTrackSideNormal)(tTrackSeg* seg, tdble X, tdble Y, int side, t3Dd* norm);
+
+/** @brief Get the normal vector of the road (pointing upward).
+ *  @ingroup trackmodint
+ *  @param[in] pos Local position
+ *  @param[in,out] norm t3Dd passed from the caller to fill in the normal vector
+ *  @see RtTrackSurfaceNormalL
+ */
+typedef void(*tfTrackSurfaceNormal)(tTrkLocPos *pos, t3Dd* norm);
+
+/** @brief Release current track and all its resources
+ *  @ingroup trackmodint
+ */
 typedef void(*tfTrackShutdown)(void);
 
+/** @brief Interface Structure for Track Loader
+ *  @ingroup trackmodint
+ */
 typedef struct {
-    tfTrackBuild		trkBuild;		/* build track structure for simu */
-    tfTrackBuild		trkBuildEx;		/* build with graphic extensions  */
-    tfTrackHeightG		trkHeightG;
-    tfTrackHeightL		trkHeightL;
-    tfTrackGlobal2Local		trkGlobal2Local;
-    tfTrackLocal2Global		trkLocal2Global;
-    tfTrackSideNormal   	trkSideNormal;
-    tfTrackSurfaceNormal	trkSurfaceNormal;
-    tfTrackShutdown		trkShutdown;
+	tfTrackBuild			trkBuild;		/**< build track structure for simu */
+	tfTrackBuild			trkBuildEx;		/**< build with graphic extensions (used by trackgen tool) */
+	tfTrackHeightG			trkHeightG;
+	tfTrackHeightL			trkHeightL;
+	tfTrackGlobal2Local		trkGlobal2Local;
+	tfTrackLocal2Global		trkLocal2Global;
+	tfTrackSideNormal   	trkSideNormal;
+	tfTrackSurfaceNormal	trkSurfaceNormal;
+	tfTrackShutdown			trkShutdown;
 } tTrackItf;
 
 

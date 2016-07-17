@@ -5,7 +5,7 @@
     created              : Thu Aug 17 23:57:35 CEST 2000
     copyright            : (C) 2000-2004 by Eric Espie, Christos Dimitrakakis
     email                : torcs@free.fr
-    version              : $Id: grsound.h,v 1.7 2005/06/05 10:53:03 olethros Exp $
+    version              : $Id: grsound.h,v 1.7.2.1 2013/09/01 10:24:22 berniw Exp $
 
  ***************************************************************************/
 
@@ -28,6 +28,7 @@
 extern void grInitSound(tSituation* s, int ncars);
 extern void grShutdownSound(int ncars);
 extern float grRefreshSound(tSituation *s, cGrCamera *camera);
+extern void grMuteForMenu(void);
 
 
 #endif /* _GRSOUND_H_ */ 

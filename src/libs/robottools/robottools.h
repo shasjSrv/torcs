@@ -4,7 +4,7 @@
     created              : Mon Feb 28 22:31:13 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: robottools.h,v 1.6 2003/11/23 20:21:11 torcs Exp $
+    version              : $Id: robottools.h,v 1.6.2.5 2013/08/31 12:57:31 berniw Exp $
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		Robots Tools
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: robottools.h,v 1.6 2003/11/23 20:21:11 torcs Exp $
+    @version	$Id: robottools.h,v 1.6.2.5 2013/08/31 12:57:31 berniw Exp $
 */
 
 #ifndef _ROBOTTOOLS_H_
@@ -178,6 +178,27 @@ extern void RtTelemStartMonitoring(const char * filename);
 extern void RtTelemStopMonitoring(void);
 extern void RtTelemUpdate(double time);
 extern void RtTelemShutdown(void);
+
+typedef enum rtCarPitSetupType {
+	PRACTICE = 0,
+	QUALIFYING = 1,
+	RACE = 2,
+	BACKUP1 = 3,
+	BACKUP2 = 4,
+	BACKUP3 = 5
+} rtCarPitSetupType;
+
+extern void RtGetCarPitSetupFilename(rtCarPitSetupType type, int robidx, const char* carname, const char* trackname, char* filename, const int len);
+extern void RtSaveCarPitSetup(void *hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname);
+extern void RtSaveCarPitSetupFile(void *hdlecar, tCarPitSetup* s, const char* filepath, const char* carname);	
+extern void RtInitCarPitSetup(void* carparmhandle, tCarPitSetup* setup, bool minmaxonly);
+extern bool RtCarPitSetupExists(rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname);
+extern bool RtLoadCarPitSetup(void* hdlecar, tCarPitSetup* s, rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname, const char* carname, bool minmaxonly);
+extern bool RtLoadCarPitSetupFilename(void* hdlecar, const char* filepath,  tCarPitSetup* s, bool minmaxonly);
+extern void* RtLoadOriginalCarSettings(const char* carname);
+extern bool RtInitCarPitSetupFromDefault(tCarPitSetup* s, const char* carname);
+extern void* RtParmReadSetup(rtCarPitSetupType type, const char* modulename, int robidx, const char* trackname,	const char* carname);
+
 
 #endif /* _ROBOTTOOLS_H_ */ 
 

@@ -2,9 +2,9 @@
 
     file        : racemanmenu.cpp
     created     : Fri Jan  3 22:24:41 CET 2003
-    copyright   : (C) 2003 by Eric Espi�                        
+    copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann
     email       : eric.espie@torcs.org   
-    version     : $Id: racemanmenu.cpp,v 1.5.2.3 2011/12/29 16:14:20 berniw Exp $                                  
+    version     : $Id: racemanmenu.cpp,v 1.5.2.4 2014/02/04 14:01:39 berniw Exp $                                  
 
  ***************************************************************************/
 
@@ -20,7 +20,7 @@
 /** @file   
     		
     @author	<a href=mailto:eric.espie@torcs.org>Eric Espie</a>
-    @version	$Id: racemanmenu.cpp,v 1.5.2.3 2011/12/29 16:14:20 berniw Exp $
+    @version	$Id: racemanmenu.cpp,v 1.5.2.4 2014/02/04 14:01:39 berniw Exp $
 */
 
 #include <stdlib.h>

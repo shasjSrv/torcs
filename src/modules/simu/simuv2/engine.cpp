@@ -4,7 +4,7 @@
     created              : Sun Mar 19 00:06:55 CET 2000
     copyright            : (C) 2000 by Eric Espie
     email                : torcs@free.fr
-    version              : $Id: engine.cpp,v 1.25.2.2 2012/02/09 22:36:25 berniw Exp $
+    version              : $Id: engine.cpp,v 1.25.2.3 2014/04/12 13:55:30 berniw Exp $
 
 ***************************************************************************/
 
@@ -45,11 +45,11 @@ SimEngineConfig(tCar *car)
 	if (getFuelConsumption())
 		car->engine.fuelcons    = GfParmGetNum(hdle, SECT_ENGINE, PRM_FUELCONS, (char*)NULL, 0.0622f);
 	else
-		car->engine.fuelcons = 0.0;		
+		car->engine.fuelcons = 0.0;
 	car->engine.brakeCoeff  = GfParmGetNum(hdle, SECT_ENGINE, PRM_ENGBRKCOEFF, (char*)NULL, 0.33f);
 	car->engine.exhaust_pressure = 0.0f;
 	car->engine.exhaust_refract = 0.1f;
-	
+	car->engine.fuelcons *= rulesFuelFactor;
 	
 	snprintf(idx, IDXSIZE, "%s/%s", SECT_ENGINE, ARR_DATAPTS);
 	car->engine.curve.nbPts = GfParmGetEltNb(hdle, idx);
