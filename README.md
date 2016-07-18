@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1. Build
 ============
 build server
@@ -50,3 +51,6 @@ clean
 ```
 make clean
 ```
+=======
+Hello torcs_data
+>>>>>>> 18cbacbe56b4c923f2ba486da2b5b571d135e0a8
