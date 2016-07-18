@@ -1,17 +1,14 @@
 ##############################################################################
 #
 #    file                 : Makefile
-<<<<<<< HEAD
 #    created              : Mon Dec 11 22:30:53 CET 2000
 #    copyright            : (C) 2000 by Eric Espié
 #    email                : Eric.Espie@torcs.org
 #    version              : $Id: Makefile,v 1.29.2.1 2008/09/03 21:49:41 berniw Exp $
-=======
 #    created              : Tue Aug 31 22:25:21 CEST 1999
 #    copyright            : (C) 1999 by Eric Espie                         
 #    email                : torcs@free.fr   
 #    version              : $Id: Makefile,v 1.3 2002/06/28 20:03:41 torcs Exp $                                  
->>>>>>> 18cbacbe56b4c923f2ba486da2b5b571d135e0a8
 #
 ##############################################################################
 #
