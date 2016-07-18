@@ -20,7 +20,6 @@
 ##############################################################################
 
 
-<<<<<<< HEAD
 # #### The Open Racing Car Simulator ####
 
 ifndef TORCS_BASE
@@ -128,7 +127,6 @@ tags:
 
 setup_linux.sh: linuxsetup
 	@chmod +x setup_linux.sh
-=======
 DATASUBDIRS	= data cars tracks
 
 PKGSUBDIRS	= $(DATASUBDIRS)
@@ -137,4 +135,3 @@ PKGSUBDIRS	= $(DATASUBDIRS)
 include ${MAKE_DEFAULT}
 
 
->>>>>>> 18cbacbe56b4c923f2ba486da2b5b571d135e0a8
