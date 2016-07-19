@@ -1,0 +1,38 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Ctag
+.tags
+.tags_sorted_by_file
+
+# IDE info
+.vscode/*
+*.def
+*.dsp
+*.vcproj
+
+#Lib
+*.Lib
+
+
+###########################
+Make-config
+config.h
+
+.depend
+
+*.dev
+
+
+*~
