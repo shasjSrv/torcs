@@ -1,0 +1,172 @@
+typedef struct Situation {
+    tRaceAdmInfo	raceInfo;
+    double		deltaTime;
+    double		currentTime;	/**< current time in sec since the beginning of the simulation */
+    int			nbPlayers;	/**< number of human player in local (splitted screen) */
+    tCarElt		**cars;		/**< list of cars */ 
+} tSituation;
+
+/** General info on current race */
+typedef struct {
+    int			ncars;		/**< number of cars */
+    int			totLaps;	/**< total laps */
+    int			state;
+#define RM_RACE_RUNNING		0X00000001
+#define RM_RACE_FINISHING	0X00000002
+#define RM_RACE_ENDED		0X00000004
+#define RM_RACE_STARTING	0X00000008
+#define RM_RACE_PRESTART	0X00000010
+#define RM_RACE_PAUSED		0X40000000
+    int			type;		/**< Race type */
+#define RM_TYPE_PRACTICE	0 /* Please keep the order */
+#define RM_TYPE_QUALIF		1
+#define RM_TYPE_RACE		2
+    int                 maxDammage;
+    unsigned long	fps;
+} tRaceAdmInfo;
+
+#define _ncars		raceInfo.ncars
+#define _totLaps	raceInfo.totLaps
+#define _raceState	raceInfo.state
+#define _raceType	raceInfo.type
+#define _maxDammage	raceInfo.maxDammage
+
+
+typedef struct CarElt
+{
+    int			index;	/**< car index */
+    tInitCar		info;	/**< public */
+    tPublicCar		pub;	/**< public */
+    tCarRaceInfo	race;	/**< public */
+    tPrivCar		priv;	/**< private */
+    tCarCtrl		ctrl;	/**< private */
+    tCarPitCmd		pitcmd;	/**< private */
+    struct RobotItf	*robot;	/**< private */
+    struct CarElt	*next;
+    int         RESTART;
+    int         RESET;
+
+    unsigned char **imgs; /**< camera sensor buffer */
+    int imgWidth,imgHeight;
+    int camNum;
+    int imgSended; // image sended to client?
+
+} tCarElt;
+
+
+/** Static Public info */
+typedef struct {
+    char	name[MAX_NAME_LEN];	/**< Driver's name */
+	char	teamname[MAX_NAME_LEN];	/**< Team name */
+    char	carName[MAX_NAME_LEN];	/**< Car object name */
+    char	category[MAX_NAME_LEN];	/**< Car's category */
+    int		raceNumber;		/**< Car's race number */
+    int		startRank;		/**< Car's starting position */
+    int		driverType;		/**< Driver type */
+    int		skillLevel;		/**< Driver's skill level (0=rookie -> 3=pro) */
+    tdble	iconColor[3];		/**< Car color in leaders board */
+    t3Dd	dimension;		/**< Car's mesures */
+    t3Dd	drvPos;			/**< Driver's position */
+    t3Dd	bonnetPos;		/**< Bonnet's position */
+    tdble	tank;			/**< Fuel tank capa */
+    tdble	steerLock;		/**< Steer lock angle */
+    t3Dd	statGC;			/**< Static pos of GC (should be the origin of car axis) */
+    tWheelSpec	wheel[4];		/**< Wheels specifications */
+    tVisualAttributes visualAttr; 	/**< Visual attributes */
+} tInitCar;
+/* structure access short cuts */
+#define _name		info.name			/**< short cut to tInitCar#name */
+#define _teamname	info.teamname		/**< short cut to tInitCar#teamname */
+#define _carName	info.carName			/**< short cut to tInitCar#carName */
+#define _category	info.category			/**< short cut to tInitCar#category */
+#define _driverType	info.driverType			/**< short cut to tInitCar#driverType */
+#define _skillLevel	info.skillLevel			/**< short cut to tInitCar#skillLevel */
+#define _raceNumber	info.raceNumber			/**< short cut to tInitCar#raceNumber */
+#define _startRank	info.startRank			/**< short cut to tInitCar#startRank */
+#define _dimension	info.dimension			/**< short cut to tInitCar#dimension */
+#define _dimension_x	info.dimension.x		/**< short cut to tInitCar#dimension.x */
+#define _dimension_y	info.dimension.y		/**< short cut to tInitCar#dimension.y */
+#define _dimension_z	info.dimension.z		/**< short cut to tInitCar#dimension.z */
+#define _drvPos_x	info.drvPos.x			/**< short cut to tInitCar#drvPos.x */
+#define _drvPos_y	info.drvPos.y			/**< short cut to tInitCar#drvPos.y */
+#define _drvPos_z	info.drvPos.z			/**< short cut to tInitCar#drvPos.z */
+#define _bonnetPos_x	info.bonnetPos.x		/**< short cut to tInitCar#bonnetPos.x */
+#define _bonnetPos_y	info.bonnetPos.y		/**< short cut to tInitCar#bonnetPos.y */
+#define _bonnetPos_z	info.bonnetPos.z		/**< short cut to tInitCar#bonnetPos.z */
+#define _statGC		info.statGC			/**< short cut to tInitCar#statGC */
+#define _statGC_x	info.statGC.x			/**< short cut to tInitCar#statGC.x */
+#define _statGC_y	info.statGC.y			/**< short cut to tInitCar#statGC.y */
+#define _statGC_z	info.statGC.z			/**< short cut to tInitCar#statGC.z */
+#define _iconColor	info.iconColor			/**< short cut to tInitCar#iconColor */
+#define _tank		info.tank			/**< short cut to tInitCar#tank */
+#define _steerLock	info.steerLock			/**< short cut to tInitCar#steerLock */
+#define _exhaustNb	info.visualAttr.exhaustNb	/**< short cut to tVisualAttributes#exhaustNb */
+#define _exhaustPos	info.visualAttr.exhaustPos	/**< short cut to tVisualAttributes#exhaustPos */
+#define _exhaustPower	info.visualAttr.exhaustPower	/**< short cut to tVisualAttributes#exhaustPower */
+
+#define RM_DRV_HUMAN	1
+#define RM_DRV_ROBOT	2
+
+
+#define RM_PENALTY_DRIVETHROUGH	1
+#define RM_PENALTY_STOPANDGO	2
+
+
+/** Public info on the cars */
+typedef struct {
+    tDynPt	DynGC;		/**< GC data (car axis) */    
+    tDynPt	DynGCg;		/**< GC data (world axis) */
+	tdble	speed;		// total speed, sqrt(vx*vx + vy*vy + vz*vz)
+    sgMat4	posMat;		/**< position matrix */
+    tTrkLocPos	trkPos;		/**< current track position. The segment is the track segment (not sides)*/
+    int		state;	    	/**< state of the car.
+				   <br>The states are:
+				   - RM_CAR_STATE_FINISH
+				   - RM_CAR_STATE_PIT
+				   - RM_CAR_STATE_DNF
+				   - RM_CAR_STATE_PULLUP
+				   - RM_CAR_STATE_PULLSIDE
+				   - RM_CAR_STATE_PULLDN
+				   - RM_CAR_STATE_OUT
+				   - RM_CAR_STATE_NO_SIMU
+				   - RM_CAR_STATE_BROKEN
+				   - RM_CAR_STATE_OUTOFGAS
+				*/
+#define RM_CAR_STATE_FINISH	 	0x00000100				/**< Car having passed the finish line */
+#define RM_CAR_STATE_PIT	 	0x00000001				/**< Car currently stopped in pits */
+#define RM_CAR_STATE_DNF	 	0x00000002				/**< Car did not finish */
+#define RM_CAR_STATE_PULLUP	 	0x00000004				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLSIDE	 	0x00000008				/**< Car pulled out in the air */
+#define RM_CAR_STATE_PULLDN	 	0x00000010				/**< Car pulled out in the air */
+#define RM_CAR_STATE_OUT		(RM_CAR_STATE_DNF | RM_CAR_STATE_FINISH)/**< Car out of race */
+#define RM_CAR_STATE_NO_SIMU	 	0x000000FF				/**< Do not simulate the car */
+#define RM_CAR_STATE_BROKEN	 	0x00000200				/**< Engine no more working */
+#define RM_CAR_STATE_OUTOFGAS	 	0x00000400				/**< Out of Gas */
+#define RM_CAR_STATE_ELIMINATED	 	0x00000800				/**< Eliminated due to rules infringement */
+#define RM_CAR_STATE_SIMU_NO_MOVE	0x00010000 				/**< Simulation without car move (i.e. clutch applied and no wheel move)  */
+    tPosd	corner[4];
+
+} tPublicCar;
+
+/* structure access */
+#define _DynGC		pub.DynGC
+#define _pos_X		pub.DynGC.pos.x
+#define _pos_Y		pub.DynGC.pos.y
+#define _pos_Z		pub.DynGC.pos.z
+#define _roll		pub.DynGC.pos.ax
+#define _pitch		pub.DynGC.pos.ay
+#define _yaw		pub.DynGC.pos.az
+#define _yaw_rate	pub.DynGC.vel.az
+#define _speed_x	pub.DynGC.vel.x
+#define _speed_y	pub.DynGC.vel.y
+#define _speed_z	pub.DynGC.vel.z
+#define _accel_x	pub.DynGC.acc.x
+#define _accel_y	pub.DynGC.acc.y
+#define _accel_z	pub.DynGC.acc.z
+#define _state		pub.state
+#define _trkPos		pub.trkPos
+#define _speed_X	pub.DynGCg.vel.x
+#define _speed_Y	pub.DynGCg.vel.y
+#define _corner_x(i)	pub.corner[i].ax
+#define _corner_y(i)	pub.corner[i].ay
+#define _posMat		pub.posMat
