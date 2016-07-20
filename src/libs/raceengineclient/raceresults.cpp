@@ -521,7 +521,7 @@ ReDisplayResults(void)
 			/* show judge result */
 			/* fix the results structure which will be used in rmRaceResults() in result.cpp */
 			Rjudge->display(NULL);
-			RmShowResults(ReInfo->_reGameScreen, ReInfo);
+			RmShowResults(ReInfo->_reGameScreen, ReInfo,Rjudge);
 
 		} else {
 			ReResShowCont();

@@ -24,7 +24,7 @@
 #include <raceman.h>
 #include <track.h>
 #include <simu.h>
-
+#include "judge.h"
 
 /** @brief Structure for track selection
  *  @ingroup racemantools
@@ -95,7 +95,7 @@ extern void RmLoadingScreenStart(const char * /* text */, const char * /* bgimg 
 extern void RmLoadingScreenSetText(const char * /* text */);
 extern void RmShutdownLoadingScreen(void);
 
-extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */);
+extern void RmShowResults(void * /* prevHdle */, tRmInfo * /* info */,Judge * /* Rjudge */);
 
 extern void *RmTwoStateScreen(const char *title,
 			      const char *label1, const char *tip1, void *screen1,

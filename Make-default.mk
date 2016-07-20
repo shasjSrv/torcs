@@ -237,7 +237,7 @@ specfiles: installspecfiles specfilesdirs
 .SUFFIXES: .cpp
 
 .cpp.o:
-	${CXX} $(INCFLAGS) $(CXXFLAGS) $(COMPILFLAGS) -c $<
+	${CXX} -std=c++11 $(INCFLAGS) $(CXXFLAGS) $(COMPILFLAGS) -c $<
 
 .SUFFIXES: .c
 

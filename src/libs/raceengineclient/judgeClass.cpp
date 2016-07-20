@@ -52,6 +52,23 @@ string DefaultJudge::getJudgeFactor()
     return "";
 }
 
+void DefaultJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
+{
+
+}
+
+short DefaultJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+    return 0;
+}
+
+
+
+
+
+
+
+
 FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
                                         name("Follow Result"),
                                         factor("avg.dis"),
@@ -151,4 +168,54 @@ string FollowJudge::getJudgeName()
 string FollowJudge::getJudgeFactor()
 {
     return factor;
+}
+
+void FollowJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
+{
+    judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, judge_result,       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                //fix err which use get function
+        GfuiLabelCreateEx(rmScrHdle, "Score",       fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+
+    
+    judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(judge_result[0]!='\0'){
+        if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
+            GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+                x8, y, GFUI_ALIGN_HC_VB, 0);
+        }
+        else{    //is not judge car, replace 'x'
+            GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
+                x8, y, GFUI_ALIGN_HC_VB, 0);
+        }
+    }
+
+    if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            //fix err which use get function
+        if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
+            GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+                x9, y, GFUI_ALIGN_HC_VB, 0);
+        }
+        else{    //is not judge car, replace 'x'
+            GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
+                x9, y, GFUI_ALIGN_HC_VB, 0);
+        }
+    }else
+        return  1;
+    return  2;
 }

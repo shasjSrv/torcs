@@ -39,7 +39,7 @@ static int	rmSaveId;
 static void	*rmScrHdle = NULL;
 
 static void rmPracticeResults(void *prevHdle, tRmInfo *info, int start);
-static void rmRaceResults(void *prevHdle, tRmInfo *info, int start);
+static void rmRaceResults(void *prevHdle, tRmInfo *info, int start,Judge * Rjudge);
 static void rmQualifResults(void *prevHdle, tRmInfo *info, int start);
 static void rmShowStandings(void *prevHdle, tRmInfo *info, int start);
 
@@ -201,12 +201,12 @@ static void rmChgRaceScreen(void *vprc)
 	void *prevScr = rmScrHdle;
 	tRaceCall *prc = (tRaceCall*)vprc;
 
-	rmRaceResults(prc->prevHdle, prc->info, prc->start);
+	rmRaceResults(prc->prevHdle, prc->info, prc->start,NULL);
 	GfuiScreenRelease(prevScr);
 }
 
 
-static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
+static void rmRaceResults(void *prevHdle, tRmInfo *info, int start,Judge * Rjudge)
 {
 	void *results = info->results;
 	const char *race = info->_reRaceName;
@@ -223,6 +223,7 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	int laps, totLaps;
 	tdble refTime;
 	int nbCars;
+	int paramNum = 0;
 
 	rmScrHdle = GfuiScreenCreate();
 	const char *judge_result;
@@ -260,20 +261,8 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	GfuiLabelCreateEx(rmScrHdle, "Top Spd",   fgcolor, GFUI_FONT_MEDIUM_C, x6, y, GFUI_ALIGN_HC_VB, 0);
 	GfuiLabelCreateEx(rmScrHdle, "Damage",    fgcolor, GFUI_FONT_MEDIUM_C, x7, y, GFUI_ALIGN_HC_VB, 0);
 	
-	judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
-	if(judge_result[0]!='\0'){
-		GfuiLabelCreateEx(rmScrHdle, judge_result,       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
-	}
-	else{
-		GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
-	}
+	Rjudge->showlable(rmScrHdle,x8,x9,y);
 	
-	if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){				//fix err which use get function
-		GfuiLabelCreateEx(rmScrHdle, "Score",       fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
-	}
-	else{
-		GfuiLabelCreateEx(rmScrHdle, "Penalty",   fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);	
-	}
 	y -= 20;
 	
 	snprintf(path, BUFSIZE, "%s/%s/%s", info->track->name, RE_SECT_RESULTS, race);
@@ -327,40 +316,51 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 				x7, y, GFUI_ALIGN_HC_VB, 0);
 
-		judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
-		if(judge_result[0]!='\0'){
-			if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-				snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
-				GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
-					x8, y, GFUI_ALIGN_HC_VB, 0);
-			}
-			else{    //is not judge car, replace 'x'
-				GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
-					x8, y, GFUI_ALIGN_HC_VB, 0);
-			}
-		}
-		else{
+		paramNum = Rjudge->resualt(rmScrHdle,x8,x9,y,i,buf,path);
+		if(paramNum == 0){
 			snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
 			GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 				x8, y, GFUI_ALIGN_HC_VB, 0);
-		}
-
-		
-		if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){			//fix err which use get function
-			if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-				snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
-				GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
-					x9, y, GFUI_ALIGN_HC_VB, 0);
-			}
-			else{    //is not judge car, replace 'x'
-				GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
-					x9, y, GFUI_ALIGN_HC_VB, 0);
-			}
-		}
-		else{
+			GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
+			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
+		}else if (paramNum == 1){
 			GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
 			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
 		}
+		// judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+		// if(judge_result[0]!='\0'){
+		// 	if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+		// 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
+		// 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+		// 			x8, y, GFUI_ALIGN_HC_VB, 0);
+		// 	}
+		// 	else{    //is not judge car, replace 'x'
+		// 		GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
+		// 			x8, y, GFUI_ALIGN_HC_VB, 0);
+		// 	}
+		// }
+		// else{
+		// 	snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
+		// 	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+		// 		x8, y, GFUI_ALIGN_HC_VB, 0);
+		// }
+
+		
+		// if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){			//fix err which use get function
+		// 	if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+		// 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
+		// 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
+		// 			x9, y, GFUI_ALIGN_HC_VB, 0);
+		// 	}
+		// 	else{    //is not judge car, replace 'x'
+		// 		GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
+		// 			x9, y, GFUI_ALIGN_HC_VB, 0);
+		// 	}
+		// }
+		// else{
+		// 	GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
+		// 	GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
+		// }
 		
 		y -= 15;
 	}
@@ -647,7 +647,7 @@ static void rmShowStandings(void *prevHdle, tRmInfo *info, int start)
  *  @param[in] prevHdle Handle to previous result screen (used if the results require more than one screen)
  *  @param[in] info tRmInfo.results carries the result parameter set handle
  */
-void RmShowResults(void *prevHdle, tRmInfo *info)
+void RmShowResults(void *prevHdle, tRmInfo *info,Judge * Rjudge)
 {
 	switch (info->s->_raceType) {
 		case RM_TYPE_PRACTICE:
@@ -655,7 +655,7 @@ void RmShowResults(void *prevHdle, tRmInfo *info)
 			return;
 
 		case RM_TYPE_RACE:
-			rmRaceResults(prevHdle, info, 0);
+			rmRaceResults(prevHdle, info, 0,Rjudge);
 			return;
 
 		case RM_TYPE_QUALIF:
