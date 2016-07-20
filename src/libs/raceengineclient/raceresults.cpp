@@ -350,6 +350,7 @@ void ReStoreRaceResults(const char *race)
 			
 			ReApplyRaceTimePenalties();
 
+
 			for (i = 0; i < s->_ncars; i++) {
 				snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
 				car = s->cars[i];

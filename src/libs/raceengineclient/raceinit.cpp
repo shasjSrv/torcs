@@ -110,7 +110,8 @@ RjInit(void)
 	RjShutdown();
 	if(Rjudge==NULL)
 	{
-		Rjudge=JudgeFactory::createJudgementInst(GfParmGetStr(ReInfo->_reParam, "Judge", "project", "DefaultJudge"), ReInfo);
+		Rjudge=JudgeFactory::createJudgementInst(GfParmGetStr(ReInfo->_reParam, "Judge", "project", ""), ReInfo);
+
 	}
 }
 

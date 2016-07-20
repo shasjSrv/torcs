@@ -27,6 +27,11 @@
     <attnum name="fps" val="25"/>
     <attstr name="output directory" val="/home/torcs/captures"/>
   </section>
+<!-- fixed    :2016.07.19 -->
+<!-- fun      :use to chose which judgement -->
+  <section name="Judge">
+    <attstr name="project" val="FollowJudge"/>
+  </section>
 
 </params>
 

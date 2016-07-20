@@ -1,5 +1,6 @@
 #include "judge.h"
 #include "judgeClass.h"
+#include "tgf.h"
 #include <iostream>
 using namespace std;
 
@@ -31,7 +32,7 @@ Judge* JudgeFactory::createJudgementInst(string classname,tRmInfo *ReInfo)
     }
     */
     /* ---------------------------------------------------- */
-
+ 
     if(classname=="FollowJudge"){
         cout<<"create FollowJudge..."<<endl;
         return new FollowJudge(ReInfo);

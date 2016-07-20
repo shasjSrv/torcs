@@ -436,7 +436,7 @@ ReRaceRules(tCarElt *car)
 	if(Rjudge!=NULL)
 	{
         Rjudge->judge(car);
-        //std::cout<<"judge..."<<std::endl;
+//        std::cout<<"judge..."<<std::endl;
 		
 	}
 

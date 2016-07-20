@@ -249,7 +249,7 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	x6 = 420;
 	x7 = 490;
 	x8 = 545;
-	x9 = 630;
+	x9 = 600;
 	
 	y = 400;
 	GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
@@ -267,8 +267,8 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 	else{
 		GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
 	}
-	judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,"");
-	if(judge_result[0]!='\0'){
+	
+	if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){				//fix err which use get function
 		GfuiLabelCreateEx(rmScrHdle, "Score",       fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
 	}
 	else{
@@ -330,8 +330,8 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 		judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
 		if(judge_result[0]!='\0'){
 			if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-				judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,"N/A");
-				GfuiLabelCreate(rmScrHdle, judge_result, GFUI_FONT_MEDIUM_C,
+				snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
+				GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 					x8, y, GFUI_ALIGN_HC_VB, 0);
 			}
 			else{    //is not judge car, replace 'x'
@@ -345,10 +345,11 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start)
 				x8, y, GFUI_ALIGN_HC_VB, 0);
 		}
 
-		judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,"");
-		if(judge_result[0]!='\0'){
+		
+		if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){			//fix err which use get function
 			if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-				GfuiLabelCreate(rmScrHdle, judge_result, GFUI_FONT_MEDIUM_C,
+				snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
+				GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 					x9, y, GFUI_ALIGN_HC_VB, 0);
 			}
 			else{    //is not judge car, replace 'x'
