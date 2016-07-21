@@ -19,13 +19,20 @@ using namespace std;
 
 DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
                 score(100),
-                s(NULL)
+                s(NULL),
+                m_judge_result(NULL),
+                m_results(NULL)
 {
     cout<<"create judge system"<<endl;
 
     if(ReInfo!=NULL)
     {
         s=ReInfo->s;
+    }
+
+    if (s != NULL)
+    {
+        m_results = ReInfo->results;
     }
 }
 
@@ -52,14 +59,29 @@ string DefaultJudge::getJudgeFactor()
     return "";
 }
 
-void DefaultJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
-{
 
+//choose default model to show result lable
+void DefaultJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
 }
 
 short DefaultJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
 {
-    return 0;
+	return 0;
 }
 
 
@@ -72,13 +94,12 @@ short DefaultJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf
 FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
                                         name("Follow Result"),
                                         factor("avg.dis"),
-                                        results(NULL),
                                         targetCar(NULL),
                                         nCar(0)
 {
     if(s!=NULL)
     {
-        results=ReInfo->results;
+        m_results=ReInfo->results;
 
         nCar=s->_ncars;
         cout<<"number of player:  "<<nCar<<endl;
@@ -149,13 +170,13 @@ void FollowJudge::display(tCarElt *car)
     score=(1.0/(1+pow(2.72,-score)))*100;
 
   
-    /* 设置results */
-    if(results!=NULL)
+    /* 设置m_results */
+    if(m_results!=NULL)
     {
-        GfParmSetStr(results, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME,name.c_str());
-        GfParmSetStr(results, RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,factor.c_str());        
-        GfParmSetNum(results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, total);        
-        GfParmSetNum(results, RE_SECT_JUDGE, RE_ATTR_JUDGE_SCORE, NULL, score);
+        GfParmSetStr(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME,name.c_str());
+        GfParmSetStr(m_results, RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,factor.c_str());        
+        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, total);        
+        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_SCORE, NULL, score);
     }
 
 }
@@ -172,19 +193,19 @@ string FollowJudge::getJudgeFactor()
 
 void FollowJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
 {
-    judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
-    if(judge_result[0]!='\0'){
-        GfuiLabelCreateEx(rmScrHdle, judge_result,       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
     }
     else{
-        GfuiLabelCreateEx(rmScrHdle, "Pit",       fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
     }
     
-    if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                //fix err which use get function
-        GfuiLabelCreateEx(rmScrHdle, "Score",       fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                //fix err which use get function
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
     }
     else{
-        GfuiLabelCreateEx(rmScrHdle, "Penalty",   fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
     }
 }
 
@@ -192,10 +213,10 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
 {
 
     
-    judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
-    if(judge_result[0]!='\0'){
-        if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x8, y, GFUI_ALIGN_HC_VB, 0);
         }
@@ -205,9 +226,9 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
         }
     }
 
-    if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            //fix err which use get function
-        if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+            snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x9, y, GFUI_ALIGN_HC_VB, 0);
         }

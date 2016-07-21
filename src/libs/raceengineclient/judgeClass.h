@@ -14,14 +14,19 @@ public:
     virtual void display(tCarElt *car);
     virtual std::string getJudgeName();
     virtual std::string getJudgeFactor();
-    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+
+    //you can inherit this function to show what judgement's name you design
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y); 
+
+    //you can inherit this function to show what score you figure up          
     virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
 protected:
     double score;
     tSituation *s;
-    float fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
-    const char *judge_result;
+    float m_fgcolor[4] = {1.0, 0.0, 1.0, 1.0};
+    const char *m_judge_result;
     const int BUFSIZE = 1024;
+    void *m_results;
 };
 
 
@@ -39,7 +44,7 @@ public:
 private:
     std::string name;
     std::string factor;
-    void *results;
+    
     
     tCarElt *targetCar;
     int nCar;
