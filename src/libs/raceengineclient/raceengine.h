@@ -2,7 +2,7 @@
 
     file        : raceengine.h
     created     : Sat Nov 23 09:35:21 CET 2002
-    copyright   : (C) 2002 by Eric Espiï¿½                        
+    copyright   : (C) 2002 by Eric Espié                        
     email       : eric.espie@torcs.org   
     version     : $Id: raceengine.h,v 1.4 2004/04/05 18:25:00 olethros Exp $                                  
 

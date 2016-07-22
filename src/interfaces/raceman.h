@@ -324,11 +324,14 @@ typedef struct RmInfo
 #define RE_SECT_HEADER		"Header"
 #define RE_ATTR_DATE		"date"
 
+
 #define RE_SECT_JUDGE       "Judge"
 #define RE_ATTR_JUDGE_NAME  "judge name"
 #define RE_ATTR_JUDGE_FACTOR "judge factor"
 #define RE_ATTR_JUDGE_FACTOR_VAL "judge fac val"
 #define RE_ATTR_JUDGE_SCORE "judge score"
+
+
 
 #define RE_SECT_CURRENT		"Current"
 #define RE_ATTR_CUR_RACE	"current race"

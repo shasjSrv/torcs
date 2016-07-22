@@ -12,10 +12,16 @@
 *.la
 *.a
 
+# Ctag
+.tags
+.tags_sorted_by_file
+
 ###########################
 Make-config
 config.h
 src/doc/torcsdoc.conf
+
+autom4te.cache/
 
 config.log
 config.status
