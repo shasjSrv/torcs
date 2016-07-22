@@ -1,10 +1,10 @@
 /***************************************************************************
 
-    file                 : trackgen.cpp
-    created              : Sat Dec 23 09:27:43 CET 2000
-    copyright            : (C) 2000-2015 by Eric Espie, Bernhard Wymann
-    email                : torcs@free.fr
-    version              : $Id: maintrackgen.cpp,v 1.5.2.8 2015/01/16 21:11:34 berniw Exp $
+file                 : trackgen.cpp
+created              : Sat Dec 23 09:27:43 CET 2000
+copyright            : (C) 2000-2015 by Eric Espie, Bernhard Wymann
+email                : torcs@free.fr
+version              : $Id: maintrackgen.cpp,v 1.5.2.8 2015/01/16 21:11:34 berniw Exp $
 
  ***************************************************************************/
 
@@ -18,10 +18,10 @@
  ***************************************************************************/
 
 /** @file   
-    		
-    @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
-    @version	$Id: maintrackgen.cpp,v 1.5.2.8 2015/01/16 21:11:34 berniw Exp $
-*/
+
+  @author	<a href=mailto:torcs@free.fr>Eric Espie</a>
+  @version	$Id: maintrackgen.cpp,v 1.5.2.8 2015/01/16 21:11:34 berniw Exp $
+  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -89,143 +89,143 @@ static void Generate(void);
 
 void usage(void)
 {
-    fprintf(stderr, "Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
-    fprintf(stderr, "Usage: trackgen -c category -n name [-i xml_path] [-o ac_path] [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
-    fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
-    fprintf(stderr, "       -n name        : track name\n");
+	fprintf(stderr, "Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
+	fprintf(stderr, "Usage: trackgen -c category -n name [-i xml_path] [-o ac_path] [-a] [-m] [-s] [-S] [-E <n> [-H <nb>]]\n");
+	fprintf(stderr, "       -c category    : track category (road, oval, dirt...)\n");
+	fprintf(stderr, "       -n name        : track name\n");
 	fprintf(stderr, "       -i xml_path    : path to track XML file, for unit tests (instead of fetching it from standard location)\n");
 	fprintf(stderr, "       -o ac_path     : path of the generated ac file, for unit tests (instead of putting it to the standard location)\n");
-    fprintf(stderr, "       -b             : draw bump track\n");
+	fprintf(stderr, "       -b             : draw bump track\n");
 	fprintf(stderr, "       -r             : draw raceline track\n");
-    fprintf(stderr, "       -B             : don't use terrain border (relief supplied int clockwise, ext CC)\n");
-    fprintf(stderr, "       -a             : draw all (default is track only)\n");
-    fprintf(stderr, "       -z             : just calculate track parameters and exit\n");
-    fprintf(stderr, "       -s             : split the track and the terrain\n");
-    fprintf(stderr, "       -S             : split all\n");
-    fprintf(stderr, "       -E <n>         : save elevation file n\n");
-    fprintf(stderr, "                         0: all elevatation files\n");
-    fprintf(stderr, "                         1: elevation file of terrain + track\n");
-    fprintf(stderr, "                         2: elevation file of terrain with track white\n");
-    fprintf(stderr, "                         3: track only\n");
-    fprintf(stderr, "                         4: track elevations with height steps\n");
-    fprintf(stderr, "       -H <nb>        : nb of height steps for 4th elevation file [30]\n");
+	fprintf(stderr, "       -B             : don't use terrain border (relief supplied int clockwise, ext CC)\n");
+	fprintf(stderr, "       -a             : draw all (default is track only)\n");
+	fprintf(stderr, "       -z             : just calculate track parameters and exit\n");
+	fprintf(stderr, "       -s             : split the track and the terrain\n");
+	fprintf(stderr, "       -S             : split all\n");
+	fprintf(stderr, "       -E <n>         : save elevation file n\n");
+	fprintf(stderr, "                         0: all elevatation files\n");
+	fprintf(stderr, "                         1: elevation file of terrain + track\n");
+	fprintf(stderr, "                         2: elevation file of terrain with track white\n");
+	fprintf(stderr, "                         3: track only\n");
+	fprintf(stderr, "                         4: track elevations with height steps\n");
+	fprintf(stderr, "       -H <nb>        : nb of height steps for 4th elevation file [30]\n");
 #ifndef WIN32
-    fprintf(stderr, "       -L libDir      : Library directory\n");
+	fprintf(stderr, "       -L libDir      : Library directory\n");
 #endif
 }
 
 void init_args(int argc, char **argv)
 {
 #ifdef WIN32
-    int i=0;
+	int i=0;
 #else
-    int	c;    
+	int	c;    
 #endif
-    TrackOnly = 1;
+	TrackOnly = 1;
 	JustCalculate = 0;
-    MergeAll = 1;
-    MergeTerrain = 1;
-    TrackName = NULL;
-    TrackCategory = NULL;
-    saveElevation = -1;
+	MergeAll = 1;
+	MergeTerrain = 1;
+	TrackName = NULL;
+	TrackCategory = NULL;
+	saveElevation = -1;
 	TrackXMLFilePath = NULL;
 	TrackACFilePath = NULL;
 
 #ifndef WIN32
 	const int BUFSIZE = 1024;
 	char buf[BUFSIZE];
-	
-    while (1) {
-	int option_index = 0;
-	static struct option long_options[] = {
-	    {"help", 0, 0, 0},
-	    {"version", 1, 0, 0}
-	};
 
-	c = getopt_long(argc, argv, "hvn:c:i:o:azsSE:H:rbBL:",
-			long_options, &option_index);
-	if (c == -1)
-	    break;
-	     
-	switch (c) {
-		case 0:
-			switch (option_index) {
-				case 0:
-					usage();
-					exit(0);
-					break;
-				case 1:
-					printf("Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
-					exit(0);
-					break;
-				default:
-					usage();
-					exit(1);
-			}
-			break;
-		case 'h':
-			usage();
-			exit(0);
-			break;
-		case 'H':
-			HeightSteps = strtol(optarg, NULL, 0);
-			break;
-		case 'v':
-			printf("Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
-			exit(0);
-			break;
-		case 'a':
-			TrackOnly = 0;
-			break;
-		case 'z':
-			JustCalculate = 1;
-			break;
-		case 'b':
-			bump = 1;
-			break;
-		case 'r':
-			raceline = 1;
-			break;
-		case 's':
-			MergeAll = 0;
-			MergeTerrain = 1;
-			break;
-		case 'S':
-			MergeAll = 0;
-			MergeTerrain = 0;
-			break;
-		case 'n':
-			TrackName = strdup(optarg);
-			break;
-		case 'c':
-			TrackCategory = strdup(optarg);
-			break;
-		case 'i':
-			TrackXMLFilePath = strdup(optarg);
-			break;
-		case 'o':
-			TrackACFilePath = strdup(optarg);
-			break;
-		case 'E':
-			saveElevation = strtol(optarg, NULL, 0);;
-			TrackOnly = 0;
-			break;
-		case 'B':
-			UseBorder = 0;
-			break;
-		case 'L':
-			snprintf(buf, BUFSIZE, "%s/", optarg);
-			SetLibDir(buf);
-			break;
-		default:
-			usage();
-			exit(1);
-			break;
+	while (1) {
+		int option_index = 0;
+		static struct option long_options[] = {
+			{"help", 0, 0, 0},
+			{"version", 1, 0, 0}
+		};
+
+		c = getopt_long(argc, argv, "hvn:c:i:o:azsSE:H:rbBL:",
+					long_options, &option_index);
+		if (c == -1)
+		  break;
+
+		switch (c) {
+			case 0:
+				switch (option_index) {
+					case 0:
+						usage();
+						exit(0);
+						break;
+					case 1:
+						printf("Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
+						exit(0);
+						break;
+					default:
+						usage();
+						exit(1);
+				}
+				break;
+			case 'h':
+				usage();
+				exit(0);
+				break;
+			case 'H':
+				HeightSteps = strtol(optarg, NULL, 0);
+				break;
+			case 'v':
+				printf("Terrain generator for tracks $Revision: 1.5.2.8 $ \n");
+				exit(0);
+				break;
+			case 'a':
+				TrackOnly = 0;
+				break;
+			case 'z':
+				JustCalculate = 1;
+				break;
+			case 'b':
+				bump = 1;
+				break;
+			case 'r':
+				raceline = 1;
+				break;
+			case 's':
+				MergeAll = 0;
+				MergeTerrain = 1;
+				break;
+			case 'S':
+				MergeAll = 0;
+				MergeTerrain = 0;
+				break;
+			case 'n':
+				TrackName = strdup(optarg);
+				break;
+			case 'c':
+				TrackCategory = strdup(optarg);
+				break;
+			case 'i':
+				TrackXMLFilePath = strdup(optarg);
+				break;
+			case 'o':
+				TrackACFilePath = strdup(optarg);
+				break;
+			case 'E':
+				saveElevation = strtol(optarg, NULL, 0);;
+				TrackOnly = 0;
+				break;
+			case 'B':
+				UseBorder = 0;
+				break;
+			case 'L':
+				snprintf(buf, BUFSIZE, "%s/", optarg);
+				SetLibDir(buf);
+				break;
+			default:
+				usage();
+				exit(1);
+				break;
 		}
-    }
+	}
 #else
-    i = 1;
-    while (i < argc) {
+	i = 1;
+	while (i < argc) {
 		if (strncmp(argv[i], "-h", 2) == 0) {
 			usage();
 			exit(0);
@@ -298,13 +298,13 @@ void init_args(int argc, char **argv)
 			exit(0);
 		}
 		i++;
-    }
+	}
 #endif
 
-    if (!TrackName || !TrackCategory) {
+	if (!TrackName || !TrackCategory) {
 		usage();
 		exit(1);
-    }
+	}
 }
 #ifndef WIN32
 extern void LinuxSpecInit(void);
@@ -317,19 +317,19 @@ extern void WindowsSpecInit(void);
 
 int main(int argc, char **argv)
 {
-    init_args(argc, argv);
-    glutInit(&argc, argv);
-    glutCreateWindow(argv[1]);
-    ssgInit();
-    
+	init_args(argc, argv);
+	glutInit(&argc, argv);
+	glutCreateWindow(argv[1]);
+	ssgInit();
+
 #ifndef WIN32
-    LinuxSpecInit();
+	LinuxSpecInit();
 #else
-    WindowsSpecInit();
+	WindowsSpecInit();
 #endif
 
-    Generate();
-    return 0;
+	Generate();
+	return 0;
 }
 
 
@@ -443,30 +443,30 @@ static void Generate(void)
 			Ac3dClose(outfd);
 		}
 		switch (saveElevation) {
-		case 0:
-		case 1:
-			snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
-			snprintf(buf, BUFSIZE, "%s-elv.png", OutputFileName);
-			SaveElevation(Track, TrackHandle, buf, buf2, 1);
-			if (saveElevation) {
-			break;
-			}
-		case 2:
-			snprintf(buf, BUFSIZE, "%s-elv2.png", OutputFileName);
-			SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
-			if (saveElevation) {
-			break;
-			}
-		case 3:
-			snprintf(buf, BUFSIZE, "%s-elv3.png", OutputFileName);
-			SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
-			if (saveElevation) {
-			break;
-			}
-		case 4:
-			snprintf(buf, BUFSIZE, "%s-elv4.png", OutputFileName);
-			SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
-			break;
+			case 0:
+			case 1:
+				snprintf(buf2, BUFSIZE, "%s.ac", OutputFileName);
+				snprintf(buf, BUFSIZE, "%s-elv.png", OutputFileName);
+				SaveElevation(Track, TrackHandle, buf, buf2, 1);
+				if (saveElevation) {
+					break;
+				}
+			case 2:
+				snprintf(buf, BUFSIZE, "%s-elv2.png", OutputFileName);
+				SaveElevation(Track, TrackHandle, buf, OutMeshName, 1);
+				if (saveElevation) {
+					break;
+				}
+			case 3:
+				snprintf(buf, BUFSIZE, "%s-elv3.png", OutputFileName);
+				SaveElevation(Track, TrackHandle, buf, OutMeshName, 0);
+				if (saveElevation) {
+					break;
+				}
+			case 4:
+				snprintf(buf, BUFSIZE, "%s-elv4.png", OutputFileName);
+				SaveElevation(Track, TrackHandle, buf, OutTrackName, 2);
+				break;
 		}
 		return;
 	}

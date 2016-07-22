@@ -165,7 +165,7 @@ void FollowJudge::display(tCarElt *car)
     else{
         total=0;
     }
-    
+
     score=-(1*(total-20)+10*targetCar->_dammage);
     score=(1.0/(1+pow(2.72,-score)))*100;
 
