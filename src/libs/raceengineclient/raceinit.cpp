@@ -46,7 +46,7 @@
 #include "raceresults.h"
 
 #include "judge.h"
-
+#include <iostream>
 #include "raceinit.h"
 
 static const char *level_str[] = { ROB_VAL_ROOKIE, ROB_VAL_AMATEUR, ROB_VAL_SEMI_PRO, ROB_VAL_PRO };
@@ -110,7 +110,8 @@ RjInit(void)
 	RjShutdown();
 	if(Rjudge==NULL)
 	{
-		Rjudge=JudgeFactory::createJudgementInst(GfParmGetStr(ReInfo->_reParam, "Judge", "project", ""), ReInfo);
+		std::cout<<GfParmGetStr(ReInfo->params, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME, "")<<std::endl;
+		Rjudge=JudgeFactory::createJudgementInst(GfParmGetStr(ReInfo->params, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME, ""), ReInfo);
 
 	}
 }
@@ -302,12 +303,13 @@ void ReAddRacemanListButton(void *menuHandle)
 
 	reSortRacemanList(&racemanList);
 
+	//read all the files in src/raceman to show the menu and 
 	racemanCur = racemanList;
 	do {
 		GfuiMenuButtonCreate(menuHandle,
 				racemanCur->dispName,
 				GfParmGetStr(racemanCur->userData, RM_SECT_HEADER, RM_ATTR_DESCR, ""),
-				racemanCur->userData,
+				racemanCur->userData,		//read all information in the xml's file in src/raceman
 				reSelectRaceman);
 		racemanCur = racemanCur->next;
 	} while (racemanCur != racemanList);
