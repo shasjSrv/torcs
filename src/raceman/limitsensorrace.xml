@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Quick Race">
+<params name="Limit Sensor Race">
   <section name="Header">
-    <attstr name="name" val="Quick Race"/>
-    <attstr name="description" val="Quick Race"/>
+    <attstr name="name" val="Limit Sensor Race"/>
+    <attstr name="description" val="Limit Sensor Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Quick Race"/>
+      <attstr name="name" val="Limit Sensor Race"/>
     </section>
 
   </section>
 
-  <section name="Quick Race">
+  <section name="Limit Sensor Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -61,7 +61,7 @@
     <attnum name="focused idx" val="0"/>
     <attstr name="focused module" val="scr_server"/>
     <section name="1">
-      <attnum name="idx" val="0"/>
+      <attnum name="idx" val="2"/>
       <attstr name="module" val="scr_server"/>
     </section>
     <section name="2">
@@ -83,7 +83,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="Quick Race"/>
+      <attstr name="race" val="Limit Sensor Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>
@@ -94,5 +94,9 @@
     </section>
 
   </section>
-
+  <!-- fixed    :2016.07.19 -->
+  <!-- fun      :use to chose which judgement -->
+  <section name="Judge">
+    <attstr name="judge name" val="LimitSensorJudge"/>
+  </section>
 </params>

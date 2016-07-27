@@ -487,18 +487,19 @@ drive(int index, tCarElt* car, tSituation *s)
     stateString += SimpleParser::stringify("fuel", car->_fuel);
     stateString += SimpleParser::stringify("gear", car->_gear);
     stateString += SimpleParser::stringify("lastLapTime", float(car->_lastLapTime));
-    stateString += SimpleParser::stringify("opponents", oppSensorOut, 36);
-    stateString += SimpleParser::stringify("racePos", car->race.pos);
-    stateString += SimpleParser::stringify("rpm", car->_enginerpm*10);
-    stateString += SimpleParser::stringify("speedX", float(car->_speed_x  * 3.6));
-    stateString += SimpleParser::stringify("speedY", float(car->_speed_y  * 3.6));
-    stateString += SimpleParser::stringify("speedZ", float(car->_speed_z  * 3.6));
-    stateString += SimpleParser::stringify("track", trackSensorOut, 19);
-    stateString += SimpleParser::stringify("trackPos", dist_to_middle);
-    stateString += SimpleParser::stringify("wheelSpinVel", wheelSpinVel, 4);
-    stateString += SimpleParser::stringify("z", car->_pos_Z  - RtTrackHeightL(&(car->_trkPos)));
-	stateString += SimpleParser::stringify("focus", focusSensorOut, 5);//ML
-
+	if(index ==1 || index == 3 || index == 5 || index ==6 || index == 7){
+		stateString += SimpleParser::stringify("opponents", oppSensorOut, 36);
+		stateString += SimpleParser::stringify("racePos", car->race.pos);
+		stateString += SimpleParser::stringify("rpm", car->_enginerpm*10);
+		stateString += SimpleParser::stringify("speedX", float(car->_speed_x  * 3.6));
+		stateString += SimpleParser::stringify("speedY", float(car->_speed_y  * 3.6));
+		stateString += SimpleParser::stringify("speedZ", float(car->_speed_z  * 3.6));
+		stateString += SimpleParser::stringify("track", trackSensorOut, 19);
+		stateString += SimpleParser::stringify("trackPos", dist_to_middle);
+		stateString += SimpleParser::stringify("wheelSpinVel", wheelSpinVel, 4);
+		stateString += SimpleParser::stringify("z", car->_pos_Z  - RtTrackHeightL(&(car->_trkPos)));
+		stateString += SimpleParser::stringify("focus", focusSensorOut, 5);//ML
+	}
     char line[UDP_MSGLEN];
     sprintf(line,"%s",stateString.c_str());
 

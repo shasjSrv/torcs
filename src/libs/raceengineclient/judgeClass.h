@@ -51,4 +51,60 @@ private:
     std::vector<double> distances;
 };
 
+
+class LimitImageJudge:public DefaultJudge
+{
+public:
+    LimitImageJudge(tRmInfo *ReInfo);
+    virtual ~LimitImageJudge();
+    virtual void judge(tCarElt *car);
+    virtual void display(tCarElt *car);
+    virtual std::string getJudgeName();
+    virtual std::string getJudgeFactor();
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+    virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
+private:
+    std::string name;
+    std::string factor;
+    
+};
+
+
+class LimitSensorJudge:public DefaultJudge
+{
+public:
+    LimitSensorJudge(tRmInfo *ReInfo);
+    virtual ~LimitSensorJudge();
+    virtual void judge(tCarElt *car);
+    virtual void display(tCarElt *car);
+    virtual std::string getJudgeName();
+    virtual std::string getJudgeFactor();
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+    virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
+private:
+    std::string name;
+    std::string factor;
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif

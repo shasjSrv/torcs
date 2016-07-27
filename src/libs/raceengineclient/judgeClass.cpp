@@ -240,3 +240,121 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
         return  1;
     return  2;
 }
+
+
+
+
+
+LimitImageJudge::LimitImageJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
+										name("Limit Result"),
+                                        factor("time")
+
+{
+}
+
+LimitImageJudge::~LimitImageJudge()
+{
+    cout<<"kill judge system"<<endl;
+}
+
+void LimitImageJudge::judge(tCarElt *car)
+{
+}
+
+void LimitImageJudge::display(tCarElt *car)
+{
+}
+
+string LimitImageJudge::getJudgeName()
+{
+    return "";
+}
+
+string LimitImageJudge::getJudgeFactor()
+{
+    return "";
+}
+
+
+void LimitImageJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short LimitImageJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+	return 0;
+}
+
+
+
+
+LimitSensorJudge::LimitSensorJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
+										name("Limit Result"),
+                                        factor("time")
+
+{
+}
+
+LimitSensorJudge::~LimitSensorJudge()
+{
+    cout<<"kill judge system"<<endl;
+}
+
+void LimitSensorJudge::judge(tCarElt *car)
+{
+}
+
+void LimitSensorJudge::display(tCarElt *car)
+{
+}
+
+string LimitSensorJudge::getJudgeName()
+{
+    return "";
+}
+
+string LimitSensorJudge::getJudgeFactor()
+{
+    return "";
+}
+
+
+//choose default model to show result lable
+void LimitSensorJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short LimitSensorJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+	return 0;
+}
+
+

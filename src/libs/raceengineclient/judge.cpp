@@ -21,9 +21,15 @@ Judge* JudgeFactory::createJudgementInst(string classname,tRmInfo *ReInfo)
     if(classname=="FollowJudge"){
         cout<<"create FollowJudge..."<<endl;
         return new FollowJudge(ReInfo);
-    }
-
-    //protect
+    }else if(classname == "LimitImageJudge"){
+		cout<<"create LimitImageJudge"<<endl;
+		return new LimitImageJudge(ReInfo);
+	}else if(classname == "LimitSensorJudge"){
+		cout<<"create LimitSensorJudge"<<endl;
+		return new LimitSensorJudge(ReInfo);
+	}
+		
+	//protect
     cout<<"no one matched    create DefaultJudge..."<<endl;
     return new DefaultJudge(ReInfo);
 }
