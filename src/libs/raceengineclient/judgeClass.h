@@ -11,7 +11,7 @@ public:
     DefaultJudge(tRmInfo *ReInfo);
     virtual ~DefaultJudge();
     virtual void judge(tCarElt *car);
-    virtual void display(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
     virtual std::string getJudgeName();
     virtual std::string getJudgeFactor();
 
@@ -36,7 +36,7 @@ public:
     FollowJudge(tRmInfo *ReInfo);
     virtual ~FollowJudge();
     virtual void judge(tCarElt *car);
-    virtual void display(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
     virtual std::string getJudgeName();
     virtual std::string getJudgeFactor();
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
@@ -58,7 +58,7 @@ public:
     LimitImageJudge(tRmInfo *ReInfo);
     virtual ~LimitImageJudge();
     virtual void judge(tCarElt *car);
-    virtual void display(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
     virtual std::string getJudgeName();
     virtual std::string getJudgeFactor();
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
@@ -76,7 +76,25 @@ public:
     LimitSensorJudge(tRmInfo *ReInfo);
     virtual ~LimitSensorJudge();
     virtual void judge(tCarElt *car);
-    virtual void display(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
+    virtual std::string getJudgeName();
+    virtual std::string getJudgeFactor();
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+    virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
+private:
+    std::string name;
+    std::string factor;
+
+};
+
+
+class LightImageJudge:public DefaultJudge
+{
+public:
+    LightImageJudge(tRmInfo *ReInfo);
+    virtual ~LightImageJudge();
+    virtual void judge(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
     virtual std::string getJudgeName();
     virtual std::string getJudgeFactor();
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
@@ -89,9 +107,41 @@ private:
 
 
 
+class PassBasicJudge:public DefaultJudge
+{
+public:
+    PassBasicJudge(tRmInfo *ReInfo);
+    virtual ~PassBasicJudge();
+    virtual void judge(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
+    virtual std::string getJudgeName();
+    virtual std::string getJudgeFactor();
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+    virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
+private:
+    std::string name;
+    std::string factor;
+
+};
 
 
 
+class PassHardJudge :public DefaultJudge
+{
+public:
+    PassHardJudge(tRmInfo *ReInfo);
+    virtual ~PassHardJudge();
+    virtual void judge(tCarElt *car);
+    virtual void figurOut(tCarElt *car);
+    virtual std::string getJudgeName();
+    virtual std::string getJudgeFactor();
+    virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
+    virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
+private:
+    std::string name;
+    std::string factor;
+
+};
 
 
 

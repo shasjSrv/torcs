@@ -45,7 +45,7 @@ void DefaultJudge::judge(tCarElt *car)
 {
 }
 
-void DefaultJudge::display(tCarElt *car)
+void DefaultJudge::figurOut(tCarElt *car)
 {
 }
 
@@ -107,7 +107,7 @@ FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
         {
             for(int i=0;i<nCar;i++)
             {
-                if(strncmp(s->cars[i]->_name, "scr_server 1", 12) == 0)
+                if(strncmp(s->cars[i]->_name, "bt 1", 4) == 0)
                 {
                     targetCar=s->cars[i];
                     cout<<"target player get"<<endl;
@@ -131,27 +131,28 @@ void FollowJudge::judge(tCarElt *car)
             //整秒记录距离
             // if(s->currentTime>(double)(distances.size()))
             // {
-                double min_dis_sque=9999999999;
+                //double min_dis_sque=9999999999;
                 //确定被跟的车 以及 距离
+				double dis_sque = 0;
                 for(int i=0;i<nCar;i++)
                 {
                     if(s->cars[i]!=targetCar)
                     {
-                        double dis_sque=pow(targetCar->_pos_X - s->cars[i]->_pos_X,2)+
+						dis_sque=pow(targetCar->_pos_X - s->cars[i]->_pos_X,2)+
                                     pow(targetCar->_pos_Y - s->cars[i]->_pos_Y,2);
-                        if(dis_sque<min_dis_sque){
-                            min_dis_sque=dis_sque;
-                        }
+				   /*     if(dis_sque<min_dis_sque){*/
+							//min_dis_sque=dis_sque;
+						/*}*/
                     }
                 }
                 //记录
-                distances.push_back(sqrt(min_dis_sque));
+                distances.push_back(sqrt(dis_sque));
             // }
         }
     }
 }
 
-void FollowJudge::display(tCarElt *car)
+void FollowJudge::figurOut(tCarElt *car)
 {
     double total=0;
     vector<double>::iterator it;
@@ -215,7 +216,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     
     m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
     if(m_judge_result[0]!='\0'){
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"bt 1")==0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x8, y, GFUI_ALIGN_HC_VB, 0);
@@ -227,7 +228,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     }
 
     if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"bt 1")==0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x9, y, GFUI_ALIGN_HC_VB, 0);
@@ -261,7 +262,7 @@ void LimitImageJudge::judge(tCarElt *car)
 {
 }
 
-void LimitImageJudge::display(tCarElt *car)
+void LimitImageJudge::figurOut(tCarElt *car)
 {
 }
 
@@ -318,7 +319,7 @@ void LimitSensorJudge::judge(tCarElt *car)
 {
 }
 
-void LimitSensorJudge::display(tCarElt *car)
+void LimitSensorJudge::figurOut(tCarElt *car)
 {
 }
 
@@ -358,3 +359,178 @@ short LimitSensorJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char *
 }
 
 
+
+LightImageJudge::LightImageJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
+                                        name("Limit Result"),
+                                        factor("time")
+
+{
+}
+
+
+
+LightImageJudge::~LightImageJudge()
+{
+    cout<<"kill judge system"<<endl;
+}
+
+void LightImageJudge::judge(tCarElt *car)
+{
+}
+
+void LightImageJudge::figurOut(tCarElt *car)
+{
+}
+
+string LightImageJudge::getJudgeName()
+{
+    return "";
+}
+
+string LightImageJudge::getJudgeFactor()
+{
+    return "";
+}
+
+
+//choose default model to show result lable
+void LightImageJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short LightImageJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+	return 0;
+}
+
+
+
+PassBasicJudge::PassBasicJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
+                                        name("Limit Result"),
+                                        factor("time")
+
+{
+}
+
+
+
+PassBasicJudge::~PassBasicJudge()
+{
+    cout<<"kill judge system"<<endl;
+}
+
+void PassBasicJudge::judge(tCarElt *car)
+{
+}
+
+void PassBasicJudge::figurOut(tCarElt *car)
+{
+}
+
+string PassBasicJudge::getJudgeName()
+{
+    return "";
+}
+
+string PassBasicJudge::getJudgeFactor()
+{
+    return "";
+}
+
+
+//choose default model to show result lable
+void PassBasicJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short PassBasicJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+	return 0;
+}
+
+
+
+PassHardJudge::PassHardJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
+                                        name("Limit Result"),
+                                        factor("time")
+
+{
+}
+
+
+
+PassHardJudge::~PassHardJudge()
+{
+    cout<<"kill judge system"<<endl;
+}
+
+void PassHardJudge::judge(tCarElt *car)
+{
+}
+
+void PassHardJudge::figurOut(tCarElt *car)
+{
+}
+
+string PassHardJudge::getJudgeName()
+{
+    return "";
+}
+
+string PassHardJudge::getJudgeFactor()
+{
+    return "";
+}
+
+
+//choose default model to show result lable
+void PassHardJudge::showlable(void *rmScrHdle,int x8,int x9,int y)           
+{
+    m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
+    if(m_judge_result[0]!='\0'){
+        GfuiLabelCreateEx(rmScrHdle, m_judge_result,       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+        GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
+    }
+    else{
+        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+    }
+}
+
+short PassHardJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path)
+{
+	return 0;
+}

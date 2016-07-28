@@ -197,7 +197,7 @@ ReInitResults(void)
 	GfParmSetNum(results, RE_SECT_CURRENT, RE_ATTR_CUR_DRIVER, NULL, 1);	
 
 	if(Rjudge!=NULL){
-		Rjudge->display(NULL);    //init
+		Rjudge->figurOut(NULL);    //init
 	}
 }
 
@@ -520,7 +520,7 @@ ReDisplayResults(void)
 		{
 			/* show judge result */
 			/* fix the results structure which will be used in rmRaceResults() in result.cpp */
-			Rjudge->display(NULL);
+			Rjudge->figurOut(NULL);
 			RmShowResults(ReInfo->_reGameScreen, ReInfo,Rjudge);
 
 		} else {

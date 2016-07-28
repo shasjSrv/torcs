@@ -10,7 +10,7 @@ class Judge
 public:
     virtual ~Judge();
     virtual void judge(tCarElt *car)=0;
-    virtual void display(tCarElt *car)=0;
+    virtual void figurOut(tCarElt *car)=0;
     virtual std::string getJudgeName()=0;
     virtual std::string getJudgeFactor()=0;
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y) = 0;
