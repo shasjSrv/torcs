@@ -269,6 +269,18 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		b1 = (myc->getSpeedSqr() - myc->currentpathseg->getSpeedsqr()) / (myc->getSpeedSqr());
 	}
 
+	//控制车速，单位m/s
+	const double limitspeed = 50/3.6;
+	if (myc->getSpeed() > limitspeed) {
+		b1 = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
+		static int i;
+		if(++i%20==0)
+		{
+			printf("speed: %f\n", myc->getSpeed());
+			i=0;
+		}
+	}
+
 	/* try to avoid flying */
 	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
 		b4 = 1.0;
