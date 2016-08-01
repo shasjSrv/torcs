@@ -129,6 +129,7 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		(char*)NULL, track->length*MyCar::MAX_FUEL_PER_METER);
 	fuel *= (situation->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
+
 }
 
 
@@ -269,16 +270,11 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		b1 = (myc->getSpeedSqr() - myc->currentpathseg->getSpeedsqr()) / (myc->getSpeedSqr());
 	}
 
+
 	//控制车速，单位m/s
 	const double limitspeed = 50/3.6;
 	if (myc->getSpeed() > limitspeed) {
 		b1 = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
-		static int i;
-		if(++i%20==0)
-		{
-			printf("speed: %f\n", myc->getSpeed());
-			i=0;
-		}
 	}
 
 	/* try to avoid flying */
@@ -437,6 +433,30 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	}
 
 	if (myc->tr_mode == 0) car->_steerCmd = steer;
+	
+
+	//显示信息
+	static int ii=-1;
+	if(ii==-1)
+	{
+		int ntrackid = myTrackDesc->getnTrackSegments();
+		printf("the number of track segment: %i \n",ntrackid);
+	}
+
+	if(++ii%100==0)
+	{
+		double speed = myc->getSpeed()*3.6;
+		int tracktype = myc->currentseg->getType();
+		char typestr[]="TR_RGT";
+		if(tracktype==2)
+		{	typestr[3]='L';typestr[4]='F';}
+		else if(tracktype==3)
+		{   typestr[3]='S';typestr[4]='T';typestr[5]='R';}
+
+		printf("speed: %.2f km/h, type: %s\n", speed,typestr);
+		ii=0;
+
+	}
 }
 
 /* pitstop callback */
