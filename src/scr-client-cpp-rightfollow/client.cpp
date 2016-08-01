@@ -337,7 +337,7 @@ void parse_args(int argc, char *argv[], char *hostName, unsigned int &serverPort
     // Set default values
     maxEpisodes=0;
     maxSteps=0;
-    serverPort=3002;
+    serverPort=3005;
     strcpy(hostName,"localhost");
     strcpy(id,"SCR");
 //    noise=false;
