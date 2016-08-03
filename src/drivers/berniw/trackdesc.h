@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
-
+#include <time.h>
 #include <tgf.h>
 #include <track.h>
 #include <car.h>
