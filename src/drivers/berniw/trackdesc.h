@@ -128,12 +128,16 @@ class TrackDesc
 		bool isBetween(int start, int end, int id);
 		int diffSegId(int id1, int id2);
 
+		void SpecialIdgen(int num);
+		inline int getSpecialId(int i) {return specialId[i]; }
+
 	private:
 		tTrack *torcstrack;
 		TrackSegment* ts;		/* pointer to the array of tracksegments */
 		int nTrackSegments;		/* # of track segments */
 		int nPitEntryStart;
 		int nPitExitEnd;
+		int specialId[5];  		//赛道上开始加速或者其他特殊操作的路段序号
 };
 
 
