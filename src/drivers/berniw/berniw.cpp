@@ -80,7 +80,7 @@ static OtherCar* ocar = NULL;
 static TrackDesc* myTrackDesc = NULL;
 static double currenttime;
 static const tdble waitToTurn = 1.0; /* how long should i wait till i try to turn backwards */
-
+static int specialid[2];
 
 /* release resources when the module gets unloaded */
 static void shutdown(int index) {
@@ -129,6 +129,10 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 		(char*)NULL, track->length*MyCar::MAX_FUEL_PER_METER);
 	fuel *= (situation->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
+
+	myTrackDesc->SpecialIdgen(2);
+	specialid[0] = myTrackDesc->getSpecialId(0);
+	specialid[1] = myTrackDesc->getSpecialId(1);
 
 }
 
@@ -272,10 +276,25 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 
 	//控制车速，单位m/s
-	const double limitspeed = 50/3.6;
+	static double limitspeed;
+	if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+500)
+	{
+		limitspeed = 200/3.6;
+	}
+	else if (specialid[1]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[1]+150)
+	{
+		limitspeed = 100/3.6;
+	}
+	else
+	{
+		limitspeed = 150/3.6;
+	}
 	if (myc->getSpeed() > limitspeed) {
 		b1 = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
+        if(specialid[0]+150<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+200)
+			b1 = 0.05;
 	}
+	
 
 	/* try to avoid flying */
 	if (myc->getDeltaPitch() > myc->MAXALLOWEDPITCH && myc->getSpeed() > myc->FLYSPEED) {
@@ -441,6 +460,10 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 	{
 		int ntrackid = myTrackDesc->getnTrackSegments();
 		printf("the number of track segment: %i \n",ntrackid);
+		int specialid[2];
+		specialid[0] = myTrackDesc->getSpecialId(0);
+		specialid[1] = myTrackDesc->getSpecialId(1);
+		printf("the two id of the spcial segment: %i, %i \n",specialid[0],specialid[1]);
 	}
 
 	if(++ii%100==0)
@@ -452,11 +475,21 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		{	typestr[3]='L';typestr[4]='F';}
 		else if(tracktype==3)
 		{   typestr[3]='S';typestr[4]='T';typestr[5]='R';}
+		int myccursegid = myc->getCurrentSegId();
 
-		printf("speed: %.2f km/h, type: %s\n", speed,typestr);
+		printf("speed: %.2f km/h, type: %s, cursegid: %i \n", speed,typestr,myccursegid);
 		ii=0;
 
+		//int ocarcursegid[situation->_ncars];
+        printf("the segment id of the other car: ");
+	    for (int i = 0; i < situation->_ncars; i++) {
+		    printf("%i ",ocar[i].getCurrentSegId());
+		}
+		printf("\n");
+
+
 	}
+
 }
 
 /* pitstop callback */
