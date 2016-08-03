@@ -14,6 +14,7 @@
 #include "racegl.h"
 #include "raceinit.h"
 #include "raceengine.h"
+#include <iostream>
 using namespace std;
 
 
@@ -156,6 +157,7 @@ void FollowJudge::figurOut(tCarElt *car)
 {
     double total=0;
     vector<double>::iterator it;
+	
     for(it=distances.begin();it!=distances.end();it++)
     {
         total+=*it;
@@ -166,10 +168,12 @@ void FollowJudge::figurOut(tCarElt *car)
     else{
         total=0;
     }
-
-    score=-(1*(total-20)+10*targetCar->_dammage);
+	if(targetCar !=NULL)
+		score=-(1*(total-20)+10*targetCar->_dammage);
+	std::cout<<"3:"<<score<<std::endl;
     score=(1.0/(1+pow(2.72,-score)))*100;
-
+	std::cout<<"4:"<<score<<std::endl;
+	std::cout<<score<<std::endl;
   
     /* 设置m_results */
     if(m_results!=NULL)
