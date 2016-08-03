@@ -285,4 +285,57 @@ int TrackDesc::getNearestId(v3d* p)
 	return minindex;
 }
 
+void TrackDesc::SpecialIdgen(int num)
+{
+	int r;
+	int i,j;
+/*	for(i=0; i<num; i++)
+	{
+		while(1)
+		{
+			srand((int)time(NULL));
+			r = rand()%(nTrackSegments/(num+2)) + nTrackSegments*(i+1)/(num+2);
+			for(j=0; j<250; j+=10)
+			{
+				if(getSegmentPtr(r+j)->getType()!=TR_STR)
+					break;
+			}
+			if(j==100)
+				break;		
+		}
+		specialId[i]=r;
 
+	}
+*/
+	while(1)
+	{
+		srand((int)time(NULL));
+		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
+		for(j=0; j<500; j+=10)
+		{
+			if(getSegmentPtr(r+j)->getType()!=TR_STR)
+				break;
+		}
+		if(j==500)
+			break;		
+	}
+	specialId[0]=r;
+	
+	while(1)
+	{
+		srand((int)time(NULL));
+		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
+		for(j=0; j<150; j+=10)
+		{
+			if(getSegmentPtr(r+j)->getType()!=TR_STR)
+				break;
+		}
+		if(j==150)
+		{
+			if((r+150)<specialId[0]||r>(specialId[0]+500))
+				break;
+		}
+	}
+	specialId[1]=r;
+
+}
