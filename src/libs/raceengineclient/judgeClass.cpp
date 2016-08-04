@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
+#include <algorithm>
 #include <tgfclient.h>
 #include <robot.h>
 #include <raceman.h>
@@ -14,7 +14,6 @@
 #include "racegl.h"
 #include "raceinit.h"
 #include "raceengine.h"
-#include <iostream>
 using namespace std;
 
 
@@ -157,13 +156,16 @@ void FollowJudge::figurOut(tCarElt *car)
 {
     double total=0;
     vector<double>::iterator it;
-	
-    for(it=distances.begin();it!=distances.end();it++)
+	double avg = 0;
+	double deviation = 0;
+    double max = 0;
+	double min = 0;
+	for(it=distances.begin();it!=distances.end();it++)
     {
         total+=*it;
     }
     if(distances.size()!=0){
-        total/=distances.size();
+        avg = total/distances.size();
     }
     else{
         total=0;
@@ -171,13 +173,15 @@ void FollowJudge::figurOut(tCarElt *car)
 	if(targetCar !=NULL)
 		score=-(1*(total-20)+10*targetCar->_dammage);
     score=(1.0/(1+pow(2.72,-score)))*100;
-  
+	max = *(std::max_element(distances.begin(),distances.end()));
+	min = *(std::min_element(distances.begin(),distances.end()));
+	score = avg - deviation;
     /* 设置m_results */
     if(m_results!=NULL)
     {
         GfParmSetStr(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME,name.c_str());
         GfParmSetStr(m_results, RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,factor.c_str());        
-        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, total);        
+        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, avg);        
         GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_SCORE, NULL, score);
     }
 
