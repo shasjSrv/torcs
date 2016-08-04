@@ -289,53 +289,91 @@ void TrackDesc::SpecialIdgen(int num)
 {
 	int r;
 	int i,j;
+	int flag;
+	int d;
+	int s;   //用来更新rand生成种子
+
+	//打印赛道
+//	for(i=0; i<nTrackSegments; i+=10)
+//		printf("i: %i, type: %i \n", i,getSegmentPtr(i)->getType());
+
+	//不区分特殊点，只找短直道
 /*	for(i=0; i<num; i++)
 	{
 		while(1)
 		{
-			srand((int)time(NULL));
+			flag=0;
+			srand(s++);
 			r = rand()%(nTrackSegments/(num+2)) + nTrackSegments*(i+1)/(num+2);
 			for(j=0; j<250; j+=10)
 			{
 				if(getSegmentPtr(r+j)->getType()!=TR_STR)
+					flag++;
+				if(flag>=3)
 					break;
 			}
-			if(j==100)
+			if(j==250)
 				break;		
 		}
 		specialId[i]=r;
 
 	}
 */
+
+	
+	//区分两个特殊点，第一个用于加速，第二个用于减速
+	s=0;
 	while(1)
 	{
-		srand((int)time(NULL));
+		flag=0;
+		srand(s++);
 		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
-		for(j=0; j<500; j+=10)
+	
+		d = (nTrackSegments/5>500)?500:nTrackSegments/5;
+
+		for(j=0; j<d; j+=10)
 		{
 			if(getSegmentPtr(r+j)->getType()!=TR_STR)
+				flag++;
+			if(flag>=3)
 				break;
 		}
-		if(j==500)
+		if(j>=d)
 			break;		
+//      printf("d: %i, j: %i, type: %i",d,j,getSegmentPtr(r+j)->getType());
+//		printf("\n");
+		if(s==1)
+			printf("Trying to get special pots, please wait for a moment\n");
 	}
 	specialId[0]=r;
 	
+	s=0;
 	while(1)
 	{
-		srand((int)time(NULL));
-		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
+		flag=0;
+		srand(s++);
+		r = rand()%(nTrackSegments*8/10) + nTrackSegments/10;
+//		printf("r: %i\n",r);
 		for(j=0; j<150; j+=10)
 		{
 			if(getSegmentPtr(r+j)->getType()!=TR_STR)
+				flag++;
+			if(flag>=2)
 				break;
 		}
 		if(j==150)
 		{
-			if((r+150)<specialId[0]||r>(specialId[0]+500))
+			if((r+150)<specialId[0]||r>(specialId[0]+d))
 				break;
 		}
+//		printf("d: %i, j: %i, type: %i",d,j,getSegmentPtr(r+j)->getType());
+//		printf("Id1: %i, r: %i",specialId[0],r);
+//		printf("\n");
+		if(s==1)
+        	printf("Trying to get special pots, please wait for a moment\n");
 	}
 	specialId[1]=r;
+	
+	
 
 }

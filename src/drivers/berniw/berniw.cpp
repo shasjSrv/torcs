@@ -277,6 +277,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	//控制车速，单位m/s
 	static double limitspeed;
+	double b;
 	if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+500)
 	{
 		limitspeed = 200/3.6;
@@ -290,10 +291,12 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		limitspeed = 150/3.6;
 	}
 	if (myc->getSpeed() > limitspeed) {
-		b1 = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
+		b = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
         if(specialid[0]+150<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+200)
-			b1 = 0.05;
+			b = 0.05;
 	}
+	if(b>b1)
+		b1 = b;
 	
 
 	/* try to avoid flying */
@@ -456,7 +459,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 
 	//显示信息
 	static int ii=-1;
-	if(ii==-1)
+	if(++ii==0)
 	{
 		int ntrackid = myTrackDesc->getnTrackSegments();
 		printf("the number of track segment: %i \n",ntrackid);
@@ -466,7 +469,7 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		printf("the two id of the spcial segment: %i, %i \n",specialid[0],specialid[1]);
 	}
 
-	if(++ii%100==0)
+/*	if(++ii%100==0)
 	{
 		double speed = myc->getSpeed()*3.6;
 		int tracktype = myc->currentseg->getType();
@@ -486,10 +489,8 @@ static void drive(int index, tCarElt* car, tSituation *situation)
 		    printf("%i ",ocar[i].getCurrentSegId());
 		}
 		printf("\n");
-
-
 	}
-
+*/
 }
 
 /* pitstop callback */
