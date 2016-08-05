@@ -1,2 +1,0 @@
-TORCS_BASE = /home/cc/torcs
-MAKE_DEFAULT = /home/cc/torcs/Make-default.mk

@@ -1,1 +1,0 @@
-/home/cc/torcs/src/interfaces/telemetry.h
