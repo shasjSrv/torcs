@@ -146,34 +146,19 @@ void FollowJudge::judge(tCarElt *car)
                 //double min_dis_sque=9999999999;
                 //确定被跟的车 以及 距离
 				double dis_sque = 0.0;
-				float dis_tag = 0.0;
-				float dis_follow = 0.0;
 				for(int i=0;i<nCar;i++)
 				{
 					if(s->cars[i]!=targetCar)
 					{
-						tTrackSeg* seg = s->cars[i]->pub.trkPos.seg;
-						dis_follow = s->cars[i]->pub.trkPos.toStart;
-						while(seg->id !=0 && seg->id > 0 ){
-							seg = seg->prev;
-							dis_follow += seg->length;
-						}
-						seg = targetCar->pub.trkPos.seg;
-						dis_tag = targetCar->pub.trkPos.toStart;
-						while(seg->id !=0 && seg->id > 0 ){
-							seg = seg->prev;
-							dis_tag += seg->length;
-						}
-						dis_sque = (dis_tag +targetCar->race.laps * m_segLength) -
-							(dis_follow + s->cars[i]->race.laps * m_segLength);
+						dis_sque = (targetCar->pub.trkPos.seg->lgfromstart + targetCar->race.laps * m_segLength) -
+							(s->cars[i]->pub.trkPos.seg->lgfromstart + s->cars[i]->race.laps * m_segLength);
 					}
 				}
                 //记录
                 distances.push_back(dis_sque);
 				if(m_outfile.is_open()){							
 					m_outfile<<"distances:"<<dis_sque<<"time:"<<GfTimeClock()-m_curTime<<endl;								
-					m_outfile<<"dis_tag:"<<dis_tag<<"cutlap:"<<targetCar->race.laps<<"trackNseg:"<<m_segLength<<endl;
-					m_outfile<<"dis_follow:"<<dis_follow<<endl;
+					m_outfile<<"dis_tag:"<<targetCar->pub.trkPos.seg->lgfromstart<<"cutlap:"<<targetCar->race.laps<<"trackNseg:"<<m_segLength<<endl;
 					m_outfile<<endl;
 				}
 
@@ -312,12 +297,12 @@ void LimitImageJudge::figurOut(tCarElt *car)
 
 string LimitImageJudge::getJudgeName()
 {
-    return "";
+    return name;
 }
 
 string LimitImageJudge::getJudgeFactor()
 {
-    return "";
+    return factor;
 }
 
 
@@ -369,12 +354,12 @@ void LimitSensorJudge::figurOut(tCarElt *car)
 
 string LimitSensorJudge::getJudgeName()
 {
-    return "";
+    return name;
 }
 
 string LimitSensorJudge::getJudgeFactor()
 {
-    return "";
+    return factor;
 }
 
 
@@ -405,7 +390,7 @@ short LimitSensorJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char *
 
 
 LightImageJudge::LightImageJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
-                                        name("Limit Result"),
+                                        name("Light Result"),
                                         factor("time")
 
 {
@@ -428,12 +413,12 @@ void LightImageJudge::figurOut(tCarElt *car)
 
 string LightImageJudge::getJudgeName()
 {
-    return "";
+    return name;
 }
 
 string LightImageJudge::getJudgeFactor()
 {
-    return "";
+    return factor;
 }
 
 
@@ -487,12 +472,12 @@ void PassBasicJudge::figurOut(tCarElt *car)
 
 string PassBasicJudge::getJudgeName()
 {
-    return "";
+    return name;
 }
 
 string PassBasicJudge::getJudgeFactor()
 {
-    return "";
+    return factor;
 }
 
 
@@ -546,12 +531,12 @@ void PassHardJudge::figurOut(tCarElt *car)
 
 string PassHardJudge::getJudgeName()
 {
-    return "";
+    return name;
 }
 
 string PassHardJudge::getJudgeFactor()
 {
-    return "";
+    return factor;
 }
 
 
