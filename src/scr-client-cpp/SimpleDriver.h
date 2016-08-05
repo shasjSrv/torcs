@@ -114,6 +114,10 @@ private:
 
 	// Solves the steering subproblems
 	float getSteer(CarState &cs);
+
+	//calculate targetAngle
+	void calLAngle(float rxS, float cS, float sxS, CarState &cs, float &targetAngle);
+	void calRAngle(float rxS, float cS, float sxS, CarState &cs, float &targetAngle);
 	
 	// Solves the gear changing subproblems
 	float getAccel(CarState &cs);
