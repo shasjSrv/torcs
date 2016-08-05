@@ -1,14 +1,14 @@
 #include "judgeClass.h"
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <tgfclient.h>
 #include <robot.h>
-#include <raceman.h>
+#include "raceman.h"
 #include <racescreens.h>
 #include <robottools.h>
 #include <portability.h>
+#include "tgf.h"
 
 #include "racemain.h"
 #include "racegl.h"
@@ -21,7 +21,8 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
                 score(100),
                 s(NULL),
                 m_judge_result(NULL),
-                m_results(NULL)
+                m_results(NULL),
+				m_ReInfo(ReInfo)
 {
     cout<<"create judge system"<<endl;
 
@@ -34,11 +35,21 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
     {
         m_results = ReInfo->results;
     }
+	double tracklength = 0.0;
+	tTrackSeg* first = ReInfo->track->seg;
+	tTrackSeg* seg = first;
+	do {
+		tracklength += seg->length;
+		seg = seg->next;
+	} while (seg != first);
+	m_segLength = (float)tracklength;
+	m_outfile.open("/home/jzy/distancs.txt");
 }
 
 DefaultJudge::~DefaultJudge()
 {
     cout<<"kill judge system"<<endl;
+	m_outfile.close();
 }
 
 void DefaultJudge::judge(tCarElt *car)
@@ -97,6 +108,7 @@ FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
                                         targetCar(NULL),
                                         nCar(0)
 {
+	m_curTime = GfTimeClock();
     if(s!=NULL)
     {
         m_results=ReInfo->results;
@@ -129,55 +141,82 @@ void FollowJudge::judge(tCarElt *car)
         if(targetCar==car)
         {
             //整秒记录距离
-            // if(s->currentTime>(double)(distances.size()))
-            // {
+			if((GfTimeClock() - m_curTime> (double) 1) && targetCar->race.laps >=1)
+			{
                 //double min_dis_sque=9999999999;
                 //确定被跟的车 以及 距离
-				double dis_sque = 0;
-                for(int i=0;i<nCar;i++)
-                {
-                    if(s->cars[i]!=targetCar)
-                    {
-						dis_sque=pow(targetCar->_pos_X - s->cars[i]->_pos_X,2)+
-                                    pow(targetCar->_pos_Y - s->cars[i]->_pos_Y,2);
-				   /*     if(dis_sque<min_dis_sque){*/
-							//min_dis_sque=dis_sque;
-						/*}*/
-                    }
-                }
+				double dis_sque = 0.0;
+				float dis_tag = 0.0;
+				float dis_follow = 0.0;
+				for(int i=0;i<nCar;i++)
+				{
+					if(s->cars[i]!=targetCar)
+					{
+						tTrackSeg* seg = s->cars[i]->pub.trkPos.seg;
+						dis_follow = s->cars[i]->pub.trkPos.toStart;
+						while(seg->id !=0 && seg->id > 0 ){
+							seg = seg->prev;
+							dis_follow += seg->length;
+						}
+						seg = targetCar->pub.trkPos.seg;
+						dis_tag = targetCar->pub.trkPos.toStart;
+						while(seg->id !=0 && seg->id > 0 ){
+							seg = seg->prev;
+							dis_tag += seg->length;
+						}
+						dis_sque = (dis_tag +targetCar->race.laps * m_segLength) -
+							(dis_follow + s->cars[i]->race.laps * m_segLength);
+					}
+				}
                 //记录
-                distances.push_back(sqrt(dis_sque));
-            // }
+                distances.push_back(dis_sque);
+				if(m_outfile.is_open()){							
+					m_outfile<<"distances:"<<dis_sque<<"time:"<<GfTimeClock()-m_curTime<<endl;								
+					m_outfile<<"dis_tag:"<<dis_tag<<"cutlap:"<<targetCar->race.laps<<"trackNseg:"<<m_segLength<<endl;
+					m_outfile<<"dis_follow:"<<dis_follow<<endl;
+					m_outfile<<endl;
+				}
+
+				m_curTime = GfTimeClock();
+			}	
         }
     }
 }
 
 void FollowJudge::figurOut(tCarElt *car)
 {
-    double total=0;
+	double total=0;
     vector<double>::iterator it;
 	double avg = 0;
 	double deviation = 0;
     double max = 0;
 	double min = 0;
-	for(it=distances.begin();it!=distances.end();it++)
-    {
-        total+=*it;
-    }
-    if(distances.size()!=0){
-        avg = total/distances.size();
-    }
-    else{
-        total=0;
-    }
-	if(targetCar !=NULL)
-		score=-(1*(total-20)+10*targetCar->_dammage);
-    score=(1.0/(1+pow(2.72,-score)))*100;
-	max = *(std::max_element(distances.begin(),distances.end()));
-	min = *(std::min_element(distances.begin(),distances.end()));
-	score = avg - deviation;
-    /* 设置m_results */
-    if(m_results!=NULL)
+	if (s != NULL){
+		for(it=distances.begin();it!=distances.end();it++)
+		{
+			total+=*it;
+
+		}
+		if(distances.size()!=0){
+			avg = total/distances.size();
+		}
+		else{
+			total=0;
+		}
+		max = *(std::max_element(distances.begin(),distances.end()));
+		min = *(std::min_element(distances.begin(),distances.end()));
+		for_each(begin(distances),end(distances),[&](const double d){				//compute variance
+						deviation += (d-avg) * (d-avg);
+					}
+				);
+		deviation = sqrt(deviation/(distances.size()-1));
+		if(min < 1)
+			score = avg - deviation - max/distances.size() - 5;
+		else  
+			score = avg - deviation - max/distances.size();
+	}
+	/* 设置m_results */
+	if(m_results!=NULL)
     {
         GfParmSetStr(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME,name.c_str());
         GfParmSetStr(m_results, RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,factor.c_str());        
@@ -221,7 +260,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     
     m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
     if(m_judge_result[0]!='\0'){
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"berniw 1")==0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"berniw 1")!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x8, y, GFUI_ALIGN_HC_VB, 0);
@@ -233,7 +272,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     }
 
     if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"berniw 1")==0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"berniw 1")!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x9, y, GFUI_ALIGN_HC_VB, 0);
