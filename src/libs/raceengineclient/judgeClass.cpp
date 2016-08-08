@@ -9,6 +9,7 @@
 #include <robottools.h>
 #include <portability.h>
 #include "tgf.h"
+#include <string>
 
 #include "racemain.h"
 #include "racegl.h"
@@ -22,7 +23,8 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
                 s(NULL),
                 m_judge_result(NULL),
                 m_results(NULL),
-				m_ReInfo(ReInfo)
+				m_ReInfo(ReInfo),
+				m_nCar(0)	
 {
     cout<<"create judge system"<<endl;
 
@@ -35,6 +37,7 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
     {
         m_results = ReInfo->results;
     }
+	
 	double tracklength = 0.0;
 	tTrackSeg* first = ReInfo->track->seg;
 	tTrackSeg* seg = first;
@@ -43,7 +46,15 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
 		seg = seg->next;
 	} while (seg != first);
 	m_segLength = (float)tracklength;
-	m_outfile.open("/home/jzy/distancs.txt");
+	
+	string			buf;
+	buf = GetLocalDir();
+	buf = buf.erase(buf.rfind(".torcs/"),7);
+	buf += "distancs.txt";
+	m_outfile.open(buf);
+	
+	m_nCar = ReInfo->s->_ncars;
+	m_curTime = GfTimeClock();
 }
 
 DefaultJudge::~DefaultJudge()
@@ -105,19 +116,17 @@ short DefaultJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf
 FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
                                         name("Follow Result"),
                                         factor("avg.dis"),
-                                        targetCar(NULL),
-                                        nCar(0)
+                                        targetCar(NULL)
 {
-	m_curTime = GfTimeClock();
     if(s!=NULL)
     {
         m_results=ReInfo->results;
 
-        nCar=s->_ncars;
-        cout<<"number of player:  "<<nCar<<endl;
-        if(nCar>=2)
+        //nCar=s->_ncars;
+        cout<<"number of player:  "<<m_nCar<<endl;
+        if(m_nCar>=2)
         {
-            for(int i=0;i<nCar;i++)
+            for(int i=0;i<m_nCar;i++)
             {
                 if(strncmp(s->cars[i]->_name, "berniw 1", 4) == 0)
                 {
@@ -146,7 +155,7 @@ void FollowJudge::judge(tCarElt *car)
                 //double min_dis_sque=9999999999;
                 //确定被跟的车 以及 距离
 				double dis_sque = 0.0;
-				for(int i=0;i<nCar;i++)
+				for(int i=0;i<m_nCar;i++)
 				{
 					if(s->cars[i]!=targetCar)
 					{
@@ -280,11 +289,18 @@ LimitImageJudge::LimitImageJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
                                         factor("time")
 
 {
+	if(s!=NULL)
+	{
+		m_results=ReInfo->results;
+
+		//nCar=s->_ncars;
+		cout<<"number of player:  "<<m_nCar<<endl;
+		
+	}
 }
 
 LimitImageJudge::~LimitImageJudge()
 {
-    cout<<"kill judge system"<<endl;
 }
 
 void LimitImageJudge::judge(tCarElt *car)
@@ -341,7 +357,6 @@ LimitSensorJudge::LimitSensorJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
 
 LimitSensorJudge::~LimitSensorJudge()
 {
-    cout<<"kill judge system"<<endl;
 }
 
 void LimitSensorJudge::judge(tCarElt *car)
@@ -400,7 +415,6 @@ LightImageJudge::LightImageJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
 
 LightImageJudge::~LightImageJudge()
 {
-    cout<<"kill judge system"<<endl;
 }
 
 void LightImageJudge::judge(tCarElt *car)
@@ -459,7 +473,6 @@ PassBasicJudge::PassBasicJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
 
 PassBasicJudge::~PassBasicJudge()
 {
-    cout<<"kill judge system"<<endl;
 }
 
 void PassBasicJudge::judge(tCarElt *car)
@@ -518,7 +531,6 @@ PassHardJudge::PassHardJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
 
 PassHardJudge::~PassHardJudge()
 {
-    cout<<"kill judge system"<<endl;
 }
 
 void PassHardJudge::judge(tCarElt *car)

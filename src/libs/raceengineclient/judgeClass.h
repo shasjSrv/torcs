@@ -34,6 +34,8 @@ protected:
 	tRmInfo			*m_ReInfo;
 	float			m_segLength;
 	std::ofstream	m_outfile;
+	int				m_nCar;
+	double			m_curTime; 
 };
 
 
@@ -51,9 +53,7 @@ public:
 private:
     std::string				name;
 	std::string				factor;
-	double					m_curTime; 
 	tCarElt					*targetCar;
-	int						nCar;
 	std::vector<double>		distances;
 };
 
