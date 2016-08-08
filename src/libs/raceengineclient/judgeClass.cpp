@@ -185,7 +185,7 @@ void FollowJudge::figurOut(tCarElt *car)
 	double deviation = 0;
     double max = 0;
 	double min = 0;
-	if (s != NULL){
+	if (targetCar != NULL){
 		for(it=distances.begin();it!=distances.end();it++)
 		{
 			total+=*it;
@@ -195,19 +195,20 @@ void FollowJudge::figurOut(tCarElt *car)
 			avg = total/distances.size();
 		}
 		else{
-			total=0;
+			avg = 1;
 		}
 		max = *(std::max_element(distances.begin(),distances.end()));
 		min = *(std::min_element(distances.begin(),distances.end()));
 		for_each(begin(distances),end(distances),[&](const double d){				//compute variance
-						deviation += (d-avg) * (d-avg);
+					deviation += (d-avg) * (d-avg);
 					}
 				);
 		deviation = sqrt(deviation/(distances.size()-1));
+
 		if(min < 1)
-			score = 1000/avg - deviation - max/distances.size() - 5;
+		  score = 1000/avg - deviation - max/distances.size() - 5;
 		else  
-			score = 1000/avg - deviation - max/distances.size();
+		  score = 1000/avg - deviation - max/distances.size();
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
