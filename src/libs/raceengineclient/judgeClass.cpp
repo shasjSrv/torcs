@@ -205,9 +205,9 @@ void FollowJudge::figurOut(tCarElt *car)
 				);
 		deviation = sqrt(deviation/(distances.size()-1));
 		if(min < 1)
-			score = avg - deviation - max/distances.size() - 5;
+			score = 1000/avg - deviation - max/distances.size() - 5;
 		else  
-			score = avg - deviation - max/distances.size();
+			score = 1000/avg - deviation - max/distances.size();
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
