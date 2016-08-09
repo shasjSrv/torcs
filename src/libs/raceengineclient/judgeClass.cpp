@@ -201,6 +201,7 @@ void FollowJudge::figurOut(tCarElt *car)
 		min = *(std::min_element(distances.begin(),distances.end()));
 		for_each(begin(distances),end(distances),[&](const double d){				//compute variance
 					deviation += (d-avg) * (d-avg);
+					m_outfile<<"deviation:"<<deviation<<endl;
 					}
 				);
 		deviation = sqrt(deviation/(distances.size()-1));
