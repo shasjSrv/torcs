@@ -168,6 +168,7 @@ void FollowJudge::judge(tCarElt *car)
 				if(m_outfile.is_open()){							
 					m_outfile<<"distances:"<<dis_sque<<"time:"<<GfTimeClock()-m_curTime<<endl;								
 					m_outfile<<"dis_tag:"<<targetCar->pub.trkPos.seg->lgfromstart<<"cutlap:"<<targetCar->race.laps<<"trackNseg:"<<m_segLength<<endl;
+					m_outfile<<"width:"<<targetCar->pub.trkPos.toRight + targetCar->pub.trkPos.toLeft<<endl;
 					m_outfile<<endl;
 				}
 
@@ -210,6 +211,8 @@ void FollowJudge::figurOut(tCarElt *car)
 		  score = 10000/avg - deviation - max/distances.size() - 5;
 		else  
 		  score = 10000/avg - deviation - max/distances.size();
+
+		score = (std::exp(std::fabs(50-avg)))*1000 -std::exp(-deviation*0.1) * 1000;
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
