@@ -39,7 +39,6 @@
 #include "racemanmenu.h"
 
 #include "racestate.h"
-
 static void *mainMenu;
 
 /* State Automaton Init */

@@ -250,7 +250,7 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start,Judge * Rjudg
 	x6 = 420;
 	x7 = 490;
 	x8 = 545;
-	x9 = 600;
+	x9 = 620;
 	
 	y = 400;
 	GfuiLabelCreateEx(rmScrHdle, "Rank",      fgcolor, GFUI_FONT_MEDIUM_C, x1, y, GFUI_ALIGN_HC_VB, 0);
@@ -327,41 +327,7 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start,Judge * Rjudg
 			GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
 			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
 		}
-		// judge_result=GfParmGetStr(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
-		// if(judge_result[0]!='\0'){
-		// 	if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-		// 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
-		// 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
-		// 			x8, y, GFUI_ALIGN_HC_VB, 0);
-		// 	}
-		// 	else{    //is not judge car, replace 'x'
-		// 		GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
-		// 			x8, y, GFUI_ALIGN_HC_VB, 0);
-		// 	}
-		// }
-		// else{
-		// 	snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
-		// 	GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
-		// 		x8, y, GFUI_ALIGN_HC_VB, 0);
-		// }
-
-		
-		// if(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){			//fix err which use get function
-		// 	if(strcmp(GfParmGetStr(results, path, RE_ATTR_NAME, ""),"scr_server 1")==0){  //is judge car
-		// 		snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
-		// 		GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
-		// 			x9, y, GFUI_ALIGN_HC_VB, 0);
-		// 	}
-		// 	else{    //is not judge car, replace 'x'
-		// 		GfuiLabelCreate(rmScrHdle, "x", GFUI_FONT_MEDIUM_C,
-		// 			x9, y, GFUI_ALIGN_HC_VB, 0);
-		// 	}
-		// }
-		// else{
-		// 	GfTime2Str(timefmt, TIMEFMTSIZE, GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
-		// 	GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
-		// }
-		
+				
 		y -= 15;
 	}
 
