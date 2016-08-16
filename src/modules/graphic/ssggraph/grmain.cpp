@@ -45,6 +45,7 @@
 #include "grcarlight.h"
 #include <glfeatures.h>
 #include "grtrafficlight.h"
+#include <iostream>
 
 int maxTextureUnits = 0;
 static double OldTime;
@@ -403,6 +404,7 @@ initCars(tSituation *s)
 		//add by zhu
 		// alloc image buffer
 		int camNum = (int)GfParmGetNum(hdle, idx, "camera num",   (char*)NULL, 0);
+		std::cout<<"camNum:"<<camNum<<std::endl;
 		if(camNum > 0 && camNum < 10) {
 			elt->camNum = camNum;
 			elt->imgWidth = (int)GfParmGetNum(hdle, idx, "image width",   (char*)NULL, 0);
