@@ -288,7 +288,8 @@ int TrackDesc::getNearestId(v3d* p)
 void TrackDesc::SpecialIdgen(int num)
 {
 	int r;
-	int i,j;
+//	int i;
+	int j;
 	int flag;
 	int d;
 	int s;   //用来更新rand生成种子

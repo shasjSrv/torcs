@@ -52,6 +52,38 @@
 
 static const double g = 9.81;
 
+class Driver {
+	public:
+		Driver(int index);
+		~Driver();
+
+		// Callback functions called from TORCS.
+		void initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);
+		void newRace(tCarElt* car, tSituation *situation);
+		void drive(tSituation *s);
+		int pitcmd(tSituation *s);
+		void endRace(tSituation *s);
+	
+	private:
+		void drive_original(tSituation *s);
+		void drive_normal(tSituation *s);
+		void drive_follow(tSituation *s);
+		void drive_overtake(tSituation *s);
+		void update(tSituation *s);
+
+		int index;
+		tCarElt *car;			// Pointer to tCarElt struct.
+		MyCar* myc;
+		Pathfinder* mpf;
+		OtherCar* ocar;
+		TrackDesc* myTrackDesc;
+		double currenttime;		
+		int specialid[2];
+
+		static const tdble waitToTurn; /* how long should i wait till i try to turn backwards */
+
+};
+
 
 /* compute the angle between the track and the car */
 inline double queryAngleToTrack(tCarElt * car)

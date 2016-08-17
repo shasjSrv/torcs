@@ -27,8 +27,8 @@
 
 /* function prototypes */
 static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);
-static void drive(int index, tCarElt* car, tSituation *situation);
-static void newRace(int index, tCarElt* car, tSituation *situation);
+static void drive(int index, tCarElt* car, tSituation *s);
+static void newRace(int index, tCarElt* car, tSituation *s);
 static int  InitFuncPt(int index, void *pt);
 static int  pitcmd(int index, tCarElt* car, tSituation *s);
 static void shutdown(int index);
@@ -43,6 +43,10 @@ static const char* botdesc[maxBOTS] = {
 	"target 1", "target 2", "target 3", "berniw 4", "berniw 5",
 	"berniw 6", "berniw 7", "berniw 8", "berniw 9", "berniw 10"
 };
+
+static MyCar* mycar[maxBOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+
+static Driver *driver[BOTS];
 
 /* Module entry point */
 extern "C" int berniw(tModInfo *modInfo)
@@ -65,6 +69,9 @@ static int InitFuncPt(int index, void *pt)
 {
 	tRobotItf *itf = (tRobotItf *)pt;
 
+	// Create robot instance for index.
+	driver[index] = new Driver(index);
+
 	itf->rbNewTrack = initTrack;	/* init new track */
 	itf->rbNewRace  = newRace;		/* init new race */
 	itf->rbDrive    = drive;		/* drive during race */
@@ -75,15 +82,57 @@ static int InitFuncPt(int index, void *pt)
 }
 
 
-static MyCar* mycar[maxBOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };
-static OtherCar* ocar = NULL;
-static TrackDesc* myTrackDesc = NULL;
-static double currenttime;
-static const tdble waitToTurn = 1.0; /* how long should i wait till i try to turn backwards */
-static int specialid[2];
+// Called for every track change or new race.
+static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
+{
+	driver[index]->initTrack(track, carHandle, carParmHandle, s);
+}
 
-/* release resources when the module gets unloaded */
-static void shutdown(int index) {
+
+// Start a new race.
+static void newRace(int index, tCarElt* car, tSituation *s)
+{
+	driver[index]->newRace(car, s);
+}
+
+// Drive during race.
+static void drive(int index, tCarElt* car, tSituation *s)
+{
+	driver[index]->drive(s);
+}
+
+
+// Pitstop callback.
+static int pitcmd(int index, tCarElt* car, tSituation *s)
+{
+	return driver[index]->pitcmd(s);
+}
+
+// Called before the module is unloaded.
+static void shutdown(int index)
+{
+	delete driver[index];
+}
+
+
+/**** implement of driver ******/
+
+const tdble Driver::waitToTurn = 1.0; // how long should i wait till i try to turn backwards 
+
+Driver::Driver(int index)
+{
+	this->index = index;
+
+	int i;
+	for(i=0; i<maxBOTS; i++)
+		mycar[i] = NULL;
+	ocar = NULL;
+	myTrackDesc = NULL;
+	specialid[0] = specialid[1] = 0;
+}
+
+Driver::~Driver()
+{
 	int i = index - 1;
 	if (mycar[i] != NULL) {
 		delete mycar[i];
@@ -103,7 +152,7 @@ static void shutdown(int index) {
 
 
 /* initialize track data, called for every selected driver */
-static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+void Driver::initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
 {
 	if ((myTrackDesc != NULL) && (myTrackDesc->getTorcsTrack() != track)) {
 		delete myTrackDesc;
@@ -130,16 +179,19 @@ static void initTrack(int index, tTrack* track, void *carHandle, void **carParmH
 	fuel *= (situation->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
 
-	myTrackDesc->SpecialIdgen(2);
-	specialid[0] = myTrackDesc->getSpecialId(0);
-	specialid[1] = myTrackDesc->getSpecialId(1);
-
+	if(index == 2)
+	{
+		myTrackDesc->SpecialIdgen(2);
+		specialid[0] = myTrackDesc->getSpecialId(0);
+		specialid[1] = myTrackDesc->getSpecialId(1);
+	}
 }
 
 
 /* initialize driver for the race, called for every selected driver */
-static void newRace(int index, tCarElt* car, tSituation *situation)
+void Driver::newRace(tCarElt* car, tSituation *situation)
 {
+	this->car = car;
 	if (ocar != NULL) delete [] ocar;
 	ocar = new OtherCar[situation->_ncars];
 	for (int i = 0; i < situation->_ncars; i++) {
@@ -148,12 +200,13 @@ static void newRace(int index, tCarElt* car, tSituation *situation)
 
 	if (mycar[index-1] != NULL) delete mycar[index-1];
 	mycar[index-1] = new MyCar(myTrackDesc, car, situation);
-
+	myc = mycar[index-1];
+	mpf = myc->getPathfinderPtr();
 	currenttime = situation->currentTime;
 }
 
 /* pitstop callback */
-static int pitcmd(int index, tCarElt* car, tSituation *s)
+int Driver::pitcmd(tSituation *s)
 {
 	MyCar* myc = mycar[index-1];
 	Pathfinder* mpf = myc->getPathfinderPtr();
@@ -169,26 +222,10 @@ static int pitcmd(int index, tCarElt* car, tSituation *s)
 	return ROB_PIT_IM; /* return immediately */
 }
 
-/* controls the car */
-static void drive_original(int index, tCarElt* car, tSituation *situation)
+void Driver::update(tSituation *s)
 {
-	tdble angle;
-	tdble brake;
-	tdble b1;							/* brake value in case we are to fast HERE and NOW */
-	tdble b2;							/* brake value for some brake point in front of us */
-	tdble b3;							/* brake value for control (avoid loosing control) */
-	tdble b4;							/* brake value for avoiding high angle of attack */
-	tdble b5;							// Brake for the pit;
-	tdble steer, targetAngle, shiftaccel;
-
-	MyCar* myc = mycar[index-1];
-	Pathfinder* mpf = myc->getPathfinderPtr();
-
-	b1 = b2 = b3 = b4 = b5 = 0.0;
-	shiftaccel = 0.0;
-
 	/* update some values needed */
-	myc->update(myTrackDesc, car, situation);
+	myc->update(myTrackDesc, car, s);
 
 	/* decide how we want to drive */
 	if ( car->_dammage < myc->undamaged/3 && myc->bmode != myc->NORMAL) {
@@ -197,12 +234,6 @@ static void drive_original(int index, tCarElt* car, tSituation *situation)
 		myc->loadBehaviour(myc->CAREFUL);
 	} else if (car->_dammage > (myc->undamaged*2)/3 && myc->bmode != myc->SLOW) {
 		myc->loadBehaviour(myc->SLOW);
-	}
-
-	/* update the other cars just once */
-	if (currenttime != situation->currentTime) {
-		currenttime = situation->currentTime;
-		for (int i = 0; i < situation->_ncars; i++) ocar[i].update();
 	}
 
 	/* startmode */
@@ -215,8 +246,34 @@ static void drive_original(int index, tCarElt* car, tSituation *situation)
 		myc->loadBehaviour(myc->NORMAL);
 	}
 
+	/* update the other cars just once */
+	if (currenttime != s->currentTime) {
+		currenttime = s->currentTime;
+		for (int i = 0; i < s->_ncars; i++) ocar[i].update();
+	}
+
 	/* compute path according to the situation */
-	mpf->plan(myc->getCurrentSegId(), car, situation, myc, ocar);
+	mpf->plan(myc->getCurrentSegId(), car, s, myc, ocar);
+
+}
+
+/* controls the car */
+void Driver::drive_original(tSituation *s)
+{
+	tdble angle;
+	tdble brake;
+	tdble b1;							/* brake value in case we are to fast HERE and NOW */
+	tdble b2;							/* brake value for some brake point in front of us */
+	tdble b3;							/* brake value for control (avoid loosing control) */
+	tdble b4;							/* brake value for avoiding high angle of attack */
+	tdble b5;							// Brake for the pit;
+	tdble steer, targetAngle, shiftaccel;
+
+
+	b1 = b2 = b3 = b4 = b5 = 0.0;
+	shiftaccel = 0.0;
+
+	update(s);
 
 	/* clear ctrl structure with zeros and set the current gear */
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
@@ -428,7 +485,7 @@ static void drive_original(int index, tCarElt* car, tSituation *situation)
 	tdble parallel = (cx*bx + cy*by) / (sqrt(cx*cx + cy*cy)*sqrt(bx*bx + by*by));
 
 	if ((myc->getSpeed() < myc->TURNSPEED) && (parallel < cos(90.0*PI/180.0))  && (mpf->dist2D(myc->getCurrentPos(), mpf->getPathSeg(myc->getCurrentSegId())->getLoc()) > myc->TURNTOL)) {
-		myc->turnaround += situation->deltaTime;
+		myc->turnaround += s->deltaTime;
 	} else myc->turnaround = 0.0;
 	if ((myc->turnaround >= waitToTurn) || (myc->tr_mode >= 1)) {
 		if (myc->tr_mode == 0) {
@@ -510,29 +567,37 @@ static void drive_original(int index, tCarElt* car, tSituation *situation)
 }
 
 
-static void drive_normal(int index, tCarElt* car, tSituation *situation)
+void Driver::drive_normal(tSituation *s)
 {
-	car->ctrl.gear = 1;
+	float angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
+	NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
+	angle -= 1.0 * (car->_trkPos.toMiddle/car->_trkPos.seg->width + 0.25);
+	// setup the values to return
+	car->ctrl.steer = angle/car->_steerLock;
+	car->ctrl.gear = 1;       // first gear
+	car->ctrl.accelCmd = 0.3; // 30% accelerator pedal
+	car->ctrl.brakeCmd = 0.0; // no brakes
 }
 
-static void drive_follow(int index, tCarElt* car, tSituation *situation)
+void Driver::drive_follow(tSituation *s)
 {
 	car->ctrl.gear = 2;
 }
 
-static void drive_overtake(int index, tCarElt* car, tSituation *situation)
+void Driver::drive_overtake(tSituation *s)
 {
 	car->ctrl.gear = 3;
 }
 
-static void drive(int index, tCarElt* car, tSituation *situation)
+void Driver::drive(tSituation *s)
 {
 	switch(index)
 	{
-	case 1: drive_normal(index,car,situation); break;
-	case 2: drive_follow(index,car,situation); break;
-	case 3: drive_overtake(index,car,situation); break;
-	default: drive_original(index,car,situation); break;
+	case 1: drive_normal(s); break;
+	case 2: drive_follow(s); break;
+	case 3: drive_overtake(s); break;
+	default: drive_original(s); break;
 	}
-}
 
+//	drive_original(s);
+}
