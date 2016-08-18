@@ -136,6 +136,7 @@ class Driver {
 
 		float limitedspeed;
 		bool f_offset;
+		int trackside; 		//-1:rightside, 1:leftside
 
 		// Data that should stay constant after first initialization.
 		int MAX_UNSTUCK_COUNT;
@@ -184,7 +185,7 @@ class Driver {
 		static const float TEAM_REAR_DIST;
 		static const int TEAM_DAMAGE_CHANGE_LEAD;
 
-		static const float RL_OFFSET_INC;
+		static const float TS_OFFSET_INC;
 
 		// Track variables.
 		tTrack* track;

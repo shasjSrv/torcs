@@ -53,7 +53,7 @@ const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;		// [m] if offset < this us
 
 const float Driver::TEAM_REAR_DIST = 50.0f;					//
 const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in the team?
-const float Driver::RL_OFFSET_INC = 0.15; 					// 行驶在右跑道的偏置单词增加量
+const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
 
 // Static variables.
 Cardata *Driver::cardata = NULL;
@@ -168,12 +168,16 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	pit = new Pit(s, this);
 
 	limitedspeed = 99.0/3.6;
+	trackside = -1; 	//-1:right side, 1:left side
 }
 
 
 // Drive during race.
 void Driver::drive(tSituation *s)
 {
+	int distance;
+	int r;
+
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
 	update(s);
@@ -187,6 +191,32 @@ void Driver::drive(tSituation *s)
 		car->_brakeCmd = 0.0f;	// No brakes.
 		car->_clutchCmd = 0.0f;	// Full clutch (gearbox connected with engine).
 	} else {
+
+		if(opponents->getNOpponents())
+		{	
+			if(s->currentTime>30)
+			{
+				distance = opponent->getDistance();
+				if(distance>-25)
+				{
+					srand(distance);
+					r = rand()%10;
+					if(r==0)
+						limitedspeed = 150;
+
+					srand(distance+1);
+					r = rand()%10;
+					if(r==0)
+						trackside = 1;
+				}
+				else
+				{
+					trackside = -1;
+					limitedspeed = 99;
+				}
+		    }
+		}
+
 		car->_steerCmd = filterSColl(getSteer());
 		car->_gearCmd = getGear();
 		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
@@ -439,17 +469,19 @@ vec2f Driver::getTargetPoint()
 	float length = getDistToSegEnd();	
     float width = seg->width;
 	float offset = getOffset();
+	float toffset;
 
 	if(!f_offset) 		//如果不需要超车等额外偏置
 	{
-		//尽量行驶在右跑道中央
+		toffset = fabs(offset);
+		//尽量行驶在右(左)跑道中央
 		if(seg->type != TR_STR)
-			offset = MIN((-0.1*width), offset+0.15);
+			offset = MAX((0.1*width), toffset-TS_OFFSET_INC)*trackside;
 		else
-			offset = MAX((-0.25*width), offset-0.15);
+			offset = MIN((0.25*width), toffset+TS_OFFSET_INC)*trackside;
 	}
 		
-//	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());
+	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());
 	
 	if (pit->getInPit()) {
 		// To stop in the pit we need special lookahead values.
