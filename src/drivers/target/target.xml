@@ -48,7 +48,7 @@
 		<attstr name="team" val="target"/>
 		<attstr name="desc" val="Berni's first Bot 3"/>
 		<attstr name="author" val="Bernhard Wymann"/>
-		<attstr name="car name" val="car1-trb1"/>
+		<attstr name="car name" val="car1-stock1"/>
 		<attnum name="race number" val="140"/>
 		<attnum name="red" val="0.0"/>
 		<attnum name="green" val="1.0"/>
