@@ -55,6 +55,9 @@ private:
 	std::string				factor;
 	tCarElt					*targetCar;
 	std::vector<double>		distances;
+	const float				m_min = 1.0f;					//the min distance to target driver.
+	const float				m_max = 300.0f;					//the max distance to target driver.
+	const float				m_penalty = 5;					//To punish the score in some situation.
 };
 
 

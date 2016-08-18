@@ -180,6 +180,10 @@ void FollowJudge::judge(tCarElt *car)
 
 void FollowJudge::figurOut(tCarElt *car)
 {
+	const char *race = m_ReInfo->_reRaceName;
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE];
+	int	   demage = 0;
 	double total=0;
     vector<double>::iterator it;
 	double avg = 0;
@@ -206,17 +210,26 @@ void FollowJudge::figurOut(tCarElt *car)
 				);
 		deviation = sqrt(deviation/(distances.size()-1));
 		m_outfile<<"deviation:"<<deviation<<endl;
-
-		if(min < 1)
-		  score = 10000/avg - deviation - max/distances.size() - 5;
-		else  
-		  score = 10000/avg - deviation - max/distances.size();
+		for(int i=0;i<m_nCar;i++){
+			snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", m_ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+			if(strstr(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server")!=0)
+				demage = (int)(GfParmGetNum(m_results, path, RE_ATTR_DAMMAGES, NULL, 0));
+			m_outfile<<"i:"<<i<<",    demage:"<<demage<<endl;
+			m_outfile<<GfParmGetStr(m_results, path, RE_ATTR_NAME, "")<<endl;
+		}	
 
 		float w1 = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
 		float w2 = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
+		float w3 = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
+		
 
+		if(min < m_min && max > m_max)
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - 2 * m_penalty - w3 * demage; 
+		else if(min < m_min || max > m_max)
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - m_penalty - w3 * demage; 
+		else
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
 
-		score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2;
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
