@@ -98,5 +98,7 @@
   <!-- fun      :use to chose which judgement -->
   <section name="Judge">
     <attstr name="judge name" val="FollowJudge"/>
+    <attnum name="wight1" val="0.5"/>
+    <attnum name="wight2" val="0.5"/>
   </section>
 </params>
