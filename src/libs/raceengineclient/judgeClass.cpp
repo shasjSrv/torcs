@@ -528,19 +528,19 @@ void PassBasicJudge::judge(tCarElt *car)
 			{
 				//double min_dis_sque=9999999999;
 				//确定被跟的车 以及 距离
-				LengthInfo dis_sque = 0.0;
+				LengthInfo dis_sque ;
 				for(int i=0;i<m_nCar;i++)
 				{
 					if(s->cars[i]!=targetCar)
 					{
-						dis_sque = (targetCar->pub.trkPos.seg->lgfromstart + targetCar->race.laps * m_segLength) -
+						dis_sque.length = (targetCar->pub.trkPos.seg->lgfromstart + targetCar->race.laps * m_segLength) -
 							(s->cars[i]->pub.trkPos.seg->lgfromstart + s->cars[i]->race.laps * m_segLength);
 					}
 				}
 				//记录
 	//			distances.push_back(dis_sque);
 				if(m_outfile.is_open()){							
-					m_outfile<<"distances:"<<dis_sque<<"time:"<<GfTimeClock()-m_curTime<<endl;								
+					//m_outfile<<"distances:"<<dis_sque<<"time:"<<GfTimeClock()-m_curTime<<endl;								
 					m_outfile<<"dis_tag:"<<targetCar->pub.trkPos.seg->lgfromstart<<"cutlap:"<<targetCar->race.laps<<"trackNseg:"<<m_segLength<<endl;
 					m_outfile<<"width:"<<targetCar->pub.trkPos.toRight + targetCar->pub.trkPos.toLeft<<endl;
 					m_outfile<<endl;
