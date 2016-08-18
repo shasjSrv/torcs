@@ -1,10 +1,10 @@
-ROBOT = berniw
+ROBOT = target
 
 MODULE = ${ROBOT}.so
 
 MODULEDIR = drivers/${ROBOT}
 
-SOURCES   = ${ROBOT}.cpp spline.cpp trackdesc.cpp pathfinder.cpp mycar.cpp
+SOURCES   = ${ROBOT}.cpp spline.cpp trackdesc.cpp pathfinder.cpp mycar.cpp berniw.cpp driver.cpp opponent.cpp pit.cpp learn.cpp strategy.cpp cardata.cpp
 
 SHIPDIR   = drivers/${ROBOT}
 

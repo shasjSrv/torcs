@@ -20,6 +20,25 @@
 #ifndef _SPLINE_H_
 #define _SPLINE_H_
 
+class SplinePoint {
+	public:
+		float x;	// x coordinate.
+		float y;	// y coordinate.
+		float s;	// slope.
+};
+
+
+class Spline {
+	public:
+		Spline(int dim, SplinePoint *s);
+
+		float evaluate(float z);
+
+	private:
+		SplinePoint *s;
+		int dim;
+};
+
 // Structs to arrange data cache-friendly.
 typedef struct {
 	double a, b, c, d, h;

@@ -39,9 +39,6 @@
 #define TRACKFILENAME		"/home/berni/track.dat"
 #define TRACKDESCFILENAME   "/home/berni/track.txt"
 #define RMAX				10000.0
-#define maxBOTS 10
-#define BOTS 3
-#define BUFSIZE 256
 
 #define BERNIW_SECT_PRIV	"berniw private"
 #define BERNIW_ATT_PITENTRY	"pitentry"
@@ -52,10 +49,10 @@
 
 static const double g = 9.81;
 
-class Driver {
+class Driver_berniw {
 	public:
-		Driver(int index);
-		~Driver();
+		Driver_berniw(int index);
+		~Driver_berniw();
 
 		// Callback functions called from TORCS.
 		void initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);
@@ -70,6 +67,13 @@ class Driver {
 		void drive_follow(tSituation *s);
 		void drive_overtake(tSituation *s);
 		void update(tSituation *s);
+		float Gear();
+		float Steer();
+		float Brake();
+		float Accel(float brake);
+		void Pit();
+		int isStuck(tSituation *s);
+		void getUnstuck();
 
 		int index;
 		tCarElt *car;			// Pointer to tCarElt struct.
@@ -80,6 +84,8 @@ class Driver {
 		double currenttime;		
 		int specialid[2];
 
+		tdble parallel;
+		tdble cerror;
 		static const tdble waitToTurn; /* how long should i wait till i try to turn backwards */
 
 };

@@ -1,0 +1,1146 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACCELINC	mycar.h	/^		double ACCELINC;								\/* increment\/decrement for acceleration [-] *\/$/;"	m	class:MyCar	access:public
+ACCELLIMIT	mycar.h	/^		double ACCELLIMIT;								\/* maximal allowed acceleration *\/$/;"	m	class:MyCar	access:public
+AEROMAGIC	mycar.h	/^		double AEROMAGIC;								\/* aerodynamic lift factor [-] *\/$/;"	m	class:MyCar	access:public
+AHEAD	pathfinder.h	48;"	d
+AbstractCar	mycar.h	/^		AbstractCar() {};$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar	mycar.h	/^class AbstractCar$/;"	c
+AbstractCar::AbstractCar	mycar.h	/^		AbstractCar() {};$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::cgh	mycar.h	/^		double cgh;			\/* height of center of gravity *\/$/;"	m	class:AbstractCar	access:private
+AbstractCar::currentpos	mycar.h	/^		v3d currentpos;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::currentsegid	mycar.h	/^		int currentsegid;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::dir	mycar.h	/^		v3d dir;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::getCarPtr	mycar.h	/^		inline tCarElt* getCarPtr() { return me; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::getCurrentPos	mycar.h	/^		inline v3d* getCurrentPos() { return &currentpos; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::getCurrentSegId	mycar.h	/^		inline int getCurrentSegId() { return currentsegid; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::getDir	mycar.h	/^		inline v3d* getDir() { return &dir; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::getSpeed	mycar.h	/^		inline double getSpeed() { return speed; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::getSpeedSqr	mycar.h	/^		inline double getSpeedSqr() { return speedsqr; }$/;"	f	class:AbstractCar	access:public	signature:()
+AbstractCar::initCGh	mycar.h	/^		inline void initCGh() { cgh = GfParmGetNum(me->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0); }$/;"	f	class:AbstractCar	access:protected	signature:()
+AbstractCar::me	mycar.h	/^		tCarElt* me;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::setCarPtr	mycar.h	/^		inline void setCarPtr(tCarElt* car) { me = car; }$/;"	f	class:AbstractCar	access:protected	signature:(tCarElt* car)
+AbstractCar::speed	mycar.h	/^		double speed;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::speedsqr	mycar.h	/^		double speedsqr;$/;"	m	class:AbstractCar	access:protected
+AbstractCar::updateDir	mycar.h	/^		inline void updateDir() { dir.x = cos(me->_yaw); dir.y = sin(me->_yaw); dir.z = 0.0; }$/;"	f	class:AbstractCar	access:protected	signature:()
+AbstractCar::updatePos	mycar.h	/^		inline void updatePos() { currentpos.x = me->_pos_X; currentpos.y = me->_pos_Y; currentpos.z = me->_pos_Z - cgh; }$/;"	f	class:AbstractCar	access:protected	signature:()
+AbstractCar::updateSpeed	mycar.h	/^		inline void updateSpeed() { speed = sqrt(speedsqr); }$/;"	f	class:AbstractCar	access:protected	signature:()
+AbstractCar::updateSpeedSqr	mycar.h	/^		inline void updateSpeedSqr() { speedsqr = (me->_speed_x)*(me->_speed_x) + (me->_speed_y)*(me->_speed_y) + (me->_speed_z)*(me->_speed_z); }$/;"	f	class:AbstractCar	access:protected	signature:()
+AbstractCar::~AbstractCar	mycar.h	/^		~AbstractCar() {};$/;"	f	class:AbstractCar	access:public	signature:()
+Accel	berniw.cpp	/^float Driver::Accel(float brake)$/;"	f	class:Driver	signature:(float brake)
+Accel	berniw.h	/^		float Accel(float brake);$/;"	p	class:Driver	access:private	signature:(float brake)
+BERNIW_ATT_AMAGIC	berniw.h	49;"	d
+BERNIW_ATT_FMAGIC	berniw.h	50;"	d
+BERNIW_ATT_FUELPERLAP	berniw.h	51;"	d
+BERNIW_ATT_PITENTRY	berniw.h	47;"	d
+BERNIW_ATT_PITEXIT	berniw.h	48;"	d
+BERNIW_SECT_PRIV	berniw.h	46;"	d
+BOTS	berniw.h	43;"	d
+BUFSIZE	berniw.h	44;"	d
+Brake	berniw.cpp	/^float Driver::Brake()$/;"	f	class:Driver	signature:()
+Brake	berniw.h	/^		float Brake();$/;"	p	class:Driver	access:private	signature:()
+CAREFUL	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+CARLEN	mycar.h	/^		double CARLEN;									\/* length of the car [m] *\/$/;"	m	class:MyCar	access:public
+CARWIDTH	mycar.h	/^		double CARWIDTH;								\/* width of the car [m] *\/$/;"	m	class:MyCar	access:public
+CFRICTION	mycar.h	/^		double CFRICTION;								\/* friction "magic" coefficient [-] *\/$/;"	m	class:MyCar	access:public
+COLLDIST	pathfinder.cpp	/^const double Pathfinder::COLLDIST = 200.0;$/;"	m	class:Pathfinder	file:
+COLLDIST	pathfinder.h	/^		static const double COLLDIST;	\/* up to this distance do we consider other cars as dangerous *\/$/;"	m	class:Pathfinder	access:private
+CORRLEN	mycar.cpp	/^const double MyCar::CORRLEN = 30.0;				\/* CORRLEN * derror is the length of the correction [m] *\/$/;"	m	class:MyCar	file:
+CORRLEN	mycar.h	/^		static const double CORRLEN;			\/* CORRLEN * derror is the length of the correction [m] *\/$/;"	m	class:MyCar	access:public
+D4WD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+DFWD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+DIST	mycar.h	/^		double DIST;									\/* minimal distance to other cars [m] *\/$/;"	m	class:MyCar	access:public
+DRWD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+Driver	berniw.cpp	/^Driver::Driver(int index)$/;"	f	class:Driver	signature:(int index)
+Driver	berniw.h	/^		Driver(int index);$/;"	p	class:Driver	access:public	signature:(int index)
+Driver	berniw.h	/^class Driver {$/;"	c
+Driver::Accel	berniw.cpp	/^float Driver::Accel(float brake)$/;"	f	class:Driver	signature:(float brake)
+Driver::Accel	berniw.h	/^		float Accel(float brake);$/;"	p	class:Driver	access:private	signature:(float brake)
+Driver::Brake	berniw.cpp	/^float Driver::Brake()$/;"	f	class:Driver	signature:()
+Driver::Brake	berniw.h	/^		float Brake();$/;"	p	class:Driver	access:private	signature:()
+Driver::Driver	berniw.cpp	/^Driver::Driver(int index)$/;"	f	class:Driver	signature:(int index)
+Driver::Driver	berniw.h	/^		Driver(int index);$/;"	p	class:Driver	access:public	signature:(int index)
+Driver::Gear	berniw.cpp	/^float Driver::Gear()$/;"	f	class:Driver	signature:()
+Driver::Gear	berniw.h	/^		float Gear();$/;"	p	class:Driver	access:private	signature:()
+Driver::Pit	berniw.cpp	/^void Driver::Pit()$/;"	f	class:Driver	signature:()
+Driver::Pit	berniw.h	/^		void Pit();$/;"	p	class:Driver	access:private	signature:()
+Driver::Steer	berniw.cpp	/^float Driver::Steer()$/;"	f	class:Driver	signature:()
+Driver::Steer	berniw.h	/^		float Steer();$/;"	p	class:Driver	access:private	signature:()
+Driver::car	berniw.h	/^		tCarElt *car;			\/\/ Pointer to tCarElt struct.$/;"	m	class:Driver	access:private
+Driver::cerror	berniw.h	/^		tdble cerror;$/;"	m	class:Driver	access:private
+Driver::currenttime	berniw.h	/^		double currenttime;		$/;"	m	class:Driver	access:private
+Driver::drive	berniw.cpp	/^void Driver::drive(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::drive	berniw.h	/^		void drive(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+Driver::drive_follow	berniw.cpp	/^void Driver::drive_follow(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::drive_follow	berniw.h	/^		void drive_follow(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::drive_normal	berniw.cpp	/^void Driver::drive_normal(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::drive_normal	berniw.h	/^		void drive_normal(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::drive_original	berniw.cpp	/^void Driver::drive_original(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::drive_original	berniw.h	/^		void drive_original(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::drive_overtake	berniw.cpp	/^void Driver::drive_overtake(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::drive_overtake	berniw.h	/^		void drive_overtake(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::endRace	berniw.h	/^		void endRace(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+Driver::getUnstuck	berniw.cpp	/^void Driver::getUnstuck()$/;"	f	class:Driver	signature:()
+Driver::getUnstuck	berniw.h	/^		void getUnstuck();$/;"	p	class:Driver	access:private	signature:()
+Driver::index	berniw.h	/^		int index;$/;"	m	class:Driver	access:private
+Driver::initTrack	berniw.cpp	/^void Driver::initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)$/;"	f	class:Driver	signature:(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+Driver::initTrack	berniw.h	/^		void initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);$/;"	p	class:Driver	access:public	signature:(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+Driver::isStuck	berniw.cpp	/^int Driver::isStuck(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::isStuck	berniw.h	/^		int isStuck(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::mpf	berniw.h	/^		Pathfinder* mpf;$/;"	m	class:Driver	access:private
+Driver::myTrackDesc	berniw.h	/^		TrackDesc* myTrackDesc;$/;"	m	class:Driver	access:private
+Driver::myc	berniw.h	/^		MyCar* myc;$/;"	m	class:Driver	access:private
+Driver::newRace	berniw.cpp	/^void Driver::newRace(tCarElt* car, tSituation *situation)$/;"	f	class:Driver	signature:(tCarElt* car, tSituation *situation)
+Driver::newRace	berniw.h	/^		void newRace(tCarElt* car, tSituation *situation);$/;"	p	class:Driver	access:public	signature:(tCarElt* car, tSituation *situation)
+Driver::ocar	berniw.h	/^		OtherCar* ocar;$/;"	m	class:Driver	access:private
+Driver::parallel	berniw.h	/^		tdble parallel;$/;"	m	class:Driver	access:private
+Driver::pitcmd	berniw.cpp	/^int Driver::pitcmd(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::pitcmd	berniw.h	/^		int pitcmd(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+Driver::specialid	berniw.h	/^		int specialid[2];$/;"	m	class:Driver	access:private
+Driver::update	berniw.cpp	/^void Driver::update(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+Driver::update	berniw.h	/^		void update(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+Driver::waitToTurn	berniw.cpp	/^const tdble Driver::waitToTurn = 1.0; \/\/ how long should i wait till i try to turn backwards $/;"	m	class:Driver	file:
+Driver::waitToTurn	berniw.h	/^		static const tdble waitToTurn; \/* how long should i wait till i try to turn backwards *\/$/;"	m	class:Driver	access:private
+Driver::~Driver	berniw.cpp	/^Driver::~Driver()$/;"	f	class:Driver	signature:()
+Driver::~Driver	berniw.h	/^		~Driver();$/;"	p	class:Driver	access:public	signature:()
+FLYSPEED	mycar.cpp	/^const double MyCar::FLYSPEED = 55.0;			\/* above this speed anti fly system is activated [m\/s] *\/$/;"	m	class:MyCar	file:
+FLYSPEED	mycar.h	/^		static const double FLYSPEED;			\/* speed where antifly checking gets activated [m\/s] *\/$/;"	m	class:MyCar	access:public
+FNIC	pathfinder.h	45;"	d
+FNIS	pathfinder.h	44;"	d
+FNPF	pathfinder.h	43;"	d
+GCTIME	mycar.h	/^		double GCTIME;									\/* minimal time between gear changes *\/$/;"	m	class:MyCar	access:public
+Gear	berniw.cpp	/^float Driver::Gear()$/;"	f	class:Driver	signature:()
+Gear	berniw.h	/^		float Gear();$/;"	p	class:Driver	access:private	signature:()
+INSANE	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+InitFuncPt	berniw.cpp	/^static int  InitFuncPt(int index, void *pt);$/;"	p	file:	signature:(int index, void *pt)
+InitFuncPt	berniw.cpp	/^static int InitFuncPt(int index, void *pt)$/;"	f	file:	signature:(int index, void *pt)
+LAPBACKTIMEPENALTY	mycar.cpp	/^const double MyCar::LAPBACKTIMEPENALTY = -30.0; \/* penalty if i am able to "lap back" [s] *\/$/;"	m	class:MyCar	file:
+LAPBACKTIMEPENALTY	mycar.h	/^		static const double LAPBACKTIMEPENALTY; \/* penalty if i am able to "lap back" [s] *\/$/;"	m	class:MyCar	access:public
+LOOKAHEAD_FACTOR	mycar.cpp	/^const double MyCar::LOOKAHEAD_FACTOR = 1.0\/3.0; \/* [-] *\/$/;"	m	class:MyCar	file:
+LOOKAHEAD_FACTOR	mycar.h	/^		static const double LOOKAHEAD_FACTOR;	\/* [-] *\/$/;"	m	class:MyCar	access:public
+LOOKAHEAD_MAX_ERROR	mycar.cpp	/^const double MyCar::LOOKAHEAD_MAX_ERROR = 2.0;	\/* [m] *\/$/;"	m	class:MyCar	file:
+LOOKAHEAD_MAX_ERROR	mycar.h	/^		static const double LOOKAHEAD_MAX_ERROR;\/* [m] *\/$/;"	m	class:MyCar	access:public
+MARGIN	mycar.cpp	/^const double MyCar::MARGIN = 0.3;				\/* security margin from track border [m] *\/$/;"	m	class:MyCar	file:
+MARGIN	mycar.h	/^		static const double MARGIN;				\/* security margin from track border [m] *\/$/;"	m	class:MyCar	access:public
+MAXALLOWEDPITCH	mycar.cpp	/^const double MyCar::MAXALLOWEDPITCH = 0.06;		\/* max allowed angle between road and car [radians] *\/$/;"	m	class:MyCar	file:
+MAXALLOWEDPITCH	mycar.h	/^		static const double MAXALLOWEDPITCH;	\/* [-] radians *\/$/;"	m	class:MyCar	access:public
+MAXANGLE	mycar.h	/^		double MAXANGLE;								\/* biggest allowed angle to the path [deg] *\/$/;"	m	class:MyCar	access:public
+MAXDAMMAGE	mycar.h	/^		int MAXDAMMAGE;									\/* if dammage > MAXDAMMAGE then we plan a pit stop [-] *\/$/;"	m	class:MyCar	access:public
+MAXRELAX	mycar.h	/^		double MAXRELAX;								\/* to avoid skidding (0..0.99) [-] *\/$/;"	m	class:MyCar	access:public
+MAX_FUEL_PER_METER	mycar.cpp	/^const double MyCar::MAX_FUEL_PER_METER = 0.0008;\/* [liter\/m] fuel consumtion *\/$/;"	m	class:MyCar	file:
+MAX_FUEL_PER_METER	mycar.h	/^		static const double MAX_FUEL_PER_METER;	\/* [liter\/m] fuel consumtion *\/$/;"	m	class:MyCar	access:public
+MAX_SPEED	mycar.cpp	/^const double MyCar::MAX_SPEED = 84.0;			\/* [m\/s] *\/$/;"	m	class:MyCar	file:
+MAX_SPEED	mycar.h	/^		static const double MAX_SPEED;			\/* [m\/s] *\/$/;"	m	class:MyCar	access:public
+MINOVERTAKERANGE	mycar.cpp	/^const double MyCar::MINOVERTAKERANGE = 250.0;	\/* minimum length for overtaking [m] *\/$/;"	m	class:MyCar	file:
+MINOVERTAKERANGE	mycar.h	/^		static const double MINOVERTAKERANGE;	\/* minimum length for overtaking [m] *\/$/;"	m	class:MyCar	access:public
+MODULE	Makefile	/^MODULE = ${ROBOT}.so$/;"	m
+MODULEDIR	Makefile	/^MODULEDIR = drivers\/${ROBOT}$/;"	m
+MyCar	mycar.cpp	/^MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)$/;"	f	class:MyCar	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar	mycar.h	/^		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);$/;"	p	class:MyCar	access:public	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar	mycar.h	/^class MyCar : public AbstractCar$/;"	c	inherits:AbstractCar
+MyCar::ACCELINC	mycar.h	/^		double ACCELINC;								\/* increment\/decrement for acceleration [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::ACCELLIMIT	mycar.h	/^		double ACCELLIMIT;								\/* maximal allowed acceleration *\/$/;"	m	class:MyCar	access:public
+MyCar::AEROMAGIC	mycar.h	/^		double AEROMAGIC;								\/* aerodynamic lift factor [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::CAREFUL	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::CARLEN	mycar.h	/^		double CARLEN;									\/* length of the car [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::CARWIDTH	mycar.h	/^		double CARWIDTH;								\/* width of the car [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::CFRICTION	mycar.h	/^		double CFRICTION;								\/* friction "magic" coefficient [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::CORRLEN	mycar.cpp	/^const double MyCar::CORRLEN = 30.0;				\/* CORRLEN * derror is the length of the correction [m] *\/$/;"	m	class:MyCar	file:
+MyCar::CORRLEN	mycar.h	/^		static const double CORRLEN;			\/* CORRLEN * derror is the length of the correction [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::D4WD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+MyCar::DFWD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+MyCar::DIST	mycar.h	/^		double DIST;									\/* minimal distance to other cars [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::DRWD	mycar.h	/^		enum { DRWD = 0, DFWD = 1, D4WD = 2 };$/;"	e	enum:MyCar::__anon2
+MyCar::FLYSPEED	mycar.cpp	/^const double MyCar::FLYSPEED = 55.0;			\/* above this speed anti fly system is activated [m\/s] *\/$/;"	m	class:MyCar	file:
+MyCar::FLYSPEED	mycar.h	/^		static const double FLYSPEED;			\/* speed where antifly checking gets activated [m\/s] *\/$/;"	m	class:MyCar	access:public
+MyCar::GCTIME	mycar.h	/^		double GCTIME;									\/* minimal time between gear changes *\/$/;"	m	class:MyCar	access:public
+MyCar::INSANE	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::LAPBACKTIMEPENALTY	mycar.cpp	/^const double MyCar::LAPBACKTIMEPENALTY = -30.0; \/* penalty if i am able to "lap back" [s] *\/$/;"	m	class:MyCar	file:
+MyCar::LAPBACKTIMEPENALTY	mycar.h	/^		static const double LAPBACKTIMEPENALTY; \/* penalty if i am able to "lap back" [s] *\/$/;"	m	class:MyCar	access:public
+MyCar::LOOKAHEAD_FACTOR	mycar.cpp	/^const double MyCar::LOOKAHEAD_FACTOR = 1.0\/3.0; \/* [-] *\/$/;"	m	class:MyCar	file:
+MyCar::LOOKAHEAD_FACTOR	mycar.h	/^		static const double LOOKAHEAD_FACTOR;	\/* [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::LOOKAHEAD_MAX_ERROR	mycar.cpp	/^const double MyCar::LOOKAHEAD_MAX_ERROR = 2.0;	\/* [m] *\/$/;"	m	class:MyCar	file:
+MyCar::LOOKAHEAD_MAX_ERROR	mycar.h	/^		static const double LOOKAHEAD_MAX_ERROR;\/* [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::MARGIN	mycar.cpp	/^const double MyCar::MARGIN = 0.3;				\/* security margin from track border [m] *\/$/;"	m	class:MyCar	file:
+MyCar::MARGIN	mycar.h	/^		static const double MARGIN;				\/* security margin from track border [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::MAXALLOWEDPITCH	mycar.cpp	/^const double MyCar::MAXALLOWEDPITCH = 0.06;		\/* max allowed angle between road and car [radians] *\/$/;"	m	class:MyCar	file:
+MyCar::MAXALLOWEDPITCH	mycar.h	/^		static const double MAXALLOWEDPITCH;	\/* [-] radians *\/$/;"	m	class:MyCar	access:public
+MyCar::MAXANGLE	mycar.h	/^		double MAXANGLE;								\/* biggest allowed angle to the path [deg] *\/$/;"	m	class:MyCar	access:public
+MyCar::MAXDAMMAGE	mycar.h	/^		int MAXDAMMAGE;									\/* if dammage > MAXDAMMAGE then we plan a pit stop [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::MAXRELAX	mycar.h	/^		double MAXRELAX;								\/* to avoid skidding (0..0.99) [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::MAX_FUEL_PER_METER	mycar.cpp	/^const double MyCar::MAX_FUEL_PER_METER = 0.0008;\/* [liter\/m] fuel consumtion *\/$/;"	m	class:MyCar	file:
+MyCar::MAX_FUEL_PER_METER	mycar.h	/^		static const double MAX_FUEL_PER_METER;	\/* [liter\/m] fuel consumtion *\/$/;"	m	class:MyCar	access:public
+MyCar::MAX_SPEED	mycar.cpp	/^const double MyCar::MAX_SPEED = 84.0;			\/* [m\/s] *\/$/;"	m	class:MyCar	file:
+MyCar::MAX_SPEED	mycar.h	/^		static const double MAX_SPEED;			\/* [m\/s] *\/$/;"	m	class:MyCar	access:public
+MyCar::MINOVERTAKERANGE	mycar.cpp	/^const double MyCar::MINOVERTAKERANGE = 250.0;	\/* minimum length for overtaking [m] *\/$/;"	m	class:MyCar	file:
+MyCar::MINOVERTAKERANGE	mycar.h	/^		static const double MINOVERTAKERANGE;	\/* minimum length for overtaking [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::MyCar	mycar.cpp	/^MyCar::MyCar(TrackDesc* track, tCarElt* car, tSituation *situation)$/;"	f	class:MyCar	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar::MyCar	mycar.h	/^		MyCar(TrackDesc* track, tCarElt* car, tSituation *situation);$/;"	p	class:MyCar	access:public	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar::NORMAL	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::OVERLAPPASSDIST	mycar.cpp	/^const double MyCar::OVERLAPPASSDIST = 30.0;		\/* distance smaller than that and waiting long enough -> let him pass *\/$/;"	m	class:MyCar	file:
+MyCar::OVERLAPPASSDIST	mycar.h	/^		static const double OVERLAPPASSDIST;	\/* distance smaller than that and waiting long enough -> let him pass *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERLAPSTARTDIST	mycar.cpp	/^const double MyCar::OVERLAPSTARTDIST = 70.0;	\/* distance where we start to check the need to let pass the opponent *\/$/;"	m	class:MyCar	file:
+MyCar::OVERLAPSTARTDIST	mycar.h	/^		static const double OVERLAPSTARTDIST;	\/* distance where we start to check the need to let pass the opponent *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERLAPWAITTIME	mycar.cpp	/^const double MyCar::OVERLAPWAITTIME = 5.0;		\/* minimal waiting time before we consider let him pass *\/$/;"	m	class:MyCar	file:
+MyCar::OVERLAPWAITTIME	mycar.h	/^		static const double OVERLAPWAITTIME;	\/* minimal waiting time before we consider let him pass *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERTAKEANGLE	mycar.cpp	/^const double MyCar::OVERTAKEANGLE = 0.03;		\/* minimum angle between cars [radians] *\/$/;"	m	class:MyCar	file:
+MyCar::OVERTAKEANGLE	mycar.h	/^		static const double OVERTAKEANGLE;		\/* [-] radians *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERTAKEDIST	mycar.cpp	/^const double MyCar::OVERTAKEDIST = 4.0;			\/* planning distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	file:
+MyCar::OVERTAKEDIST	mycar.h	/^		static const double OVERTAKEDIST;		\/* planned distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERTAKEMARGIN	mycar.cpp	/^const double MyCar::OVERTAKEMARGIN = 1.7;		\/* distance between cars [m] *\/$/;"	m	class:MyCar	file:
+MyCar::OVERTAKEMARGIN	mycar.h	/^		static const double OVERTAKEMARGIN;		\/* [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERTAKEMINDIST	mycar.cpp	/^const double MyCar::OVERTAKEMINDIST = 1.7;		\/* minimal distance between cars overtaking [m] *\/$/;"	m	class:MyCar	file:
+MyCar::OVERTAKEMINDIST	mycar.h	/^		static const double OVERTAKEMINDIST;	\/* minimal distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::OVERTAKERADIUS	mycar.cpp	/^const double MyCar::OVERTAKERADIUS = 100.0;		\/* min allowed radius to start overtaking [m] *\/$/;"	m	class:MyCar	file:
+MyCar::OVERTAKERADIUS	mycar.h	/^		static const double OVERTAKERADIUS;		\/* min allowed radius to start overtaking [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::PATHERR	mycar.cpp	/^const double MyCar::PATHERR = 0.5;				\/* if derror > PATHERR we take actions to come back to the path [m] *\/$/;"	m	class:MyCar	file:
+MyCar::PATHERR	mycar.h	/^		static const double PATHERR;			\/* if derror > PATHERR we take actions to come back to the path [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::PATHERRFACTOR	mycar.h	/^		double PATHERRFACTOR;							\/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] *\/$/;"	m	class:MyCar	access:public
+MyCar::PUSH	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::SHIFT	mycar.cpp	/^const double MyCar::SHIFT = 0.9;				\/* [-] (% of rpmredline) *\/$/;"	m	class:MyCar	file:
+MyCar::SHIFT	mycar.h	/^		static const double SHIFT;				\/* [-] (% of rpmredline) *\/$/;"	m	class:MyCar	access:public
+MyCar::SHIFT_MARGIN	mycar.cpp	/^const double MyCar::SHIFT_MARGIN = 4.0;			\/* [m\/s] *\/$/;"	m	class:MyCar	file:
+MyCar::SHIFT_MARGIN	mycar.h	/^		static const double SHIFT_MARGIN;		\/* [m\/s] *\/$/;"	m	class:MyCar	access:public
+MyCar::SLOW	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::SPEEDSQRFACTOR	mycar.h	/^		double SPEEDSQRFACTOR;							\/* multiplier for speedsqr *\/$/;"	m	class:MyCar	access:public
+MyCar::STABLESPEED	mycar.cpp	/^const double MyCar::STABLESPEED = 80.0;			\/* we brake currentspeed\/stablespeed if car seems unstable [m\/s] *\/$/;"	m	class:MyCar	file:
+MyCar::STABLESPEED	mycar.h	/^		static const double STABLESPEED;		\/* we brake currentspeed\/stablespeed if car seems unstable [m\/s] *\/$/;"	m	class:MyCar	access:public
+MyCar::START	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+MyCar::TCL_RANGE	mycar.cpp	/^const double MyCar::TCL_RANGE = 5.0;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	file:
+MyCar::TCL_RANGE	mycar.h	/^		static const double TCL_RANGE;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	access:public
+MyCar::TCL_SLIP	mycar.cpp	/^const double MyCar::TCL_SLIP = 2.0;				\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	file:
+MyCar::TCL_SLIP	mycar.h	/^		static const double TCL_SLIP;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	access:public
+MyCar::TIMETOCATCH	mycar.cpp	/^const double MyCar::TIMETOCATCH = 3.0;			\/* when do we start thinking about overtaking [s]*\/$/;"	m	class:MyCar	file:
+MyCar::TIMETOCATCH	mycar.h	/^		static const double TIMETOCATCH;		\/* when do we start thinking about overtaking [s]*\/$/;"	m	class:MyCar	access:public
+MyCar::TURNSPEED	mycar.cpp	/^const double MyCar::TURNSPEED = 3.0;			\/* if speed lower than this you can back up [m\/s] *\/$/;"	m	class:MyCar	file:
+MyCar::TURNSPEED	mycar.h	/^		static const double TURNSPEED;			\/* if speed lower than this you can back up [m\/s] *\/$/;"	m	class:MyCar	access:public
+MyCar::TURNTOL	mycar.cpp	/^const double MyCar::TURNTOL = 1.0;				\/* tolerance for end backing up [m] *\/$/;"	m	class:MyCar	file:
+MyCar::TURNTOL	mycar.h	/^		static const double TURNTOL;			\/* tolerance for end backing up [m] *\/$/;"	m	class:MyCar	access:public
+MyCar::accel	mycar.h	/^		double accel;$/;"	m	class:MyCar	access:public
+MyCar::behaviour	mycar.h	/^		double behaviour[6][12];$/;"	m	class:MyCar	access:public
+MyCar::bmode	mycar.h	/^		int bmode;$/;"	m	class:MyCar	access:public
+MyCar::ca	mycar.h	/^		double ca;$/;"	m	class:MyCar	access:public
+MyCar::carmass	mycar.h	/^		double carmass;			\/* mass of car without fuel *\/$/;"	m	class:MyCar	access:private
+MyCar::cgcorr_b	mycar.h	/^		double cgcorr_b;$/;"	m	class:MyCar	access:public
+MyCar::currentpathseg	mycar.h	/^		PathSeg* currentpathseg;$/;"	m	class:MyCar	access:public
+MyCar::currentseg	mycar.h	/^		TrackSegment* currentseg;$/;"	m	class:MyCar	access:public
+MyCar::cw	mycar.h	/^		double cw;$/;"	m	class:MyCar	access:public
+MyCar::deltapitch	mycar.h	/^		double deltapitch;		\/* angle between road and car *\/$/;"	m	class:MyCar	access:private
+MyCar::derror	mycar.h	/^		double derror;			\/* distance to desired trajectory *\/$/;"	m	class:MyCar	access:public
+MyCar::derrorsgn	mycar.h	/^		double derrorsgn;		\/* on which side of the trajectory am i left -1 or 1 right *\/$/;"	m	class:MyCar	access:private
+MyCar::destpathseg	mycar.h	/^		PathSeg* destpathseg;$/;"	m	class:MyCar	access:public
+MyCar::destseg	mycar.h	/^		TrackSegment* destseg;$/;"	m	class:MyCar	access:public
+MyCar::destsegid	mycar.h	/^		int destsegid;$/;"	m	class:MyCar	access:public
+MyCar::drivetrain	mycar.h	/^		int drivetrain;			\/* RWD, FWD or 4WD *\/$/;"	m	class:MyCar	access:private
+MyCar::fuelchecked	mycar.h	/^		bool fuelchecked;$/;"	m	class:MyCar	access:public
+MyCar::fuelperlap	mycar.h	/^		double fuelperlap;$/;"	m	class:MyCar	access:public
+MyCar::getDeltaPitch	mycar.h	/^		inline double getDeltaPitch() { return deltapitch; }$/;"	f	class:MyCar	access:public	signature:()
+MyCar::getErrorSgn	mycar.h	/^		inline double getErrorSgn() { return derrorsgn; }$/;"	f	class:MyCar	access:public	signature:()
+MyCar::getPathfinderPtr	mycar.h	/^		inline Pathfinder* getPathfinderPtr() { return pf; }$/;"	f	class:MyCar	access:public	signature:()
+MyCar::getWheelBase	mycar.h	/^		inline double getWheelBase() { return wheelbase; }$/;"	f	class:MyCar	access:public	signature:()
+MyCar::getWheelTrack	mycar.h	/^		inline double getWheelTrack() { return wheeltrack; }$/;"	f	class:MyCar	access:public	signature:()
+MyCar::info	mycar.cpp	/^void MyCar::info(void)$/;"	f	class:MyCar	signature:(void)
+MyCar::info	mycar.h	/^		void info(void);$/;"	p	class:MyCar	access:public	signature:(void)
+MyCar::initCarGeometry	mycar.cpp	/^void MyCar::initCarGeometry()$/;"	f	class:MyCar	signature:()
+MyCar::initCarGeometry	mycar.h	/^		void initCarGeometry();$/;"	p	class:MyCar	access:private	signature:()
+MyCar::lastfuel	mycar.h	/^		double lastfuel;$/;"	m	class:MyCar	access:public
+MyCar::lastpitfuel	mycar.h	/^		double lastpitfuel;$/;"	m	class:MyCar	access:public
+MyCar::loadBehaviour	mycar.cpp	/^void MyCar::loadBehaviour(int id) {$/;"	f	class:MyCar	signature:(int id)
+MyCar::loadBehaviour	mycar.h	/^		void loadBehaviour(int id);$/;"	p	class:MyCar	access:public	signature:(int id)
+MyCar::mass	mycar.h	/^		double mass;$/;"	m	class:MyCar	access:public
+MyCar::pf	mycar.h	/^		Pathfinder* pf;$/;"	m	class:MyCar	access:private
+MyCar::queryAcceleration	mycar.cpp	/^double MyCar::queryAcceleration(tCarElt * car, double speed)$/;"	f	class:MyCar	signature:(tCarElt * car, double speed)
+MyCar::queryAcceleration	mycar.h	/^		double queryAcceleration(tCarElt * car, double speed);$/;"	p	class:MyCar	access:public	signature:(tCarElt * car, double speed)
+MyCar::querySlipSpeed	mycar.cpp	/^double MyCar::querySlipSpeed(tCarElt* car)$/;"	f	class:MyCar	signature:(tCarElt* car)
+MyCar::querySlipSpeed	mycar.h	/^		double querySlipSpeed(tCarElt* car);$/;"	p	class:MyCar	access:public	signature:(tCarElt* car)
+MyCar::startmode	mycar.h	/^		bool startmode;$/;"	m	class:MyCar	access:public
+MyCar::tr_mode	mycar.h	/^		int tr_mode;$/;"	m	class:MyCar	access:public
+MyCar::trtime	mycar.h	/^		double trtime;$/;"	m	class:MyCar	access:public
+MyCar::turnaround	mycar.h	/^		double turnaround;$/;"	m	class:MyCar	access:public
+MyCar::undamaged	mycar.h	/^		int undamaged;$/;"	m	class:MyCar	access:public
+MyCar::update	mycar.cpp	/^void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)$/;"	f	class:MyCar	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar::update	mycar.h	/^		void update(TrackDesc* track, tCarElt* car, tSituation *situation);$/;"	p	class:MyCar	access:public	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+MyCar::updateCa	mycar.cpp	/^void MyCar::updateCa()$/;"	f	class:MyCar	signature:()
+MyCar::updateCa	mycar.h	/^		void updateCa();$/;"	p	class:MyCar	access:private	signature:()
+MyCar::updateDError	mycar.cpp	/^void MyCar::updateDError()$/;"	f	class:MyCar	signature:()
+MyCar::updateDError	mycar.h	/^		void updateDError();$/;"	p	class:MyCar	access:private	signature:()
+MyCar::wheelbase	mycar.h	/^		double wheelbase;$/;"	m	class:MyCar	access:private
+MyCar::wheeltrack	mycar.h	/^		double wheeltrack;$/;"	m	class:MyCar	access:private
+MyCar::~MyCar	mycar.cpp	/^MyCar::~MyCar()$/;"	f	class:MyCar	signature:()
+MyCar::~MyCar	mycar.h	/^		~MyCar();$/;"	p	class:MyCar	access:public	signature:()
+NORMAL	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+NTPARAMS	pathfinder.h	/^		enum { NTPARAMS = 1001 };		\/* # entries in dat files *\/$/;"	e	enum:Pathfinder::__anon9
+OVERLAPPASSDIST	mycar.cpp	/^const double MyCar::OVERLAPPASSDIST = 30.0;		\/* distance smaller than that and waiting long enough -> let him pass *\/$/;"	m	class:MyCar	file:
+OVERLAPPASSDIST	mycar.h	/^		static const double OVERLAPPASSDIST;	\/* distance smaller than that and waiting long enough -> let him pass *\/$/;"	m	class:MyCar	access:public
+OVERLAPSTARTDIST	mycar.cpp	/^const double MyCar::OVERLAPSTARTDIST = 70.0;	\/* distance where we start to check the need to let pass the opponent *\/$/;"	m	class:MyCar	file:
+OVERLAPSTARTDIST	mycar.h	/^		static const double OVERLAPSTARTDIST;	\/* distance where we start to check the need to let pass the opponent *\/$/;"	m	class:MyCar	access:public
+OVERLAPWAITTIME	mycar.cpp	/^const double MyCar::OVERLAPWAITTIME = 5.0;		\/* minimal waiting time before we consider let him pass *\/$/;"	m	class:MyCar	file:
+OVERLAPWAITTIME	mycar.h	/^		static const double OVERLAPWAITTIME;	\/* minimal waiting time before we consider let him pass *\/$/;"	m	class:MyCar	access:public
+OVERTAKEANGLE	mycar.cpp	/^const double MyCar::OVERTAKEANGLE = 0.03;		\/* minimum angle between cars [radians] *\/$/;"	m	class:MyCar	file:
+OVERTAKEANGLE	mycar.h	/^		static const double OVERTAKEANGLE;		\/* [-] radians *\/$/;"	m	class:MyCar	access:public
+OVERTAKEDIST	mycar.cpp	/^const double MyCar::OVERTAKEDIST = 4.0;			\/* planning distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	file:
+OVERTAKEDIST	mycar.h	/^		static const double OVERTAKEDIST;		\/* planned distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	access:public
+OVERTAKEMARGIN	mycar.cpp	/^const double MyCar::OVERTAKEMARGIN = 1.7;		\/* distance between cars [m] *\/$/;"	m	class:MyCar	file:
+OVERTAKEMARGIN	mycar.h	/^		static const double OVERTAKEMARGIN;		\/* [m] *\/$/;"	m	class:MyCar	access:public
+OVERTAKEMINDIST	mycar.cpp	/^const double MyCar::OVERTAKEMINDIST = 1.7;		\/* minimal distance between cars overtaking [m] *\/$/;"	m	class:MyCar	file:
+OVERTAKEMINDIST	mycar.h	/^		static const double OVERTAKEMINDIST;	\/* minimal distance of CG's while overtaking [m] *\/$/;"	m	class:MyCar	access:public
+OVERTAKERADIUS	mycar.cpp	/^const double MyCar::OVERTAKERADIUS = 100.0;		\/* min allowed radius to start overtaking [m] *\/$/;"	m	class:MyCar	file:
+OVERTAKERADIUS	mycar.h	/^		static const double OVERTAKERADIUS;		\/* min allowed radius to start overtaking [m] *\/$/;"	m	class:MyCar	access:public
+OtherCar	mycar.h	/^class OtherCar: public AbstractCar$/;"	c	inherits:AbstractCar
+OtherCar::dt	mycar.h	/^		double dt;$/;"	m	class:OtherCar	access:private
+OtherCar::init	mycar.cpp	/^void OtherCar::init(TrackDesc* itrack, tCarElt* car, tSituation *situation)$/;"	f	class:OtherCar	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+OtherCar::init	mycar.h	/^		void init(TrackDesc* itrack, tCarElt* car, tSituation *situation);$/;"	p	class:OtherCar	access:public	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+OtherCar::track	mycar.h	/^		TrackDesc* track;$/;"	m	class:OtherCar	access:private
+OtherCar::update	mycar.cpp	/^void OtherCar::update()$/;"	f	class:OtherCar	signature:()
+OtherCar::update	mycar.h	/^		void update(void);$/;"	p	class:OtherCar	access:public	signature:(void)
+PATHERR	mycar.cpp	/^const double MyCar::PATHERR = 0.5;				\/* if derror > PATHERR we take actions to come back to the path [m] *\/$/;"	m	class:MyCar	file:
+PATHERR	mycar.h	/^		static const double PATHERR;			\/* if derror > PATHERR we take actions to come back to the path [m] *\/$/;"	m	class:MyCar	access:public
+PATHERRFACTOR	mycar.h	/^		double PATHERRFACTOR;							\/* if derror > PATHERR*PATHERRFACTOR we compute a corrected path [-] *\/$/;"	m	class:MyCar	access:public
+PATH_K1999	pathfinder.h	57;"	d
+PITPOINTS	pathfinder.h	/^		enum { PITPOINTS = 7 };			\/* # points for pit spline *\/$/;"	e	enum:Pathfinder::__anon8
+PKGSUBDIRS	Makefile	/^PKGSUBDIRS	= $(SHIPSUBDIRS)$/;"	m
+PUSH	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+PathSeg	pathfinder.h	/^class PathSeg$/;"	c
+PathSeg::d	pathfinder.h	/^		v3d d;			\/* direction vector of dynamic trajectory *\/$/;"	m	class:PathSeg	access:private
+PathSeg::getDir	pathfinder.h	/^		inline v3d* getDir() { return &d; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getLength	pathfinder.h	/^		inline tdble getLength() { return length; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getLoc	pathfinder.h	/^		inline v3d* getLoc() { return &p; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getOptLoc	pathfinder.h	/^		inline v3d* getOptLoc() { return &o; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getPitLoc	pathfinder.h	/^		inline v3d* getPitLoc() { return l; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getRadius	pathfinder.h	/^		inline tdble getRadius() { return radius; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getSpeedsqr	pathfinder.h	/^		inline tdble getSpeedsqr() { return speedsqr; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::getWeight	pathfinder.h	/^		inline tdble getWeight() { return weight; }$/;"	f	class:PathSeg	access:public	signature:()
+PathSeg::l	pathfinder.h	/^		v3d* l;			\/* trajectory for pit lane *\/$/;"	m	class:PathSeg	access:private
+PathSeg::length	pathfinder.h	/^		tdble length;	\/* dist to the next pathseg *\/$/;"	m	class:PathSeg	access:private
+PathSeg::o	pathfinder.h	/^		v3d o;			\/* position in space, static trajectory *\/$/;"	m	class:PathSeg	access:private
+PathSeg::p	pathfinder.h	/^		v3d p;			\/* position in space, dynamic trajectory *\/$/;"	m	class:PathSeg	access:private
+PathSeg::radius	pathfinder.h	/^		tdble radius;	\/* radius of current segment *\/$/;"	m	class:PathSeg	access:private
+PathSeg::set	pathfinder.h	/^		void set(tdble ispeedsqr, tdble ilength, v3d* id);$/;"	p	class:PathSeg	access:public	signature:(tdble ispeedsqr, tdble ilength, v3d* id)
+PathSeg::set	pathfinder.h	/^		void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id);$/;"	p	class:PathSeg	access:public	signature:(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id)
+PathSeg::set	pathfinder.h	/^inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* id) {$/;"	f	class:PathSeg	signature:(tdble ispeedsqr, tdble ilength, v3d* id)
+PathSeg::set	pathfinder.h	/^inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {$/;"	f	class:PathSeg	signature:(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id)
+PathSeg::setLoc	pathfinder.h	/^		inline void setLoc(v3d* ip) { p = (*ip); }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+PathSeg::setOptLoc	pathfinder.h	/^		inline void setOptLoc(v3d* ip) { o = (*ip); }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+PathSeg::setPitLoc	pathfinder.h	/^		inline void setPitLoc(v3d* ip) { l = ip; }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+PathSeg::setRadius	pathfinder.h	/^		inline void setRadius(tdble r) { radius = r; }$/;"	f	class:PathSeg	access:public	signature:(tdble r)
+PathSeg::setSpeedsqr	pathfinder.h	/^		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }$/;"	f	class:PathSeg	access:public	signature:(tdble spsqr)
+PathSeg::setWeight	pathfinder.h	/^		inline void setWeight(tdble w) { weight = w; }$/;"	f	class:PathSeg	access:public	signature:(tdble w)
+PathSeg::speedsqr	pathfinder.h	/^		tdble speedsqr;	\/* max possible speed sqared (speed ist therefore sqrt(speedsqr) *\/$/;"	m	class:PathSeg	access:private
+PathSeg::weight	pathfinder.h	/^		tdble weight;	\/* weight function value for superposition *\/$/;"	m	class:PathSeg	access:private
+Pathfinder	pathfinder.cpp	/^Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)$/;"	f	class:Pathfinder	signature:(TrackDesc* itrack, tCarElt* car, tSituation *s)
+Pathfinder	pathfinder.h	/^		Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *situation);$/;"	p	class:Pathfinder	access:public	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+Pathfinder	pathfinder.h	/^class Pathfinder$/;"	c
+Pathfinder::COLLDIST	pathfinder.cpp	/^const double Pathfinder::COLLDIST = 200.0;$/;"	m	class:Pathfinder	file:
+Pathfinder::COLLDIST	pathfinder.h	/^		static const double COLLDIST;	\/* up to this distance do we consider other cars as dangerous *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::NTPARAMS	pathfinder.h	/^		enum { NTPARAMS = 1001 };		\/* # entries in dat files *\/$/;"	e	enum:Pathfinder::__anon9
+Pathfinder::PITPOINTS	pathfinder.h	/^		enum { PITPOINTS = 7 };			\/* # points for pit spline *\/$/;"	e	enum:Pathfinder::__anon8
+Pathfinder::Pathfinder	pathfinder.cpp	/^Pathfinder::Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *s)$/;"	f	class:Pathfinder	signature:(TrackDesc* itrack, tCarElt* car, tSituation *s)
+Pathfinder::Pathfinder	pathfinder.h	/^		Pathfinder(TrackDesc* itrack, tCarElt* car, tSituation *situation);$/;"	p	class:Pathfinder	access:public	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+Pathfinder::TPRES	pathfinder.cpp	/^const double Pathfinder::TPRES = PI\/(NTPARAMS - 1);	\/* resolution of the steps *\/$/;"	m	class:Pathfinder	file:
+Pathfinder::TPRES	pathfinder.h	/^		static const double TPRES;		\/* resolution of the steps *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::adjustRadius	pathfinder.cpp	/^inline void Pathfinder::adjustRadius(int s, int p, int e, double c, double security) {$/;"	f	class:Pathfinder	signature:(int s, int p, int e, double c, double security)
+Pathfinder::adjustRadius	pathfinder.h	/^		void adjustRadius(int s, int p, int e, double c, double carwidth);$/;"	p	class:Pathfinder	access:private	signature:(int s, int p, int e, double c, double carwidth)
+Pathfinder::changed	pathfinder.h	/^		int changed;$/;"	m	class:Pathfinder	access:private
+Pathfinder::clothlength	pathfinder.cpp	/^double Pathfinder::clothlength(double beta, double y)$/;"	f	class:Pathfinder	signature:(double beta, double y)
+Pathfinder::clothlength	pathfinder.h	/^		double clothlength(double beta, double y);$/;"	p	class:Pathfinder	access:private	signature:(double beta, double y)
+Pathfinder::clothparam	pathfinder.cpp	/^double Pathfinder::clothparam(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+Pathfinder::clothparam	pathfinder.h	/^		double clothparam(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+Pathfinder::clothsigma	pathfinder.cpp	/^double Pathfinder::clothsigma(double beta, double y)$/;"	f	class:Pathfinder	signature:(double beta, double y)
+Pathfinder::clothsigma	pathfinder.h	/^		double clothsigma(double beta, double y);$/;"	p	class:Pathfinder	access:private	signature:(double beta, double y)
+Pathfinder::collcars	pathfinder.h	/^		int collcars;$/;"	m	class:Pathfinder	access:private
+Pathfinder::collision	pathfinder.cpp	/^int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)
+Pathfinder::collision	pathfinder.h	/^		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar)
+Pathfinder::computeWeight	pathfinder.cpp	/^double Pathfinder::computeWeight(double x, double len)$/;"	f	class:Pathfinder	signature:(double x, double len)
+Pathfinder::computeWeight	pathfinder.h	/^		double computeWeight(double x, double len);$/;"	p	class:Pathfinder	access:private	signature:(double x, double len)
+Pathfinder::correctPath	pathfinder.cpp	/^int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)$/;"	f	class:Pathfinder	signature:(int id, tCarElt* car, MyCar* myc)
+Pathfinder::correctPath	pathfinder.h	/^		int correctPath(int id, tCarElt* car, MyCar* myc);$/;"	p	class:Pathfinder	access:private	signature:(int id, tCarElt* car, MyCar* myc)
+Pathfinder::countSegments	pathfinder.h	/^		int countSegments(int from, int to);$/;"	p	class:Pathfinder	access:private	signature:(int from, int to)
+Pathfinder::countSegments	pathfinder.h	/^inline int Pathfinder::countSegments(int from, int to)$/;"	f	class:Pathfinder	signature:(int from, int to)
+Pathfinder::cp	pathfinder.h	/^		tParam cp[NTPARAMS];			\/* holds values needed for clothiod *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::curvature	pathfinder.cpp	/^inline double Pathfinder::curvature(double xp, double yp, double x, double y, double xn, double yn)$/;"	f	class:Pathfinder	signature:(double xp, double yp, double x, double y, double xn, double yn)
+Pathfinder::curvature	pathfinder.h	/^		double curvature(double xp, double yp, double x, double y, double xn, double yn);$/;"	p	class:Pathfinder	access:private	signature:(double xp, double yp, double x, double y, double xn, double yn)
+Pathfinder::dist	pathfinder.h	/^		inline double dist(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y) + sqr(a->z-b->z)); }$/;"	f	class:Pathfinder	access:public	signature:(v3d* a, v3d* b)
+Pathfinder::dist2D	pathfinder.h	/^		inline double dist2D(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y)); }$/;"	f	class:Pathfinder	access:public	signature:(v3d* a, v3d* b)
+Pathfinder::distToPath	pathfinder.h	/^		double distToPath(int trackSegId, v3d* p);$/;"	p	class:Pathfinder	access:public	signature:(int trackSegId, v3d* p)
+Pathfinder::distToPath	pathfinder.h	/^inline double Pathfinder::distToPath(int trackSegId, v3d* p)$/;"	f	class:Pathfinder	signature:(int trackSegId, v3d* p)
+Pathfinder::e1	pathfinder.h	/^		int e1, e3;				\/* pitexitstart, pitexitend *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::e3	pathfinder.h	/^		int e1, e3;				\/* pitexitstart, pitexitend *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::findEndSegId	pathfinder.cpp	/^int Pathfinder::findEndSegId(int id)$/;"	f	class:Pathfinder	signature:(int id)
+Pathfinder::findEndSegId	pathfinder.h	/^		int findEndSegId(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+Pathfinder::findStartSegId	pathfinder.cpp	/^int Pathfinder::findStartSegId(int id)$/;"	f	class:Pathfinder	signature:(int id)
+Pathfinder::findStartSegId	pathfinder.h	/^		int findStartSegId(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+Pathfinder::getCurrentSegment	pathfinder.h	/^		int getCurrentSegment(tCarElt* car);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car)
+Pathfinder::getCurrentSegment	pathfinder.h	/^		int getCurrentSegment(tCarElt* car, int range);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car, int range)
+Pathfinder::getCurrentSegment	pathfinder.h	/^inline int Pathfinder::getCurrentSegment(tCarElt* car)$/;"	f	class:Pathfinder	signature:(tCarElt* car)
+Pathfinder::getCurrentSegment	pathfinder.h	/^inline int Pathfinder::getCurrentSegment(tCarElt* car, int range)$/;"	f	class:Pathfinder	signature:(tCarElt* car, int range)
+Pathfinder::getPathSeg	pathfinder.h	/^		inline PathSeg* getPathSeg(int pathSegId) { return &ps[pathSegId]; }$/;"	f	class:Pathfinder	access:public	signature:(int pathSegId)
+Pathfinder::getPitPoint	pathfinder.h	/^		void getPitPoint(int j, int k, double slope, double dist, v3d* r);$/;"	p	class:Pathfinder	access:private	signature:(int j, int k, double slope, double dist, v3d* r)
+Pathfinder::getPitSegId	pathfinder.h	/^		inline int getPitSegId() { return pitSegId; }$/;"	f	class:Pathfinder	access:public	signature:()
+Pathfinder::getPitSpeedSqrLimit	pathfinder.h	/^		inline double getPitSpeedSqrLimit() { return pitspeedsqrlimit; }$/;"	f	class:Pathfinder	access:public	signature:()
+Pathfinder::getPitStop	pathfinder.h	/^		inline bool getPitStop() { return pitStop; }$/;"	f	class:Pathfinder	access:public	signature:()
+Pathfinder::getnPathSeg	pathfinder.h	/^		inline int getnPathSeg() { return nPathSeg; }$/;"	f	class:Pathfinder	access:public	signature:()
+Pathfinder::inPit	pathfinder.h	/^		bool inPit;				\/* internal pit state *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::initLeft	pathfinder.cpp	/^int Pathfinder::initLeft(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+Pathfinder::initLeft	pathfinder.h	/^		int initLeft(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+Pathfinder::initPit	pathfinder.cpp	/^void Pathfinder::initPit(tCarElt* car) {$/;"	f	class:Pathfinder	signature:(tCarElt* car)
+Pathfinder::initPit	pathfinder.h	/^		void initPit(tCarElt* car);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car)
+Pathfinder::initPitStopPath	pathfinder.cpp	/^void Pathfinder::initPitStopPath(void)$/;"	f	class:Pathfinder	signature:(void)
+Pathfinder::initPitStopPath	pathfinder.h	/^		void initPitStopPath(void);$/;"	p	class:Pathfinder	access:private	signature:(void)
+Pathfinder::initRight	pathfinder.cpp	/^int Pathfinder::initRight(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+Pathfinder::initRight	pathfinder.h	/^		int initRight(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+Pathfinder::initStraight	pathfinder.cpp	/^int Pathfinder::initStraight(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+Pathfinder::initStraight	pathfinder.h	/^		int initStraight(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+Pathfinder::intcossqr	pathfinder.cpp	/^double Pathfinder::intcossqr(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+Pathfinder::intcossqr	pathfinder.h	/^		double intcossqr(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+Pathfinder::interpolate	pathfinder.cpp	/^void Pathfinder::interpolate(int step)$/;"	f	class:Pathfinder	signature:(int step)
+Pathfinder::interpolate	pathfinder.h	/^		void interpolate(int Step);$/;"	p	class:Pathfinder	access:private	signature:(int Step)
+Pathfinder::intsinsqr	pathfinder.cpp	/^double Pathfinder::intsinsqr(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+Pathfinder::intsinsqr	pathfinder.h	/^		double intsinsqr(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+Pathfinder::isPitAvailable	pathfinder.h	/^		inline bool isPitAvailable() { return pit; }$/;"	f	class:Pathfinder	access:public	signature:()
+Pathfinder::lastId	pathfinder.h	/^		int lastId;				\/* segment id of the last call *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::lastPlan	pathfinder.h	/^		int lastPlan;			\/* start of the last plan *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::lastPlanRange	pathfinder.h	/^		int lastPlanRange;		\/* range of the last plan *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::letoverlap	pathfinder.cpp	/^int Pathfinder::letoverlap(int trackSegId, tSituation *situation, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *situation, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)
+Pathfinder::letoverlap	pathfinder.h	/^        int letoverlap(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)
+Pathfinder::loadClothoidParams	pathfinder.cpp	/^bool Pathfinder::loadClothoidParams(tParam* p)$/;"	f	class:Pathfinder	signature:(tParam* p)
+Pathfinder::loadClothoidParams	pathfinder.h	/^		bool loadClothoidParams(tParam* p);$/;"	p	class:Pathfinder	access:private	signature:(tParam* p)
+Pathfinder::nPathSeg	pathfinder.h	/^		int nPathSeg;			\/* # of PathSeg's *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::o	pathfinder.h	/^		tOCar* o;$/;"	m	class:Pathfinder	access:private
+Pathfinder::optimize	pathfinder.cpp	/^void Pathfinder::optimize(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+Pathfinder::optimize	pathfinder.h	/^		void optimize(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+Pathfinder::optimize2	pathfinder.cpp	/^void Pathfinder::optimize2(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+Pathfinder::optimize2	pathfinder.h	/^		void optimize2(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+Pathfinder::optimize3	pathfinder.cpp	/^void Pathfinder::optimize3(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+Pathfinder::optimize3	pathfinder.h	/^		void optimize3(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+Pathfinder::overlaptimer	pathfinder.h	/^		tOverlapTimer* overlaptimer;$/;"	m	class:Pathfinder	access:private
+Pathfinder::overtake	pathfinder.cpp	/^int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)
+Pathfinder::overtake	pathfinder.h	/^		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)
+Pathfinder::pathSlope	pathfinder.h	/^		double pathSlope(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+Pathfinder::pathSlope	pathfinder.h	/^inline double Pathfinder::pathSlope(int id) {$/;"	f	class:Pathfinder	signature:(int id)
+Pathfinder::pit	pathfinder.h	/^		bool pit;$/;"	m	class:Pathfinder	access:private
+Pathfinder::pitLoc	pathfinder.h	/^		v3d pitLoc;				\/* location of pit *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::pitSegId	pathfinder.h	/^		int pitSegId;			\/* segment id of pit *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::pitStop	pathfinder.h	/^		bool pitStop;			\/* pitstop ? *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::pitcord	pathfinder.h	/^		v3d* pitcord;$/;"	m	class:Pathfinder	access:private
+Pathfinder::pitspeedsqrlimit	pathfinder.h	/^		double pitspeedsqrlimit;	\/* speed limit for pit lane squared *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::plan	pathfinder.cpp	/^void Pathfinder::plan(MyCar* myc)$/;"	f	class:Pathfinder	signature:(MyCar* myc)
+Pathfinder::plan	pathfinder.cpp	/^void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)
+Pathfinder::plan	pathfinder.h	/^		void plan(MyCar* myc);$/;"	p	class:Pathfinder	access:public	signature:(MyCar* myc)
+Pathfinder::plan	pathfinder.h	/^		void plan(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:public	signature:(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar)
+Pathfinder::plotPath	pathfinder.cpp	/^void Pathfinder::plotPath(char* filename)$/;"	f	class:Pathfinder	signature:(char* filename)
+Pathfinder::plotPath	pathfinder.h	/^		void plotPath(char* filename);$/;"	p	class:Pathfinder	access:public	signature:(char* filename)
+Pathfinder::plotPitStopPath	pathfinder.cpp	/^void Pathfinder::plotPitStopPath(char* filename)$/;"	f	class:Pathfinder	signature:(char* filename)
+Pathfinder::plotPitStopPath	pathfinder.h	/^		void plotPitStopPath(char* filename);$/;"	p	class:Pathfinder	access:public	signature:(char* filename)
+Pathfinder::ps	pathfinder.h	/^		PathSeg* ps;			\/* array with the plan *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::s1	pathfinder.h	/^		int s1, s3;				\/* pitentrystart, pitentryend *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::s3	pathfinder.h	/^		int s1, s3;				\/* pitentrystart, pitentryend *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::segmentsToPit	pathfinder.h	/^		int segmentsToPit(int id);$/;"	p	class:Pathfinder	access:public	signature:(int id)
+Pathfinder::segmentsToPit	pathfinder.h	/^inline int Pathfinder::segmentsToPit(int id) {$/;"	f	class:Pathfinder	signature:(int id)
+Pathfinder::setLocWeighted	pathfinder.cpp	/^void Pathfinder::setLocWeighted(int id, double newweight, v3d* newp)$/;"	f	class:Pathfinder	signature:(int id, double newweight, v3d* newp)
+Pathfinder::setLocWeighted	pathfinder.h	/^		void setLocWeighted(int id, double newweight, v3d* newp);$/;"	p	class:Pathfinder	access:private	signature:(int id, double newweight, v3d* newp)
+Pathfinder::setPitStop	pathfinder.h	/^		void setPitStop(bool p, int id);$/;"	p	class:Pathfinder	access:public	signature:(bool p, int id)
+Pathfinder::setPitStop	pathfinder.h	/^inline void Pathfinder::setPitStop(bool p, int id) {$/;"	f	class:Pathfinder	signature:(bool p, int id)
+Pathfinder::smooth	pathfinder.cpp	/^void Pathfinder::smooth(int Step)$/;"	f	class:Pathfinder	signature:(int Step)
+Pathfinder::smooth	pathfinder.cpp	/^void Pathfinder::smooth(int id, double delta, double w)$/;"	f	class:Pathfinder	signature:(int id, double delta, double w)
+Pathfinder::smooth	pathfinder.cpp	/^void Pathfinder::smooth(int s, int p, int e, double w)$/;"	f	class:Pathfinder	signature:(int s, int p, int e, double w)
+Pathfinder::smooth	pathfinder.h	/^		void smooth(int Step);$/;"	p	class:Pathfinder	access:private	signature:(int Step)
+Pathfinder::smooth	pathfinder.h	/^		void smooth(int id, double delta, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double delta, double w)
+Pathfinder::smooth	pathfinder.h	/^		void smooth(int s, int e, int p, double w);$/;"	p	class:Pathfinder	access:private	signature:(int s, int e, int p, double w)
+Pathfinder::sqr	pathfinder.h	/^		inline double sqr(double a) { return a*a; };$/;"	f	class:Pathfinder	access:public	signature:(double a)
+Pathfinder::stepInterpolate	pathfinder.cpp	/^void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)$/;"	f	class:Pathfinder	signature:(int iMin, int iMax, int Step)
+Pathfinder::stepInterpolate	pathfinder.h	/^		void stepInterpolate(int iMin, int iMax, int Step);$/;"	p	class:Pathfinder	access:private	signature:(int iMin, int iMax, int Step)
+Pathfinder::track	pathfinder.h	/^		TrackDesc* track;		\/* pointer to track data *\/$/;"	m	class:Pathfinder	access:private
+Pathfinder::updateOCar	pathfinder.cpp	/^inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)
+Pathfinder::updateOCar	pathfinder.h	/^		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)
+Pathfinder::updateOverlapTimer	pathfinder.cpp	/^inline void Pathfinder::updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)
+Pathfinder::updateOverlapTimer	pathfinder.h	/^		void updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)
+Pathfinder::~Pathfinder	pathfinder.cpp	/^Pathfinder::~Pathfinder()$/;"	f	class:Pathfinder	signature:()
+Pathfinder::~Pathfinder	pathfinder.h	/^		~Pathfinder();$/;"	p	class:Pathfinder	access:public	signature:()
+Pit	berniw.cpp	/^void Driver::Pit()$/;"	f	class:Driver	signature:()
+Pit	berniw.h	/^		void Pit();$/;"	p	class:Driver	access:private	signature:()
+RMAX	berniw.h	41;"	d
+RMAX	trackdesc.h	45;"	d
+ROBOT	1/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	10/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	2/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	3/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	4/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	5/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	6/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	7/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	8/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	9/Makefile	/^ROBOT = berniw$/;"	m
+ROBOT	Makefile	/^ROBOT = berniw$/;"	m
+RREL	trackdesc.h	48;"	d
+SEGRANGE	pathfinder.h	51;"	d
+SHIFT	mycar.cpp	/^const double MyCar::SHIFT = 0.9;				\/* [-] (% of rpmredline) *\/$/;"	m	class:MyCar	file:
+SHIFT	mycar.h	/^		static const double SHIFT;				\/* [-] (% of rpmredline) *\/$/;"	m	class:MyCar	access:public
+SHIFT_MARGIN	mycar.cpp	/^const double MyCar::SHIFT_MARGIN = 4.0;			\/* [m\/s] *\/$/;"	m	class:MyCar	file:
+SHIFT_MARGIN	mycar.h	/^		static const double SHIFT_MARGIN;		\/* [m\/s] *\/$/;"	m	class:MyCar	access:public
+SHIP	1/Makefile	/^SHIP      = car1-stock1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	10/Makefile	/^SHIP      = car1-trb3.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	2/Makefile	/^SHIP      = car1-stock1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	3/Makefile	/^SHIP      = car1-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	4/Makefile	/^SHIP      = car2-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	5/Makefile	/^SHIP      = car3-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	6/Makefile	/^SHIP      = car4-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	7/Makefile	/^SHIP      = car5-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	8/Makefile	/^SHIP      = car6-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	9/Makefile	/^SHIP      = car7-trb1.rgb $(shell find *.xml -maxdepth 0 -type f -print)$/;"	m
+SHIP	Makefile	/^SHIP      = ${ROBOT}.xml logo.rgb$/;"	m
+SHIPDIR	1/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/1$/;"	m
+SHIPDIR	10/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/10$/;"	m
+SHIPDIR	2/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/2$/;"	m
+SHIPDIR	3/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/3$/;"	m
+SHIPDIR	4/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/4$/;"	m
+SHIPDIR	5/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/5$/;"	m
+SHIPDIR	6/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/6$/;"	m
+SHIPDIR	7/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/7$/;"	m
+SHIPDIR	8/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/8$/;"	m
+SHIPDIR	9/Makefile	/^SHIPDIR   = drivers\/${ROBOT}\/9$/;"	m
+SHIPDIR	Makefile	/^SHIPDIR   = drivers\/${ROBOT}$/;"	m
+SHIPSUBDIRS	Makefile	/^SHIPSUBDIRS = 1 2 3 4 5 6 7 8 9 10$/;"	m
+SLOW	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+SOURCES	Makefile	/^SOURCES   = ${ROBOT}.cpp spline.cpp trackdesc.cpp pathfinder.cpp mycar.cpp$/;"	m
+SPEEDSQRFACTOR	mycar.h	/^		double SPEEDSQRFACTOR;							\/* multiplier for speedsqr *\/$/;"	m	class:MyCar	access:public
+STABLESPEED	mycar.cpp	/^const double MyCar::STABLESPEED = 80.0;			\/* we brake currentspeed\/stablespeed if car seems unstable [m\/s] *\/$/;"	m	class:MyCar	file:
+STABLESPEED	mycar.h	/^		static const double STABLESPEED;		\/* we brake currentspeed\/stablespeed if car seems unstable [m\/s] *\/$/;"	m	class:MyCar	access:public
+START	mycar.h	/^			INSANE = 0, PUSH = 1, NORMAL = 2, CAREFUL = 3, SLOW = 4, START = 5$/;"	e	enum:MyCar::__anon1
+SpecialIdgen	trackdesc.cpp	/^void TrackDesc::SpecialIdgen(int num)$/;"	f	class:TrackDesc	signature:(int num)
+SpecialIdgen	trackdesc.h	/^		void SpecialIdgen(int num);$/;"	p	class:TrackDesc	access:public	signature:(int num)
+SplineEquationData	spline.h	/^} SplineEquationData;$/;"	t	typeref:struct:__anon3
+SplineEquationData2	spline.h	/^} SplineEquationData2;$/;"	t	typeref:struct:__anon4
+Steer	berniw.cpp	/^float Driver::Steer()$/;"	f	class:Driver	signature:()
+Steer	berniw.h	/^		float Steer();$/;"	p	class:Driver	access:private	signature:()
+TCL_RANGE	mycar.cpp	/^const double MyCar::TCL_RANGE = 5.0;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	file:
+TCL_RANGE	mycar.h	/^		static const double TCL_RANGE;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	access:public
+TCL_SLIP	mycar.cpp	/^const double MyCar::TCL_SLIP = 2.0;				\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	file:
+TCL_SLIP	mycar.h	/^		static const double TCL_SLIP;			\/* [m\/s] range [0..10] *\/$/;"	m	class:MyCar	access:public
+TIMETOCATCH	mycar.cpp	/^const double MyCar::TIMETOCATCH = 3.0;			\/* when do we start thinking about overtaking [s]*\/$/;"	m	class:MyCar	file:
+TIMETOCATCH	mycar.h	/^		static const double TIMETOCATCH;		\/* when do we start thinking about overtaking [s]*\/$/;"	m	class:MyCar	access:public
+TPRES	pathfinder.cpp	/^const double Pathfinder::TPRES = PI\/(NTPARAMS - 1);	\/* resolution of the steps *\/$/;"	m	class:Pathfinder	file:
+TPRES	pathfinder.h	/^		static const double TPRES;		\/* resolution of the steps *\/$/;"	m	class:Pathfinder	access:private
+TRACKDESCFILENAME	berniw.h	40;"	d
+TRACKFILENAME	berniw.h	39;"	d
+TRACKRES	trackdesc.h	44;"	d
+TURNSPEED	mycar.cpp	/^const double MyCar::TURNSPEED = 3.0;			\/* if speed lower than this you can back up [m\/s] *\/$/;"	m	class:MyCar	file:
+TURNSPEED	mycar.h	/^		static const double TURNSPEED;			\/* if speed lower than this you can back up [m\/s] *\/$/;"	m	class:MyCar	access:public
+TURNTOL	mycar.cpp	/^const double MyCar::TURNTOL = 1.0;				\/* tolerance for end backing up [m] *\/$/;"	m	class:MyCar	file:
+TURNTOL	mycar.h	/^		static const double TURNTOL;			\/* tolerance for end backing up [m] *\/$/;"	m	class:MyCar	access:public
+TrackDesc	trackdesc.cpp	/^TrackDesc::TrackDesc(const tTrack* track)$/;"	f	class:TrackDesc	signature:(const tTrack* track)
+TrackDesc	trackdesc.h	/^		TrackDesc(const tTrack* track);$/;"	p	class:TrackDesc	access:public	signature:(const tTrack* track)
+TrackDesc	trackdesc.h	/^class TrackDesc$/;"	c
+TrackDesc::SpecialIdgen	trackdesc.cpp	/^void TrackDesc::SpecialIdgen(int num)$/;"	f	class:TrackDesc	signature:(int num)
+TrackDesc::SpecialIdgen	trackdesc.h	/^		void SpecialIdgen(int num);$/;"	p	class:TrackDesc	access:public	signature:(int num)
+TrackDesc::TrackDesc	trackdesc.cpp	/^TrackDesc::TrackDesc(const tTrack* track)$/;"	f	class:TrackDesc	signature:(const tTrack* track)
+TrackDesc::TrackDesc	trackdesc.h	/^		TrackDesc(const tTrack* track);$/;"	p	class:TrackDesc	access:public	signature:(const tTrack* track)
+TrackDesc::cosalpha	trackdesc.h	/^		static inline double cosalpha(v3d* a, v3d* b) { return (*a)*(*b)\/(a->len()*b->len()); }$/;"	f	class:TrackDesc	access:public	signature:(v3d* a, v3d* b)
+TrackDesc::diffSegId	trackdesc.h	/^		int diffSegId(int id1, int id2);$/;"	p	class:TrackDesc	access:public	signature:(int id1, int id2)
+TrackDesc::diffSegId	trackdesc.h	/^inline int TrackDesc::diffSegId(int id1, int id2) {$/;"	f	class:TrackDesc	signature:(int id1, int id2)
+TrackDesc::dirVector2D	trackdesc.h	/^		static inline void dirVector2D(v3d* a, v3d* b, v3d* r) { r->x = a->x - b->x; r->y = a->y - b->y; r->z = 0.0; }$/;"	f	class:TrackDesc	access:public	signature:(v3d* a, v3d* b, v3d* r)
+TrackDesc::distGFromPoint	trackdesc.h	/^		double distGFromPoint(v3d* r1, v3d* rdir, v3d* p);$/;"	p	class:TrackDesc	access:public	signature:(v3d* r1, v3d* rdir, v3d* p)
+TrackDesc::distGFromPoint	trackdesc.h	/^inline double TrackDesc::distGFromPoint(v3d* r1, v3d* rdir, v3d* p) {$/;"	f	class:TrackDesc	signature:(v3d* r1, v3d* rdir, v3d* p)
+TrackDesc::distToMiddle	trackdesc.h	/^		inline double distToMiddle(int id, v3d* p) { return (*p - *ts[id].getMiddle())*(*ts[id].getToRight()); }$/;"	f	class:TrackDesc	access:public	signature:(int id, v3d* p)
+TrackDesc::getCurrentSegment	trackdesc.cpp	/^int TrackDesc::getCurrentSegment(tCarElt* car)$/;"	f	class:TrackDesc	signature:(tCarElt* car)
+TrackDesc::getCurrentSegment	trackdesc.h	/^		int getCurrentSegment(tCarElt* car);$/;"	p	class:TrackDesc	access:public	signature:(tCarElt* car)
+TrackDesc::getCurrentSegment	trackdesc.h	/^		int getCurrentSegment(tCarElt* car, int lastId, int range);$/;"	p	class:TrackDesc	access:public	signature:(tCarElt* car, int lastId, int range)
+TrackDesc::getCurrentSegment	trackdesc.h	/^inline int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)$/;"	f	class:TrackDesc	signature:(tCarElt* car, int lastId, int range)
+TrackDesc::getNearestId	trackdesc.cpp	/^int TrackDesc::getNearestId(v3d* p)$/;"	f	class:TrackDesc	signature:(v3d* p)
+TrackDesc::getNearestId	trackdesc.h	/^		int getNearestId(v3d* p);$/;"	p	class:TrackDesc	access:public	signature:(v3d* p)
+TrackDesc::getPitEntryStartId	trackdesc.h	/^		inline int getPitEntryStartId() { return nPitEntryStart; }$/;"	f	class:TrackDesc	access:public	signature:()
+TrackDesc::getPitExitEndId	trackdesc.h	/^		inline int getPitExitEndId() { return nPitExitEnd; }$/;"	f	class:TrackDesc	access:public	signature:()
+TrackDesc::getPitType	trackdesc.h	/^		inline int getPitType() { return torcstrack->pits.type; }$/;"	f	class:TrackDesc	access:public	signature:()
+TrackDesc::getSegmentPtr	trackdesc.h	/^		inline TrackSegment* getSegmentPtr(int index) { return &ts[index]; }$/;"	f	class:TrackDesc	access:public	signature:(int index)
+TrackDesc::getSpecialId	trackdesc.h	/^		inline int getSpecialId(int i) {return specialId[i]; }$/;"	f	class:TrackDesc	access:public	signature:(int i)
+TrackDesc::getTorcsTrack	trackdesc.h	/^		inline tTrack* getTorcsTrack() { return torcstrack; }$/;"	f	class:TrackDesc	access:public	signature:()
+TrackDesc::getnTrackSegments	trackdesc.h	/^		inline int getnTrackSegments() { return nTrackSegments; }$/;"	f	class:TrackDesc	access:public	signature:()
+TrackDesc::isBetween	trackdesc.h	/^		bool isBetween(int start, int end, int id);$/;"	p	class:TrackDesc	access:public	signature:(int start, int end, int id)
+TrackDesc::isBetween	trackdesc.h	/^inline bool TrackDesc::isBetween(int start, int end, int id) {$/;"	f	class:TrackDesc	signature:(int start, int end, int id)
+TrackDesc::nPitEntryStart	trackdesc.h	/^		int nPitEntryStart;$/;"	m	class:TrackDesc	access:private
+TrackDesc::nPitExitEnd	trackdesc.h	/^		int nPitExitEnd;$/;"	m	class:TrackDesc	access:private
+TrackDesc::nTrackSegments	trackdesc.h	/^		int nTrackSegments;		\/* # of track segments *\/$/;"	m	class:TrackDesc	access:private
+TrackDesc::plot	trackdesc.cpp	/^void TrackDesc::plot(char* filename)$/;"	f	class:TrackDesc	signature:(char* filename)
+TrackDesc::plot	trackdesc.h	/^		void plot(char* filename);$/;"	p	class:TrackDesc	access:public	signature:(char* filename)
+TrackDesc::specialId	trackdesc.h	/^		int specialId[5];  		\/\/赛道上开始加速或者其他特殊操作的路段序号$/;"	m	class:TrackDesc	access:private
+TrackDesc::torcstrack	trackdesc.h	/^		tTrack *torcstrack;$/;"	m	class:TrackDesc	access:private
+TrackDesc::ts	trackdesc.h	/^		TrackSegment* ts;		\/* pointer to the array of tracksegments *\/$/;"	m	class:TrackDesc	access:private
+TrackDesc::~TrackDesc	trackdesc.cpp	/^TrackDesc::~TrackDesc()$/;"	f	class:TrackDesc	signature:()
+TrackDesc::~TrackDesc	trackdesc.h	/^		~TrackDesc();$/;"	p	class:TrackDesc	access:public	signature:()
+TrackSegment	trackdesc.cpp	/^TrackSegment::TrackSegment()$/;"	f	class:TrackSegment	signature:()
+TrackSegment	trackdesc.h	/^		TrackSegment();$/;"	p	class:TrackSegment	access:public	signature:()
+TrackSegment	trackdesc.h	/^class TrackSegment$/;"	c
+TrackSegment::TrackSegment	trackdesc.cpp	/^TrackSegment::TrackSegment()$/;"	f	class:TrackSegment	signature:()
+TrackSegment::TrackSegment	trackdesc.h	/^		TrackSegment();$/;"	p	class:TrackSegment	access:public	signature:()
+TrackSegment::distToLeft3D	trackdesc.h	/^		inline double distToLeft3D(v3d* p) { return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+TrackSegment::distToMiddle2D	trackdesc.h	/^		inline double distToMiddle2D(double x, double y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y)
+TrackSegment::distToMiddle3D	trackdesc.h	/^		inline double distToMiddle3D(double x, double y, double z) { return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z)); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y, double z)
+TrackSegment::distToMiddle3D	trackdesc.h	/^		inline double distToMiddle3D(v3d* p) { return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+TrackSegment::distToMiddleSqr3D	trackdesc.h	/^		inline double distToMiddleSqr3D(double x, double y, double z) { return sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y, double z)
+TrackSegment::distToRight3D	trackdesc.h	/^		inline double distToRight3D(v3d* p) { return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+TrackSegment::getKalpha	trackdesc.h	/^		inline tdble getKalpha() { return kalpha; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKbeta	trackdesc.h	/^		inline tdble getKbeta() { return kbeta; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKfriction	trackdesc.h	/^		inline tdble getKfriction() { return pTrackSeg->surface->kFriction; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKgamma	trackdesc.h	/^		inline tdble getKgamma() { return kgamma; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKrollres	trackdesc.h	/^		inline tdble getKrollres() { return pTrackSeg->surface->kRollRes; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKroughness	trackdesc.h	/^		inline tdble getKroughness() { return pTrackSeg->surface->kRoughness; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getKroughwavelen	trackdesc.h	/^		inline tdble getKroughwavelen() { return pTrackSeg->surface->kRoughWaveLen; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getLeftBorder	trackdesc.h	/^		inline v3d* getLeftBorder() { return &l; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getLength	trackdesc.h	/^		inline tdble getLength() { return length; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getMiddle	trackdesc.h	/^		inline v3d* getMiddle() { return &m; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getRLMiddle	trackdesc.h	/^		inline v3d* getRLMiddle() {return &rlm; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getRaceType	trackdesc.h	/^		inline unsigned int getRaceType() { return raceType; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getRadius	trackdesc.h	/^		inline tdble getRadius() { return radius; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getRightBorder	trackdesc.h	/^		inline v3d* getRightBorder() { return &r; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getToRight	trackdesc.h	/^		inline v3d* getToRight() { return &tr; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getType	trackdesc.h	/^		inline int getType() { return type; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::getWidth	trackdesc.h	/^		inline tdble getWidth() { return width; }$/;"	f	class:TrackSegment	access:public	signature:()
+TrackSegment::init	trackdesc.cpp	/^void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)$/;"	f	class:TrackSegment	signature:(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)
+TrackSegment::init	trackdesc.h	/^		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);$/;"	p	class:TrackSegment	access:public	signature:(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r)
+TrackSegment::kalpha	trackdesc.h	/^		tdble kalpha;			\/* (roll)factor for the angle (like michigan) *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::kbeta	trackdesc.h	/^		tdble kbeta;			\/* (curvature)factor for bumps (e-track-3) *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::kgamma	trackdesc.h	/^		tdble kgamma;			\/* (pitch)factor of road *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::l	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::length	trackdesc.h	/^		tdble length;			\/* distance to the next segment (2-D, not 3-D!) *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::m	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::pTrackSeg	trackdesc.h	/^		tTrackSeg* pTrackSeg;	\/* id of the corresponding segment *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::r	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::raceType	trackdesc.h	/^		unsigned int raceType;	\/* race type (eg. pitlane, speedlimit, ...) *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::radius	trackdesc.h	/^		tdble radius;			\/* radius *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::rlm	trackdesc.h	/^		v3d rlm; 				\/* 右车道中点 *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::setKbeta	trackdesc.h	/^		inline void setKbeta(double b) { kbeta = b; }$/;"	f	class:TrackSegment	access:public	signature:(double b)
+TrackSegment::setKgamma	trackdesc.h	/^		inline void setKgamma(double c) { kgamma = c; }$/;"	f	class:TrackSegment	access:public	signature:(double c)
+TrackSegment::setLength	trackdesc.h	/^		inline void setLength(double len) { length = len; }$/;"	f	class:TrackSegment	access:public	signature:(double len)
+TrackSegment::sqr	trackdesc.h	/^		inline double sqr(double a) { return a*a; }$/;"	f	class:TrackSegment	access:public	signature:(double a)
+TrackSegment::tr	trackdesc.h	/^		v3d tr;					\/* normalized direction vector to the right side *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::type	trackdesc.h	/^		int type;				\/* physical type (eg. straight, left or right) *\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::width	trackdesc.h	/^		tdble width;			\/* width of the track segment*\/$/;"	m	class:TrackSegment	access:private
+TrackSegment::~TrackSegment	trackdesc.cpp	/^TrackSegment::~TrackSegment()$/;"	f	class:TrackSegment	signature:()
+TrackSegment::~TrackSegment	trackdesc.h	/^		~TrackSegment();$/;"	p	class:TrackSegment	access:public	signature:()
+_BERNIW_H_	berniw.h	21;"	d
+_LINALG_H_	linalg.h	21;"	d
+_MYCAR_H_	mycar.h	25;"	d
+_PATHFINDER_H_	pathfinder.h	25;"	d
+_SPLINE_H_	spline.h	21;"	d
+_TRACKDESC_H_	trackdesc.h	29;"	d
+__anon3::a	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+__anon3::b	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+__anon3::c	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+__anon3::d	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+__anon3::h	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+__anon4::a	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::b	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::c	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::d	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::h	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::x1	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon4::x2	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+__anon5::ic	pathfinder.h	/^	double ic;$/;"	m	struct:__anon5	access:public
+__anon5::is	pathfinder.h	/^	double is;$/;"	m	struct:__anon5	access:public
+__anon5::pd	pathfinder.h	/^	double pd;$/;"	m	struct:__anon5	access:public
+__anon5::x	pathfinder.h	/^	double x;$/;"	m	struct:__anon5	access:public
+__anon6::brakedist	pathfinder.h	/^	double brakedist;		\/* distance needed for braking to the speed of this car *\/$/;"	m	struct:__anon6	access:public
+__anon6::catchdist	pathfinder.h	/^	int catchdist;$/;"	m	struct:__anon6	access:public
+__anon6::catchsegid	pathfinder.h	/^	int catchsegid;			\/* segment, where i expect (or better guess!) to catch opponent *\/$/;"	m	struct:__anon6	access:public
+__anon6::collcar	pathfinder.h	/^	OtherCar* collcar;		\/* pointers to the cars *\/$/;"	m	struct:__anon6	access:public
+__anon6::cosalpha	pathfinder.h	/^	double cosalpha;		\/* cos(alpha) from angle between my ond opponent *\/$/;"	m	struct:__anon6	access:public
+__anon6::dist	pathfinder.h	/^	double dist;			\/* #segments from me to the other car *\/$/;"	m	struct:__anon6	access:public
+__anon6::disttomiddle	pathfinder.h	/^	double disttomiddle;	\/* distance to middle (for prediction) *\/$/;"	m	struct:__anon6	access:public
+__anon6::disttopath	pathfinder.h	/^	double disttopath;		\/* distance to my path *\/$/;"	m	struct:__anon6	access:public
+__anon6::mincorner	pathfinder.h	/^	double mincorner;		\/* corner nearest to my car *\/$/;"	m	struct:__anon6	access:public
+__anon6::minorthdist	pathfinder.h	/^	double minorthdist;		\/* minimal distance relative to my car *\/$/;"	m	struct:__anon6	access:public
+__anon6::overtakee	pathfinder.h	/^	bool overtakee;			\/* is this the guy to overtake? *\/$/;"	m	struct:__anon6	access:public
+__anon6::speed	pathfinder.h	/^	double speed;			\/* same, but not squared *\/$/;"	m	struct:__anon6	access:public
+__anon6::speedsqr	pathfinder.h	/^	double speedsqr;		\/* on track direction projected speed squared of opponent *\/$/;"	m	struct:__anon6	access:public
+__anon6::time	pathfinder.h	/^	double time;			\/* estimate of time to catch up the car *\/$/;"	m	struct:__anon6	access:public
+__anon7::time	pathfinder.h	/^	double time;			\/* how long is the opponent "in range" to overlap me *\/$/;"	m	struct:__anon7	access:public
+a	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+a	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+accel	mycar.h	/^		double accel;$/;"	m	class:MyCar	access:public
+adjustRadius	pathfinder.cpp	/^inline void Pathfinder::adjustRadius(int s, int p, int e, double c, double security) {$/;"	f	class:Pathfinder	signature:(int s, int p, int e, double c, double security)
+adjustRadius	pathfinder.h	/^		void adjustRadius(int s, int p, int e, double c, double carwidth);$/;"	p	class:Pathfinder	access:private	signature:(int s, int p, int e, double c, double carwidth)
+b	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+b	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+behaviour	mycar.h	/^		double behaviour[6][12];$/;"	m	class:MyCar	access:public
+berniw	berniw.cpp	/^extern "C" int berniw(tModInfo *modInfo)$/;"	f	signature:(tModInfo *modInfo)
+bmode	mycar.h	/^		int bmode;$/;"	m	class:MyCar	access:public
+botdesc	berniw.cpp	/^static const char* botdesc[maxBOTS] = {$/;"	v	file:
+botname	berniw.cpp	/^static const char* botname[maxBOTS] = {$/;"	v	file:
+brakedist	pathfinder.h	/^	double brakedist;		\/* distance needed for braking to the speed of this car *\/$/;"	m	struct:__anon6	access:public
+c	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+c	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+ca	mycar.h	/^		double ca;$/;"	m	class:MyCar	access:public
+car	berniw.h	/^		tCarElt *car;			\/\/ Pointer to tCarElt struct.$/;"	m	class:Driver	access:private
+carmass	mycar.h	/^		double carmass;			\/* mass of car without fuel *\/$/;"	m	class:MyCar	access:private
+catchdist	pathfinder.h	/^	int catchdist;$/;"	m	struct:__anon6	access:public
+catchsegid	pathfinder.h	/^	int catchsegid;			\/* segment, where i expect (or better guess!) to catch opponent *\/$/;"	m	struct:__anon6	access:public
+cerror	berniw.h	/^		tdble cerror;$/;"	m	class:Driver	access:private
+cgcorr_b	mycar.h	/^		double cgcorr_b;$/;"	m	class:MyCar	access:public
+cgh	mycar.h	/^		double cgh;			\/* height of center of gravity *\/$/;"	m	class:AbstractCar	access:private
+changed	pathfinder.h	/^		int changed;$/;"	m	class:Pathfinder	access:private
+clothlength	pathfinder.cpp	/^double Pathfinder::clothlength(double beta, double y)$/;"	f	class:Pathfinder	signature:(double beta, double y)
+clothlength	pathfinder.h	/^		double clothlength(double beta, double y);$/;"	p	class:Pathfinder	access:private	signature:(double beta, double y)
+clothparam	pathfinder.cpp	/^double Pathfinder::clothparam(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+clothparam	pathfinder.h	/^		double clothparam(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+clothsigma	pathfinder.cpp	/^double Pathfinder::clothsigma(double beta, double y)$/;"	f	class:Pathfinder	signature:(double beta, double y)
+clothsigma	pathfinder.h	/^		double clothsigma(double beta, double y);$/;"	p	class:Pathfinder	access:private	signature:(double beta, double y)
+collcar	pathfinder.h	/^	OtherCar* collcar;		\/* pointers to the cars *\/$/;"	m	struct:__anon6	access:public
+collcars	pathfinder.h	/^		int collcars;$/;"	m	class:Pathfinder	access:private
+collision	pathfinder.cpp	/^int Pathfinder::collision(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tCarElt* mycar, tSituation* s, MyCar* myc, OtherCar* ocar)
+collision	pathfinder.h	/^		int collision(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tCarElt* mycar, tSituation *s, MyCar* myc, OtherCar* ocar)
+computeWeight	pathfinder.cpp	/^double Pathfinder::computeWeight(double x, double len)$/;"	f	class:Pathfinder	signature:(double x, double len)
+computeWeight	pathfinder.h	/^		double computeWeight(double x, double len);$/;"	p	class:Pathfinder	access:private	signature:(double x, double len)
+correctPath	pathfinder.cpp	/^int Pathfinder::correctPath(int id, tCarElt* car, MyCar* myc)$/;"	f	class:Pathfinder	signature:(int id, tCarElt* car, MyCar* myc)
+correctPath	pathfinder.h	/^		int correctPath(int id, tCarElt* car, MyCar* myc);$/;"	p	class:Pathfinder	access:private	signature:(int id, tCarElt* car, MyCar* myc)
+cosalpha	pathfinder.h	/^	double cosalpha;		\/* cos(alpha) from angle between my ond opponent *\/$/;"	m	struct:__anon6	access:public
+cosalpha	trackdesc.h	/^		static inline double cosalpha(v3d* a, v3d* b) { return (*a)*(*b)\/(a->len()*b->len()); }$/;"	f	class:TrackDesc	access:public	signature:(v3d* a, v3d* b)
+countSegments	pathfinder.h	/^		int countSegments(int from, int to);$/;"	p	class:Pathfinder	access:private	signature:(int from, int to)
+countSegments	pathfinder.h	/^inline int Pathfinder::countSegments(int from, int to)$/;"	f	class:Pathfinder	signature:(int from, int to)
+cp	pathfinder.h	/^		tParam cp[NTPARAMS];			\/* holds values needed for clothiod *\/$/;"	m	class:Pathfinder	access:private
+crossProduct	linalg.h	/^		void crossProduct(const v3d* b, v3d* r);				\/* r := this X b *\/$/;"	p	class:v3d	access:public	signature:(const v3d* b, v3d* r)
+crossProduct	linalg.h	/^inline void v3d::crossProduct(const v3d* b, v3d* r) {$/;"	f	class:v3d	signature:(const v3d* b, v3d* r)
+currentpathseg	mycar.h	/^		PathSeg* currentpathseg;$/;"	m	class:MyCar	access:public
+currentpos	mycar.h	/^		v3d currentpos;$/;"	m	class:AbstractCar	access:protected
+currentseg	mycar.h	/^		TrackSegment* currentseg;$/;"	m	class:MyCar	access:public
+currentsegid	mycar.h	/^		int currentsegid;$/;"	m	class:AbstractCar	access:protected
+currenttime	berniw.h	/^		double currenttime;		$/;"	m	class:Driver	access:private
+curvature	pathfinder.cpp	/^inline double Pathfinder::curvature(double xp, double yp, double x, double y, double xn, double yn)$/;"	f	class:Pathfinder	signature:(double xp, double yp, double x, double y, double xn, double yn)
+curvature	pathfinder.h	/^		double curvature(double xp, double yp, double x, double y, double xn, double yn);$/;"	p	class:Pathfinder	access:private	signature:(double xp, double yp, double x, double y, double xn, double yn)
+cw	mycar.h	/^		double cw;$/;"	m	class:MyCar	access:public
+d	pathfinder.h	/^		v3d d;			\/* direction vector of dynamic trajectory *\/$/;"	m	class:PathSeg	access:private
+d	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+d	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+deltapitch	mycar.h	/^		double deltapitch;		\/* angle between road and car *\/$/;"	m	class:MyCar	access:private
+derror	mycar.h	/^		double derror;			\/* distance to desired trajectory *\/$/;"	m	class:MyCar	access:public
+derrorsgn	mycar.h	/^		double derrorsgn;		\/* on which side of the trajectory am i left -1 or 1 right *\/$/;"	m	class:MyCar	access:private
+destpathseg	mycar.h	/^		PathSeg* destpathseg;$/;"	m	class:MyCar	access:public
+destseg	mycar.h	/^		TrackSegment* destseg;$/;"	m	class:MyCar	access:public
+destsegid	mycar.h	/^		int destsegid;$/;"	m	class:MyCar	access:public
+diffSegId	trackdesc.h	/^		int diffSegId(int id1, int id2);$/;"	p	class:TrackDesc	access:public	signature:(int id1, int id2)
+diffSegId	trackdesc.h	/^inline int TrackDesc::diffSegId(int id1, int id2) {$/;"	f	class:TrackDesc	signature:(int id1, int id2)
+dir	mycar.h	/^		v3d dir;$/;"	m	class:AbstractCar	access:protected
+dirVector	linalg.h	/^		void dirVector(const v3d* b, v3d* r);					\/* r := this - b *\/$/;"	p	class:v3d	access:public	signature:(const v3d* b, v3d* r)
+dirVector	linalg.h	/^inline void v3d::dirVector(const v3d* b, v3d* r) {$/;"	f	class:v3d	signature:(const v3d* b, v3d* r)
+dirVector2D	trackdesc.h	/^		static inline void dirVector2D(v3d* a, v3d* b, v3d* r) { r->x = a->x - b->x; r->y = a->y - b->y; r->z = 0.0; }$/;"	f	class:TrackDesc	access:public	signature:(v3d* a, v3d* b, v3d* r)
+dist	pathfinder.h	/^		inline double dist(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y) + sqr(a->z-b->z)); }$/;"	f	class:Pathfinder	access:public	signature:(v3d* a, v3d* b)
+dist	pathfinder.h	/^	double dist;			\/* #segments from me to the other car *\/$/;"	m	struct:__anon6	access:public
+dist2D	pathfinder.h	/^		inline double dist2D(v3d* a, v3d* b) { return sqrt(sqr(a->x-b->x) + sqr(a->y-b->y)); }$/;"	f	class:Pathfinder	access:public	signature:(v3d* a, v3d* b)
+distGFromPoint	trackdesc.h	/^		double distGFromPoint(v3d* r1, v3d* rdir, v3d* p);$/;"	p	class:TrackDesc	access:public	signature:(v3d* r1, v3d* rdir, v3d* p)
+distGFromPoint	trackdesc.h	/^inline double TrackDesc::distGFromPoint(v3d* r1, v3d* rdir, v3d* p) {$/;"	f	class:TrackDesc	signature:(v3d* r1, v3d* rdir, v3d* p)
+distToLeft3D	trackdesc.h	/^		inline double distToLeft3D(v3d* p) { return sqrt(sqr(p->x-l.x) + sqr(p->y-l.y) + sqr(p->z-l.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+distToMiddle	trackdesc.h	/^		inline double distToMiddle(int id, v3d* p) { return (*p - *ts[id].getMiddle())*(*ts[id].getToRight()); }$/;"	f	class:TrackDesc	access:public	signature:(int id, v3d* p)
+distToMiddle2D	trackdesc.h	/^		inline double distToMiddle2D(double x, double y) { return sqrt(sqr(x-m.x) + sqr(y-m.y)); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y)
+distToMiddle3D	trackdesc.h	/^		inline double distToMiddle3D(double x, double y, double z) { return sqrt(sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z)); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y, double z)
+distToMiddle3D	trackdesc.h	/^		inline double distToMiddle3D(v3d* p) { return sqrt(sqr(p->x-m.x) + sqr(p->y-m.y) + sqr(p->z-m.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+distToMiddleSqr3D	trackdesc.h	/^		inline double distToMiddleSqr3D(double x, double y, double z) { return sqr(x-m.x) + sqr(y-m.y) + sqr(z-m.z); }$/;"	f	class:TrackSegment	access:public	signature:(double x, double y, double z)
+distToPath	pathfinder.h	/^		double distToPath(int trackSegId, v3d* p);$/;"	p	class:Pathfinder	access:public	signature:(int trackSegId, v3d* p)
+distToPath	pathfinder.h	/^inline double Pathfinder::distToPath(int trackSegId, v3d* p)$/;"	f	class:Pathfinder	signature:(int trackSegId, v3d* p)
+distToRight3D	trackdesc.h	/^		inline double distToRight3D(v3d* p) { return sqrt(sqr(p->x-r.x) + sqr(p->y-r.y) + sqr(p->z-r.z)); }$/;"	f	class:TrackSegment	access:public	signature:(v3d* p)
+disttomiddle	pathfinder.h	/^	double disttomiddle;	\/* distance to middle (for prediction) *\/$/;"	m	struct:__anon6	access:public
+disttopath	pathfinder.h	/^	double disttopath;		\/* distance to my path *\/$/;"	m	struct:__anon6	access:public
+drive	berniw.cpp	/^static void drive(int index, tCarElt* car, tSituation *s)$/;"	f	file:	signature:(int index, tCarElt* car, tSituation *s)
+drive	berniw.cpp	/^static void drive(int index, tCarElt* car, tSituation *s);$/;"	p	file:	signature:(int index, tCarElt* car, tSituation *s)
+drive	berniw.cpp	/^void Driver::drive(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+drive	berniw.h	/^		void drive(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+drive_follow	berniw.cpp	/^void Driver::drive_follow(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+drive_follow	berniw.h	/^		void drive_follow(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+drive_normal	berniw.cpp	/^void Driver::drive_normal(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+drive_normal	berniw.h	/^		void drive_normal(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+drive_original	berniw.cpp	/^void Driver::drive_original(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+drive_original	berniw.h	/^		void drive_original(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+drive_overtake	berniw.cpp	/^void Driver::drive_overtake(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+drive_overtake	berniw.h	/^		void drive_overtake(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+driver	berniw.cpp	/^static Driver *driver[BOTS];$/;"	v	file:
+drivetrain	mycar.h	/^		int drivetrain;			\/* RWD, FWD or 4WD *\/$/;"	m	class:MyCar	access:private
+dt	mycar.h	/^		double dt;$/;"	m	class:OtherCar	access:private
+e1	pathfinder.h	/^		int e1, e3;				\/* pitexitstart, pitexitend *\/$/;"	m	class:Pathfinder	access:private
+e3	pathfinder.h	/^		int e1, e3;				\/* pitexitstart, pitexitend *\/$/;"	m	class:Pathfinder	access:private
+endRace	berniw.h	/^		void endRace(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+findEndSegId	pathfinder.cpp	/^int Pathfinder::findEndSegId(int id)$/;"	f	class:Pathfinder	signature:(int id)
+findEndSegId	pathfinder.h	/^		int findEndSegId(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+findStartSegId	pathfinder.cpp	/^int Pathfinder::findStartSegId(int id)$/;"	f	class:Pathfinder	signature:(int id)
+findStartSegId	pathfinder.h	/^		int findStartSegId(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+fuelchecked	mycar.h	/^		bool fuelchecked;$/;"	m	class:MyCar	access:public
+fuelperlap	mycar.h	/^		double fuelperlap;$/;"	m	class:MyCar	access:public
+g	berniw.h	/^static const double g = 9.81;$/;"	v
+getCarPtr	mycar.h	/^		inline tCarElt* getCarPtr() { return me; }$/;"	f	class:AbstractCar	access:public	signature:()
+getCurrentPos	mycar.h	/^		inline v3d* getCurrentPos() { return &currentpos; }$/;"	f	class:AbstractCar	access:public	signature:()
+getCurrentSegId	mycar.h	/^		inline int getCurrentSegId() { return currentsegid; }$/;"	f	class:AbstractCar	access:public	signature:()
+getCurrentSegment	pathfinder.h	/^		int getCurrentSegment(tCarElt* car);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car)
+getCurrentSegment	pathfinder.h	/^		int getCurrentSegment(tCarElt* car, int range);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car, int range)
+getCurrentSegment	pathfinder.h	/^inline int Pathfinder::getCurrentSegment(tCarElt* car)$/;"	f	class:Pathfinder	signature:(tCarElt* car)
+getCurrentSegment	pathfinder.h	/^inline int Pathfinder::getCurrentSegment(tCarElt* car, int range)$/;"	f	class:Pathfinder	signature:(tCarElt* car, int range)
+getCurrentSegment	trackdesc.cpp	/^int TrackDesc::getCurrentSegment(tCarElt* car)$/;"	f	class:TrackDesc	signature:(tCarElt* car)
+getCurrentSegment	trackdesc.h	/^		int getCurrentSegment(tCarElt* car);$/;"	p	class:TrackDesc	access:public	signature:(tCarElt* car)
+getCurrentSegment	trackdesc.h	/^		int getCurrentSegment(tCarElt* car, int lastId, int range);$/;"	p	class:TrackDesc	access:public	signature:(tCarElt* car, int lastId, int range)
+getCurrentSegment	trackdesc.h	/^inline int TrackDesc::getCurrentSegment(tCarElt* car, int lastId, int range)$/;"	f	class:TrackDesc	signature:(tCarElt* car, int lastId, int range)
+getDeltaPitch	mycar.h	/^		inline double getDeltaPitch() { return deltapitch; }$/;"	f	class:MyCar	access:public	signature:()
+getDir	mycar.h	/^		inline v3d* getDir() { return &dir; }$/;"	f	class:AbstractCar	access:public	signature:()
+getDir	pathfinder.h	/^		inline v3d* getDir() { return &d; }$/;"	f	class:PathSeg	access:public	signature:()
+getErrorSgn	mycar.h	/^		inline double getErrorSgn() { return derrorsgn; }$/;"	f	class:MyCar	access:public	signature:()
+getKalpha	trackdesc.h	/^		inline tdble getKalpha() { return kalpha; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKbeta	trackdesc.h	/^		inline tdble getKbeta() { return kbeta; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKfriction	trackdesc.h	/^		inline tdble getKfriction() { return pTrackSeg->surface->kFriction; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKgamma	trackdesc.h	/^		inline tdble getKgamma() { return kgamma; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKrollres	trackdesc.h	/^		inline tdble getKrollres() { return pTrackSeg->surface->kRollRes; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKroughness	trackdesc.h	/^		inline tdble getKroughness() { return pTrackSeg->surface->kRoughness; }$/;"	f	class:TrackSegment	access:public	signature:()
+getKroughwavelen	trackdesc.h	/^		inline tdble getKroughwavelen() { return pTrackSeg->surface->kRoughWaveLen; }$/;"	f	class:TrackSegment	access:public	signature:()
+getLeftBorder	trackdesc.h	/^		inline v3d* getLeftBorder() { return &l; }$/;"	f	class:TrackSegment	access:public	signature:()
+getLength	pathfinder.h	/^		inline tdble getLength() { return length; }$/;"	f	class:PathSeg	access:public	signature:()
+getLength	trackdesc.h	/^		inline tdble getLength() { return length; }$/;"	f	class:TrackSegment	access:public	signature:()
+getLoc	pathfinder.h	/^		inline v3d* getLoc() { return &p; }$/;"	f	class:PathSeg	access:public	signature:()
+getMiddle	trackdesc.h	/^		inline v3d* getMiddle() { return &m; }$/;"	f	class:TrackSegment	access:public	signature:()
+getNearestId	trackdesc.cpp	/^int TrackDesc::getNearestId(v3d* p)$/;"	f	class:TrackDesc	signature:(v3d* p)
+getNearestId	trackdesc.h	/^		int getNearestId(v3d* p);$/;"	p	class:TrackDesc	access:public	signature:(v3d* p)
+getOptLoc	pathfinder.h	/^		inline v3d* getOptLoc() { return &o; }$/;"	f	class:PathSeg	access:public	signature:()
+getPathSeg	pathfinder.h	/^		inline PathSeg* getPathSeg(int pathSegId) { return &ps[pathSegId]; }$/;"	f	class:Pathfinder	access:public	signature:(int pathSegId)
+getPathfinderPtr	mycar.h	/^		inline Pathfinder* getPathfinderPtr() { return pf; }$/;"	f	class:MyCar	access:public	signature:()
+getPitEntryStartId	trackdesc.h	/^		inline int getPitEntryStartId() { return nPitEntryStart; }$/;"	f	class:TrackDesc	access:public	signature:()
+getPitExitEndId	trackdesc.h	/^		inline int getPitExitEndId() { return nPitExitEnd; }$/;"	f	class:TrackDesc	access:public	signature:()
+getPitLoc	pathfinder.h	/^		inline v3d* getPitLoc() { return l; }$/;"	f	class:PathSeg	access:public	signature:()
+getPitPoint	pathfinder.h	/^		void getPitPoint(int j, int k, double slope, double dist, v3d* r);$/;"	p	class:Pathfinder	access:private	signature:(int j, int k, double slope, double dist, v3d* r)
+getPitSegId	pathfinder.h	/^		inline int getPitSegId() { return pitSegId; }$/;"	f	class:Pathfinder	access:public	signature:()
+getPitSpeedSqrLimit	pathfinder.h	/^		inline double getPitSpeedSqrLimit() { return pitspeedsqrlimit; }$/;"	f	class:Pathfinder	access:public	signature:()
+getPitStop	pathfinder.h	/^		inline bool getPitStop() { return pitStop; }$/;"	f	class:Pathfinder	access:public	signature:()
+getPitType	trackdesc.h	/^		inline int getPitType() { return torcstrack->pits.type; }$/;"	f	class:TrackDesc	access:public	signature:()
+getRLMiddle	trackdesc.h	/^		inline v3d* getRLMiddle() {return &rlm; }$/;"	f	class:TrackSegment	access:public	signature:()
+getRaceType	trackdesc.h	/^		inline unsigned int getRaceType() { return raceType; }$/;"	f	class:TrackSegment	access:public	signature:()
+getRadius	pathfinder.h	/^		inline tdble getRadius() { return radius; }$/;"	f	class:PathSeg	access:public	signature:()
+getRadius	trackdesc.h	/^		inline tdble getRadius() { return radius; }$/;"	f	class:TrackSegment	access:public	signature:()
+getRightBorder	trackdesc.h	/^		inline v3d* getRightBorder() { return &r; }$/;"	f	class:TrackSegment	access:public	signature:()
+getSegmentPtr	trackdesc.h	/^		inline TrackSegment* getSegmentPtr(int index) { return &ts[index]; }$/;"	f	class:TrackDesc	access:public	signature:(int index)
+getSpecialId	trackdesc.h	/^		inline int getSpecialId(int i) {return specialId[i]; }$/;"	f	class:TrackDesc	access:public	signature:(int i)
+getSpeed	mycar.h	/^		inline double getSpeed() { return speed; }$/;"	f	class:AbstractCar	access:public	signature:()
+getSpeedSqr	mycar.h	/^		inline double getSpeedSqr() { return speedsqr; }$/;"	f	class:AbstractCar	access:public	signature:()
+getSpeedsqr	pathfinder.h	/^		inline tdble getSpeedsqr() { return speedsqr; }$/;"	f	class:PathSeg	access:public	signature:()
+getToRight	trackdesc.h	/^		inline v3d* getToRight() { return &tr; }$/;"	f	class:TrackSegment	access:public	signature:()
+getTorcsTrack	trackdesc.h	/^		inline tTrack* getTorcsTrack() { return torcstrack; }$/;"	f	class:TrackDesc	access:public	signature:()
+getType	trackdesc.h	/^		inline int getType() { return type; }$/;"	f	class:TrackSegment	access:public	signature:()
+getUnstuck	berniw.cpp	/^void Driver::getUnstuck()$/;"	f	class:Driver	signature:()
+getUnstuck	berniw.h	/^		void getUnstuck();$/;"	p	class:Driver	access:private	signature:()
+getWeight	pathfinder.h	/^		inline tdble getWeight() { return weight; }$/;"	f	class:PathSeg	access:public	signature:()
+getWheelBase	mycar.h	/^		inline double getWheelBase() { return wheelbase; }$/;"	f	class:MyCar	access:public	signature:()
+getWheelTrack	mycar.h	/^		inline double getWheelTrack() { return wheeltrack; }$/;"	f	class:MyCar	access:public	signature:()
+getWidth	trackdesc.h	/^		inline tdble getWidth() { return width; }$/;"	f	class:TrackSegment	access:public	signature:()
+getnPathSeg	pathfinder.h	/^		inline int getnPathSeg() { return nPathSeg; }$/;"	f	class:Pathfinder	access:public	signature:()
+getnTrackSegments	trackdesc.h	/^		inline int getnTrackSegments() { return nTrackSegments; }$/;"	f	class:TrackDesc	access:public	signature:()
+h	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+h	spline.h	/^	double a, b, c, d, h;$/;"	m	struct:__anon3	access:public
+ic	pathfinder.h	/^	double ic;$/;"	m	struct:__anon5	access:public
+inPit	pathfinder.h	/^		bool inPit;				\/* internal pit state *\/$/;"	m	class:Pathfinder	access:private
+index	berniw.h	/^		int index;$/;"	m	class:Driver	access:private
+info	mycar.cpp	/^void MyCar::info(void)$/;"	f	class:MyCar	signature:(void)
+info	mycar.h	/^		void info(void);$/;"	p	class:MyCar	access:public	signature:(void)
+init	mycar.cpp	/^void OtherCar::init(TrackDesc* itrack, tCarElt* car, tSituation *situation)$/;"	f	class:OtherCar	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+init	mycar.h	/^		void init(TrackDesc* itrack, tCarElt* car, tSituation *situation);$/;"	p	class:OtherCar	access:public	signature:(TrackDesc* itrack, tCarElt* car, tSituation *situation)
+init	trackdesc.cpp	/^void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)$/;"	f	class:TrackSegment	signature:(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)
+init	trackdesc.h	/^		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);$/;"	p	class:TrackSegment	access:public	signature:(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r)
+initCGh	mycar.h	/^		inline void initCGh() { cgh = GfParmGetNum(me->_carHandle, SECT_CAR, PRM_GCHEIGHT, NULL, 0.0); }$/;"	f	class:AbstractCar	access:protected	signature:()
+initCarGeometry	mycar.cpp	/^void MyCar::initCarGeometry()$/;"	f	class:MyCar	signature:()
+initCarGeometry	mycar.h	/^		void initCarGeometry();$/;"	p	class:MyCar	access:private	signature:()
+initLeft	pathfinder.cpp	/^int Pathfinder::initLeft(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+initLeft	pathfinder.h	/^		int initLeft(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+initPit	pathfinder.cpp	/^void Pathfinder::initPit(tCarElt* car) {$/;"	f	class:Pathfinder	signature:(tCarElt* car)
+initPit	pathfinder.h	/^		void initPit(tCarElt* car);$/;"	p	class:Pathfinder	access:public	signature:(tCarElt* car)
+initPitStopPath	pathfinder.cpp	/^void Pathfinder::initPitStopPath(void)$/;"	f	class:Pathfinder	signature:(void)
+initPitStopPath	pathfinder.h	/^		void initPitStopPath(void);$/;"	p	class:Pathfinder	access:private	signature:(void)
+initRight	pathfinder.cpp	/^int Pathfinder::initRight(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+initRight	pathfinder.h	/^		int initRight(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+initStraight	pathfinder.cpp	/^int Pathfinder::initStraight(int id, double w)$/;"	f	class:Pathfinder	signature:(int id, double w)
+initStraight	pathfinder.h	/^		int initStraight(int id, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double w)
+initTrack	berniw.cpp	/^static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);$/;"	p	file:	signature:(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+initTrack	berniw.cpp	/^static void initTrack(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)$/;"	f	file:	signature:(int index, tTrack* track, void *carHandle, void **carParmHandle, tSituation *s)
+initTrack	berniw.cpp	/^void Driver::initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)$/;"	f	class:Driver	signature:(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+initTrack	berniw.h	/^		void initTrack(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation);$/;"	p	class:Driver	access:public	signature:(tTrack* track, void *carHandle, void **carParmHandle, tSituation * situation)
+intcossqr	pathfinder.cpp	/^double Pathfinder::intcossqr(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+intcossqr	pathfinder.h	/^		double intcossqr(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+interpolate	pathfinder.cpp	/^void Pathfinder::interpolate(int step)$/;"	f	class:Pathfinder	signature:(int step)
+interpolate	pathfinder.h	/^		void interpolate(int Step);$/;"	p	class:Pathfinder	access:private	signature:(int Step)
+intsinsqr	pathfinder.cpp	/^double Pathfinder::intsinsqr(double alpha)$/;"	f	class:Pathfinder	signature:(double alpha)
+intsinsqr	pathfinder.h	/^		double intsinsqr(double alpha);$/;"	p	class:Pathfinder	access:private	signature:(double alpha)
+is	pathfinder.h	/^	double is;$/;"	m	struct:__anon5	access:public
+isBetween	trackdesc.h	/^		bool isBetween(int start, int end, int id);$/;"	p	class:TrackDesc	access:public	signature:(int start, int end, int id)
+isBetween	trackdesc.h	/^inline bool TrackDesc::isBetween(int start, int end, int id) {$/;"	f	class:TrackDesc	signature:(int start, int end, int id)
+isPitAvailable	pathfinder.h	/^		inline bool isPitAvailable() { return pit; }$/;"	f	class:Pathfinder	access:public	signature:()
+isStuck	berniw.cpp	/^int Driver::isStuck(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+isStuck	berniw.h	/^		int isStuck(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+kalpha	trackdesc.h	/^		tdble kalpha;			\/* (roll)factor for the angle (like michigan) *\/$/;"	m	class:TrackSegment	access:private
+kbeta	trackdesc.h	/^		tdble kbeta;			\/* (curvature)factor for bumps (e-track-3) *\/$/;"	m	class:TrackSegment	access:private
+kgamma	trackdesc.h	/^		tdble kgamma;			\/* (pitch)factor of road *\/$/;"	m	class:TrackSegment	access:private
+l	pathfinder.h	/^		v3d* l;			\/* trajectory for pit lane *\/$/;"	m	class:PathSeg	access:private
+l	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+lastId	pathfinder.h	/^		int lastId;				\/* segment id of the last call *\/$/;"	m	class:Pathfinder	access:private
+lastPlan	pathfinder.h	/^		int lastPlan;			\/* start of the last plan *\/$/;"	m	class:Pathfinder	access:private
+lastPlanRange	pathfinder.h	/^		int lastPlanRange;		\/* range of the last plan *\/$/;"	m	class:Pathfinder	access:private
+lastfuel	mycar.h	/^		double lastfuel;$/;"	m	class:MyCar	access:public
+lastpitfuel	mycar.h	/^		double lastpitfuel;$/;"	m	class:MyCar	access:public
+len	linalg.h	/^		double len(void);$/;"	p	class:v3d	access:public	signature:(void)
+len	linalg.h	/^inline double v3d::len(void)$/;"	f	class:v3d	signature:(void)
+length	pathfinder.h	/^		tdble length;	\/* dist to the next pathseg *\/$/;"	m	class:PathSeg	access:private
+length	trackdesc.h	/^		tdble length;			\/* distance to the next segment (2-D, not 3-D!) *\/$/;"	m	class:TrackSegment	access:private
+letoverlap	pathfinder.cpp	/^int Pathfinder::letoverlap(int trackSegId, tSituation *situation, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *situation, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)
+letoverlap	pathfinder.h	/^        int letoverlap(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOverlapTimer* ov)
+loadBehaviour	mycar.cpp	/^void MyCar::loadBehaviour(int id) {$/;"	f	class:MyCar	signature:(int id)
+loadBehaviour	mycar.h	/^		void loadBehaviour(int id);$/;"	p	class:MyCar	access:public	signature:(int id)
+loadClothoidParams	pathfinder.cpp	/^bool Pathfinder::loadClothoidParams(tParam* p)$/;"	f	class:Pathfinder	signature:(tParam* p)
+loadClothoidParams	pathfinder.h	/^		bool loadClothoidParams(tParam* p);$/;"	p	class:Pathfinder	access:private	signature:(tParam* p)
+m	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+mass	mycar.h	/^		double mass;$/;"	m	class:MyCar	access:public
+maxBOTS	berniw.h	42;"	d
+me	mycar.h	/^		tCarElt* me;$/;"	m	class:AbstractCar	access:protected
+mincorner	pathfinder.h	/^	double mincorner;		\/* corner nearest to my car *\/$/;"	m	struct:__anon6	access:public
+minorthdist	pathfinder.h	/^	double minorthdist;		\/* minimal distance relative to my car *\/$/;"	m	struct:__anon6	access:public
+mpf	berniw.h	/^		Pathfinder* mpf;$/;"	m	class:Driver	access:private
+myTrackDesc	berniw.h	/^		TrackDesc* myTrackDesc;$/;"	m	class:Driver	access:private
+myc	berniw.h	/^		MyCar* myc;$/;"	m	class:Driver	access:private
+mycar	berniw.cpp	/^static MyCar* mycar[maxBOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL };$/;"	v	file:
+nPathSeg	pathfinder.h	/^		int nPathSeg;			\/* # of PathSeg's *\/$/;"	m	class:Pathfinder	access:private
+nPitEntryStart	trackdesc.h	/^		int nPitEntryStart;$/;"	m	class:TrackDesc	access:private
+nPitExitEnd	trackdesc.h	/^		int nPitExitEnd;$/;"	m	class:TrackDesc	access:private
+nTrackSegments	trackdesc.h	/^		int nTrackSegments;		\/* # of track segments *\/$/;"	m	class:TrackDesc	access:private
+newRace	berniw.cpp	/^static void newRace(int index, tCarElt* car, tSituation *s)$/;"	f	file:	signature:(int index, tCarElt* car, tSituation *s)
+newRace	berniw.cpp	/^static void newRace(int index, tCarElt* car, tSituation *s);$/;"	p	file:	signature:(int index, tCarElt* car, tSituation *s)
+newRace	berniw.cpp	/^void Driver::newRace(tCarElt* car, tSituation *situation)$/;"	f	class:Driver	signature:(tCarElt* car, tSituation *situation)
+newRace	berniw.h	/^		void newRace(tCarElt* car, tSituation *situation);$/;"	p	class:Driver	access:public	signature:(tCarElt* car, tSituation *situation)
+normalize	linalg.h	/^		void normalize(void);$/;"	p	class:v3d	access:public	signature:(void)
+normalize	linalg.h	/^inline void v3d::normalize(void)$/;"	f	class:v3d	signature:(void)
+o	pathfinder.h	/^		tOCar* o;$/;"	m	class:Pathfinder	access:private
+o	pathfinder.h	/^		v3d o;			\/* position in space, static trajectory *\/$/;"	m	class:PathSeg	access:private
+ocar	berniw.h	/^		OtherCar* ocar;$/;"	m	class:Driver	access:private
+operator *	linalg.h	/^		double operator*(const v3d &src);						\/* dot product *\/$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+operator *	linalg.h	/^		friend v3d operator*(const double s, const v3d & src);	\/* multiply by scalar *\/$/;"	p	class:v3d	access:friend	signature:(const double s, const v3d & src)
+operator *	linalg.h	/^		v3d operator*(const double s);							\/* multiply by scalar *\/$/;"	p	class:v3d	access:public	signature:(const double s)
+operator *	linalg.h	/^inline double v3d::operator*(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+operator *	linalg.h	/^inline v3d operator*(const double s, const v3d & src)$/;"	f	signature:(const double s, const v3d & src)
+operator *	linalg.h	/^inline v3d v3d::operator*(const double s)$/;"	f	class:v3d	signature:(const double s)
+operator +	linalg.h	/^		v3d operator+(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+operator +	linalg.h	/^inline v3d v3d::operator+(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+operator -	linalg.h	/^		v3d operator-(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+operator -	linalg.h	/^		v3d operator-(void);$/;"	p	class:v3d	access:public	signature:(void)
+operator -	linalg.h	/^inline v3d v3d::operator-(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+operator -	linalg.h	/^inline v3d v3d::operator-(void)$/;"	f	class:v3d	signature:(void)
+operator /	linalg.h	/^		v3d operator\/(const double s);							\/* divide by scalar *\/$/;"	p	class:v3d	access:public	signature:(const double s)
+operator /	linalg.h	/^inline v3d v3d::operator\/(const double s)$/;"	f	class:v3d	signature:(const double s)
+operator =	linalg.h	/^		v3d & operator=(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+operator =	linalg.h	/^inline v3d & v3d::operator=(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+optimize	pathfinder.cpp	/^void Pathfinder::optimize(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+optimize	pathfinder.h	/^		void optimize(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+optimize2	pathfinder.cpp	/^void Pathfinder::optimize2(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+optimize2	pathfinder.h	/^		void optimize2(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+optimize3	pathfinder.cpp	/^void Pathfinder::optimize3(int start, int range, double w)$/;"	f	class:Pathfinder	signature:(int start, int range, double w)
+optimize3	pathfinder.h	/^		void optimize3(int start, int range, double w);$/;"	p	class:Pathfinder	access:private	signature:(int start, int range, double w)
+overlaptimer	pathfinder.h	/^		tOverlapTimer* overlaptimer;$/;"	m	class:Pathfinder	access:private
+overtake	pathfinder.cpp	/^int Pathfinder::overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)
+overtake	pathfinder.h	/^		int overtake(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar)
+overtakee	pathfinder.h	/^	bool overtakee;			\/* is this the guy to overtake? *\/$/;"	m	struct:__anon6	access:public
+p	pathfinder.h	/^		v3d p;			\/* position in space, dynamic trajectory *\/$/;"	m	class:PathSeg	access:private
+pTrackSeg	trackdesc.h	/^		tTrackSeg* pTrackSeg;	\/* id of the corresponding segment *\/$/;"	m	class:TrackSegment	access:private
+parallel	berniw.h	/^		tdble parallel;$/;"	m	class:Driver	access:private
+parametricslopesn	spline.cpp	/^void parametricslopesn($/;"	f	signature:( int dim, const double *const x, const double *const y, double *const xs, double *const ys, double *const s )
+parametricslopesn	spline.h	/^extern void parametricslopesn($/;"	p	signature:( int dim, const double *const x, const double *const y, double *const xs, double *const ys, double *const s )
+parametricslopesp	spline.cpp	/^void parametricslopesp($/;"	f	signature:( int dim, const double *const x, const double *const y, double *const xs, double *const ys, double *const s )
+parametricslopesp	spline.h	/^extern void parametricslopesp($/;"	p	signature:( int dim, const double *const x, const double *const y, double *const xs, double *const ys, double *const s )
+pathSlope	pathfinder.h	/^		double pathSlope(int id);$/;"	p	class:Pathfinder	access:private	signature:(int id)
+pathSlope	pathfinder.h	/^inline double Pathfinder::pathSlope(int id) {$/;"	f	class:Pathfinder	signature:(int id)
+pd	pathfinder.h	/^	double pd;$/;"	m	struct:__anon5	access:public
+pf	mycar.h	/^		Pathfinder* pf;$/;"	m	class:MyCar	access:private
+pit	pathfinder.h	/^		bool pit;$/;"	m	class:Pathfinder	access:private
+pitLoc	pathfinder.h	/^		v3d pitLoc;				\/* location of pit *\/$/;"	m	class:Pathfinder	access:private
+pitSegId	pathfinder.h	/^		int pitSegId;			\/* segment id of pit *\/$/;"	m	class:Pathfinder	access:private
+pitStop	pathfinder.h	/^		bool pitStop;			\/* pitstop ? *\/$/;"	m	class:Pathfinder	access:private
+pitcmd	berniw.cpp	/^int Driver::pitcmd(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+pitcmd	berniw.cpp	/^static int  pitcmd(int index, tCarElt* car, tSituation *s);$/;"	p	file:	signature:(int index, tCarElt* car, tSituation *s)
+pitcmd	berniw.cpp	/^static int pitcmd(int index, tCarElt* car, tSituation *s)$/;"	f	file:	signature:(int index, tCarElt* car, tSituation *s)
+pitcmd	berniw.h	/^		int pitcmd(tSituation *s);$/;"	p	class:Driver	access:public	signature:(tSituation *s)
+pitcord	pathfinder.h	/^		v3d* pitcord;$/;"	m	class:Pathfinder	access:private
+pitspeedsqrlimit	pathfinder.h	/^		double pitspeedsqrlimit;	\/* speed limit for pit lane squared *\/$/;"	m	class:Pathfinder	access:private
+plan	pathfinder.cpp	/^void Pathfinder::plan(MyCar* myc)$/;"	f	class:Pathfinder	signature:(MyCar* myc)
+plan	pathfinder.cpp	/^void Pathfinder::plan(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)$/;"	f	class:Pathfinder	signature:(int trackSegId, tCarElt* car, tSituation *situation, MyCar* myc, OtherCar* ocar)
+plan	pathfinder.h	/^		void plan(MyCar* myc);$/;"	p	class:Pathfinder	access:public	signature:(MyCar* myc)
+plan	pathfinder.h	/^		void plan(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar);$/;"	p	class:Pathfinder	access:public	signature:(int trackSegId, tCarElt* car, tSituation* situation, MyCar* myc, OtherCar* ocar)
+plot	trackdesc.cpp	/^void TrackDesc::plot(char* filename)$/;"	f	class:TrackDesc	signature:(char* filename)
+plot	trackdesc.h	/^		void plot(char* filename);$/;"	p	class:TrackDesc	access:public	signature:(char* filename)
+plotPath	pathfinder.cpp	/^void Pathfinder::plotPath(char* filename)$/;"	f	class:Pathfinder	signature:(char* filename)
+plotPath	pathfinder.h	/^		void plotPath(char* filename);$/;"	p	class:Pathfinder	access:public	signature:(char* filename)
+plotPitStopPath	pathfinder.cpp	/^void Pathfinder::plotPitStopPath(char* filename)$/;"	f	class:Pathfinder	signature:(char* filename)
+plotPitStopPath	pathfinder.h	/^		void plotPitStopPath(char* filename);$/;"	p	class:Pathfinder	access:public	signature:(char* filename)
+ps	pathfinder.h	/^		PathSeg* ps;			\/* array with the plan *\/$/;"	m	class:Pathfinder	access:private
+queryAcceleration	mycar.cpp	/^double MyCar::queryAcceleration(tCarElt * car, double speed)$/;"	f	class:MyCar	signature:(tCarElt * car, double speed)
+queryAcceleration	mycar.h	/^		double queryAcceleration(tCarElt * car, double speed);$/;"	p	class:MyCar	access:public	signature:(tCarElt * car, double speed)
+queryAngleToTrack	berniw.h	/^inline double queryAngleToTrack(tCarElt * car)$/;"	f	signature:(tCarElt * car)
+querySlipSpeed	mycar.cpp	/^double MyCar::querySlipSpeed(tCarElt* car)$/;"	f	class:MyCar	signature:(tCarElt* car)
+querySlipSpeed	mycar.h	/^		double querySlipSpeed(tCarElt* car);$/;"	p	class:MyCar	access:public	signature:(tCarElt* car)
+r	trackdesc.h	/^		v3d l, m, r;			\/* right, middle and left segment (road) border *\/$/;"	m	class:TrackSegment	access:private
+raceType	trackdesc.h	/^		unsigned int raceType;	\/* race type (eg. pitlane, speedlimit, ...) *\/$/;"	m	class:TrackSegment	access:private
+radius	berniw.h	/^inline double radius(double x1, double y1, double x2, double y2, double x3, double y3)$/;"	f	signature:(double x1, double y1, double x2, double y2, double x3, double y3)
+radius	pathfinder.h	/^		tdble radius;	\/* radius of current segment *\/$/;"	m	class:PathSeg	access:private
+radius	trackdesc.h	/^		tdble radius;			\/* radius *\/$/;"	m	class:TrackSegment	access:private
+rlm	trackdesc.h	/^		v3d rlm; 				\/* 右车道中点 *\/$/;"	m	class:TrackSegment	access:private
+s1	pathfinder.h	/^		int s1, s3;				\/* pitentrystart, pitentryend *\/$/;"	m	class:Pathfinder	access:private
+s3	pathfinder.h	/^		int s1, s3;				\/* pitentrystart, pitentryend *\/$/;"	m	class:Pathfinder	access:private
+segmentsToPit	pathfinder.h	/^		int segmentsToPit(int id);$/;"	p	class:Pathfinder	access:public	signature:(int id)
+segmentsToPit	pathfinder.h	/^inline int Pathfinder::segmentsToPit(int id) {$/;"	f	class:Pathfinder	signature:(int id)
+set	pathfinder.h	/^		void set(tdble ispeedsqr, tdble ilength, v3d* id);$/;"	p	class:PathSeg	access:public	signature:(tdble ispeedsqr, tdble ilength, v3d* id)
+set	pathfinder.h	/^		void set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id);$/;"	p	class:PathSeg	access:public	signature:(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id)
+set	pathfinder.h	/^inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* id) {$/;"	f	class:PathSeg	signature:(tdble ispeedsqr, tdble ilength, v3d* id)
+set	pathfinder.h	/^inline void PathSeg::set(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id) {$/;"	f	class:PathSeg	signature:(tdble ispeedsqr, tdble ilength, v3d* ip, v3d* id)
+setCarPtr	mycar.h	/^		inline void setCarPtr(tCarElt* car) { me = car; }$/;"	f	class:AbstractCar	access:protected	signature:(tCarElt* car)
+setKbeta	trackdesc.h	/^		inline void setKbeta(double b) { kbeta = b; }$/;"	f	class:TrackSegment	access:public	signature:(double b)
+setKgamma	trackdesc.h	/^		inline void setKgamma(double c) { kgamma = c; }$/;"	f	class:TrackSegment	access:public	signature:(double c)
+setLength	trackdesc.h	/^		inline void setLength(double len) { length = len; }$/;"	f	class:TrackSegment	access:public	signature:(double len)
+setLoc	pathfinder.h	/^		inline void setLoc(v3d* ip) { p = (*ip); }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+setLocWeighted	pathfinder.cpp	/^void Pathfinder::setLocWeighted(int id, double newweight, v3d* newp)$/;"	f	class:Pathfinder	signature:(int id, double newweight, v3d* newp)
+setLocWeighted	pathfinder.h	/^		void setLocWeighted(int id, double newweight, v3d* newp);$/;"	p	class:Pathfinder	access:private	signature:(int id, double newweight, v3d* newp)
+setOptLoc	pathfinder.h	/^		inline void setOptLoc(v3d* ip) { o = (*ip); }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+setPitLoc	pathfinder.h	/^		inline void setPitLoc(v3d* ip) { l = ip; }$/;"	f	class:PathSeg	access:public	signature:(v3d* ip)
+setPitStop	pathfinder.h	/^		void setPitStop(bool p, int id);$/;"	p	class:Pathfinder	access:public	signature:(bool p, int id)
+setPitStop	pathfinder.h	/^inline void Pathfinder::setPitStop(bool p, int id) {$/;"	f	class:Pathfinder	signature:(bool p, int id)
+setRadius	pathfinder.h	/^		inline void setRadius(tdble r) { radius = r; }$/;"	f	class:PathSeg	access:public	signature:(tdble r)
+setSpeedsqr	pathfinder.h	/^		inline void setSpeedsqr(tdble spsqr) { speedsqr = spsqr; }$/;"	f	class:PathSeg	access:public	signature:(tdble spsqr)
+setWeight	pathfinder.h	/^		inline void setWeight(tdble w) { weight = w; }$/;"	f	class:PathSeg	access:public	signature:(tdble w)
+shutdown	berniw.cpp	/^static void shutdown(int index)$/;"	f	file:	signature:(int index)
+shutdown	berniw.cpp	/^static void shutdown(int index);$/;"	p	file:	signature:(int index)
+sign	berniw.h	/^inline double sign(double number)$/;"	f	signature:(double number)
+slopesn	spline.cpp	/^void slopesn(int dim, const double *const x, const double *const y, double *const ys)$/;"	f	signature:(int dim, const double *const x, const double *const y, double *const ys)
+slopesn	spline.h	/^extern void slopesn(int dim, const double *const x, const double *const y, double *const ys);$/;"	p	signature:(int dim, const double *const x, const double *const y, double *const ys)
+slopesp	spline.cpp	/^void slopesp(int dim, const double *const x, const double *const y, double *const ys)$/;"	f	signature:(int dim, const double *const x, const double *const y, double *const ys)
+slopesp	spline.h	/^extern void slopesp(int dim, const double *const x, const double *const y, double *const ys);$/;"	p	signature:(int dim, const double *const x, const double *const y, double *const ys)
+smooth	pathfinder.cpp	/^void Pathfinder::smooth(int Step)$/;"	f	class:Pathfinder	signature:(int Step)
+smooth	pathfinder.cpp	/^void Pathfinder::smooth(int id, double delta, double w)$/;"	f	class:Pathfinder	signature:(int id, double delta, double w)
+smooth	pathfinder.cpp	/^void Pathfinder::smooth(int s, int p, int e, double w)$/;"	f	class:Pathfinder	signature:(int s, int p, int e, double w)
+smooth	pathfinder.h	/^		void smooth(int Step);$/;"	p	class:Pathfinder	access:private	signature:(int Step)
+smooth	pathfinder.h	/^		void smooth(int id, double delta, double w);$/;"	p	class:Pathfinder	access:private	signature:(int id, double delta, double w)
+smooth	pathfinder.h	/^		void smooth(int s, int e, int p, double w);$/;"	p	class:Pathfinder	access:private	signature:(int s, int e, int p, double w)
+specialId	trackdesc.h	/^		int specialId[5];  		\/\/赛道上开始加速或者其他特殊操作的路段序号$/;"	m	class:TrackDesc	access:private
+specialid	berniw.h	/^		int specialid[2];$/;"	m	class:Driver	access:private
+speed	mycar.h	/^		double speed;$/;"	m	class:AbstractCar	access:protected
+speed	pathfinder.h	/^	double speed;			\/* same, but not squared *\/$/;"	m	struct:__anon6	access:public
+speedsqr	mycar.h	/^		double speedsqr;$/;"	m	class:AbstractCar	access:protected
+speedsqr	pathfinder.h	/^		tdble speedsqr;	\/* max possible speed sqared (speed ist therefore sqrt(speedsqr) *\/$/;"	m	class:PathSeg	access:private
+speedsqr	pathfinder.h	/^	double speedsqr;		\/* on track direction projected speed squared of opponent *\/$/;"	m	struct:__anon6	access:public
+spline	spline.cpp	/^double spline($/;"	f	signature:( int dim, double z, const double *const x, const double *const y, const double *const ys )
+spline	spline.h	/^extern double spline($/;"	p	signature:( int dim, double z, const double *const x, const double *const y, const double *const ys )
+sqr	berniw.h	/^inline double sqr(double x)$/;"	f	signature:(double x)
+sqr	pathfinder.h	/^		inline double sqr(double a) { return a*a; };$/;"	f	class:Pathfinder	access:public	signature:(double a)
+sqr	trackdesc.h	/^		inline double sqr(double a) { return a*a; }$/;"	f	class:TrackSegment	access:public	signature:(double a)
+src-robots-base_PKGDIR	1/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	10/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	2/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	3/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	4/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	5/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	6/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	7/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	8/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	9/Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGDIR	Makefile	/^src-robots-base_PKGDIR	= ${PACKAGE}-${VERSION}\/$(subst ${TORCS_BASE},,$(shell pwd))$/;"	m
+src-robots-base_PKGFILES	1/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	10/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	2/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	3/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	4/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	5/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	6/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	7/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	8/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	9/Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+src-robots-base_PKGFILES	Makefile	/^src-robots-base_PKGFILES	= $(shell find * -maxdepth 0 -type f -print)$/;"	m
+startmode	mycar.h	/^		bool startmode;$/;"	m	class:MyCar	access:public
+stepInterpolate	pathfinder.cpp	/^void Pathfinder::stepInterpolate(int iMin, int iMax, int Step)$/;"	f	class:Pathfinder	signature:(int iMin, int iMax, int Step)
+stepInterpolate	pathfinder.h	/^		void stepInterpolate(int iMin, int iMax, int Step);$/;"	p	class:Pathfinder	access:private	signature:(int iMin, int iMax, int Step)
+tOCar	pathfinder.h	/^} tOCar;$/;"	t	typeref:struct:__anon6
+tOverlapTimer	pathfinder.h	/^} tOverlapTimer;$/;"	t	typeref:struct:__anon7
+tParam	pathfinder.h	/^} tParam;$/;"	t	typeref:struct:__anon5
+time	pathfinder.h	/^	double time;			\/* estimate of time to catch up the car *\/$/;"	m	struct:__anon6	access:public
+time	pathfinder.h	/^	double time;			\/* how long is the opponent "in range" to overlap me *\/$/;"	m	struct:__anon7	access:public
+torcstrack	trackdesc.h	/^		tTrack *torcstrack;$/;"	m	class:TrackDesc	access:private
+tr	trackdesc.h	/^		v3d tr;					\/* normalized direction vector to the right side *\/$/;"	m	class:TrackSegment	access:private
+tr_mode	mycar.h	/^		int tr_mode;$/;"	m	class:MyCar	access:public
+track	mycar.h	/^		TrackDesc* track;$/;"	m	class:OtherCar	access:private
+track	pathfinder.h	/^		TrackDesc* track;		\/* pointer to track data *\/$/;"	m	class:Pathfinder	access:private
+tridiagonal	spline.cpp	/^void tridiagonal(int dim, SplineEquationData *tmp, double *x)$/;"	f	signature:(int dim, SplineEquationData *tmp, double *x)
+tridiagonal	spline.h	/^extern void tridiagonal(int dim, SplineEquationData *tmp, double *x);$/;"	p	signature:(int dim, SplineEquationData *tmp, double *x)
+tridiagonal2	spline.cpp	/^void tridiagonal2(int dim, SplineEquationData2 *tmp)$/;"	f	signature:(int dim, SplineEquationData2 *tmp)
+tridiagonal2	spline.h	/^extern void tridiagonal2(int dim, SplineEquationData2 *tmp);$/;"	p	signature:(int dim, SplineEquationData2 *tmp)
+trtime	mycar.h	/^		double trtime;$/;"	m	class:MyCar	access:public
+ts	trackdesc.h	/^		TrackSegment* ts;		\/* pointer to the array of tracksegments *\/$/;"	m	class:TrackDesc	access:private
+turnaround	mycar.h	/^		double turnaround;$/;"	m	class:MyCar	access:public
+type	trackdesc.h	/^		int type;				\/* physical type (eg. straight, left or right) *\/$/;"	m	class:TrackSegment	access:private
+undamaged	mycar.h	/^		int undamaged;$/;"	m	class:MyCar	access:public
+update	berniw.cpp	/^void Driver::update(tSituation *s)$/;"	f	class:Driver	signature:(tSituation *s)
+update	berniw.h	/^		void update(tSituation *s);$/;"	p	class:Driver	access:private	signature:(tSituation *s)
+update	mycar.cpp	/^void MyCar::update(TrackDesc* track, tCarElt* car, tSituation *situation)$/;"	f	class:MyCar	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+update	mycar.cpp	/^void OtherCar::update()$/;"	f	class:OtherCar	signature:()
+update	mycar.h	/^		void update(TrackDesc* track, tCarElt* car, tSituation *situation);$/;"	p	class:MyCar	access:public	signature:(TrackDesc* track, tCarElt* car, tSituation *situation)
+update	mycar.h	/^		void update(void);$/;"	p	class:OtherCar	access:public	signature:(void)
+updateCa	mycar.cpp	/^void MyCar::updateCa()$/;"	f	class:MyCar	signature:()
+updateCa	mycar.h	/^		void updateCa();$/;"	p	class:MyCar	access:private	signature:()
+updateDError	mycar.cpp	/^void MyCar::updateDError()$/;"	f	class:MyCar	signature:()
+updateDError	mycar.h	/^		void updateDError();$/;"	p	class:MyCar	access:private	signature:()
+updateDir	mycar.h	/^		inline void updateDir() { dir.x = cos(me->_yaw); dir.y = sin(me->_yaw); dir.z = 0.0; }$/;"	f	class:AbstractCar	access:protected	signature:()
+updateOCar	pathfinder.cpp	/^inline int Pathfinder::updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)
+updateOCar	pathfinder.h	/^		int updateOCar(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o)
+updateOverlapTimer	pathfinder.cpp	/^inline void Pathfinder::updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)$/;"	f	class:Pathfinder	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)
+updateOverlapTimer	pathfinder.h	/^		void updateOverlapTimer(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov);$/;"	p	class:Pathfinder	access:private	signature:(int trackSegId, tSituation *s, MyCar* myc, OtherCar* ocar, tOCar* o, tOverlapTimer* ov)
+updatePos	mycar.h	/^		inline void updatePos() { currentpos.x = me->_pos_X; currentpos.y = me->_pos_Y; currentpos.z = me->_pos_Z - cgh; }$/;"	f	class:AbstractCar	access:protected	signature:()
+updateSpeed	mycar.h	/^		inline void updateSpeed() { speed = sqrt(speedsqr); }$/;"	f	class:AbstractCar	access:protected	signature:()
+updateSpeedSqr	mycar.h	/^		inline void updateSpeedSqr() { speedsqr = (me->_speed_x)*(me->_speed_x) + (me->_speed_y)*(me->_speed_y) + (me->_speed_z)*(me->_speed_z); }$/;"	f	class:AbstractCar	access:protected	signature:()
+v3d	linalg.h	/^		v3d() {}$/;"	f	class:v3d	access:public	signature:()
+v3d	linalg.h	/^		v3d(const v3d &src) { this->x = src.x; this->y = src.y; this->z = src.z; }$/;"	f	class:v3d	access:public	signature:(const v3d &src)
+v3d	linalg.h	/^		v3d(double x, double y, double z) { this->x = x; this->y = y; this->z = z; }$/;"	f	class:v3d	access:public	signature:(double x, double y, double z)
+v3d	linalg.h	/^class v3d {$/;"	c
+v3d::crossProduct	linalg.h	/^		void crossProduct(const v3d* b, v3d* r);				\/* r := this X b *\/$/;"	p	class:v3d	access:public	signature:(const v3d* b, v3d* r)
+v3d::crossProduct	linalg.h	/^inline void v3d::crossProduct(const v3d* b, v3d* r) {$/;"	f	class:v3d	signature:(const v3d* b, v3d* r)
+v3d::dirVector	linalg.h	/^		void dirVector(const v3d* b, v3d* r);					\/* r := this - b *\/$/;"	p	class:v3d	access:public	signature:(const v3d* b, v3d* r)
+v3d::dirVector	linalg.h	/^inline void v3d::dirVector(const v3d* b, v3d* r) {$/;"	f	class:v3d	signature:(const v3d* b, v3d* r)
+v3d::len	linalg.h	/^		double len(void);$/;"	p	class:v3d	access:public	signature:(void)
+v3d::len	linalg.h	/^inline double v3d::len(void)$/;"	f	class:v3d	signature:(void)
+v3d::normalize	linalg.h	/^		void normalize(void);$/;"	p	class:v3d	access:public	signature:(void)
+v3d::normalize	linalg.h	/^inline void v3d::normalize(void)$/;"	f	class:v3d	signature:(void)
+v3d::operator *	linalg.h	/^		double operator*(const v3d &src);						\/* dot product *\/$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+v3d::operator *	linalg.h	/^		friend v3d operator*(const double s, const v3d & src);	\/* multiply by scalar *\/$/;"	p	class:v3d	access:friend	signature:(const double s, const v3d & src)
+v3d::operator *	linalg.h	/^		v3d operator*(const double s);							\/* multiply by scalar *\/$/;"	p	class:v3d	access:public	signature:(const double s)
+v3d::operator *	linalg.h	/^inline double v3d::operator*(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+v3d::operator *	linalg.h	/^inline v3d v3d::operator*(const double s)$/;"	f	class:v3d	signature:(const double s)
+v3d::operator +	linalg.h	/^		v3d operator+(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+v3d::operator +	linalg.h	/^inline v3d v3d::operator+(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+v3d::operator -	linalg.h	/^		v3d operator-(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+v3d::operator -	linalg.h	/^		v3d operator-(void);$/;"	p	class:v3d	access:public	signature:(void)
+v3d::operator -	linalg.h	/^inline v3d v3d::operator-(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+v3d::operator -	linalg.h	/^inline v3d v3d::operator-(void)$/;"	f	class:v3d	signature:(void)
+v3d::operator /	linalg.h	/^		v3d operator\/(const double s);							\/* divide by scalar *\/$/;"	p	class:v3d	access:public	signature:(const double s)
+v3d::operator /	linalg.h	/^inline v3d v3d::operator\/(const double s)$/;"	f	class:v3d	signature:(const double s)
+v3d::operator =	linalg.h	/^		v3d & operator=(const v3d &src);$/;"	p	class:v3d	access:public	signature:(const v3d &src)
+v3d::operator =	linalg.h	/^inline v3d & v3d::operator=(const v3d &src)$/;"	f	class:v3d	signature:(const v3d &src)
+v3d::v3d	linalg.h	/^		v3d() {}$/;"	f	class:v3d	access:public	signature:()
+v3d::v3d	linalg.h	/^		v3d(const v3d &src) { this->x = src.x; this->y = src.y; this->z = src.z; }$/;"	f	class:v3d	access:public	signature:(const v3d &src)
+v3d::v3d	linalg.h	/^		v3d(double x, double y, double z) { this->x = x; this->y = y; this->z = z; }$/;"	f	class:v3d	access:public	signature:(double x, double y, double z)
+v3d::x	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+v3d::y	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+v3d::z	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+waitToTurn	berniw.cpp	/^const tdble Driver::waitToTurn = 1.0; \/\/ how long should i wait till i try to turn backwards $/;"	m	class:Driver	file:
+waitToTurn	berniw.h	/^		static const tdble waitToTurn; \/* how long should i wait till i try to turn backwards *\/$/;"	m	class:Driver	access:private
+weight	pathfinder.h	/^		tdble weight;	\/* weight function value for superposition *\/$/;"	m	class:PathSeg	access:private
+wheelbase	mycar.h	/^		double wheelbase;$/;"	m	class:MyCar	access:private
+wheeltrack	mycar.h	/^		double wheeltrack;$/;"	m	class:MyCar	access:private
+width	trackdesc.h	/^		tdble width;			\/* width of the track segment*\/$/;"	m	class:TrackSegment	access:private
+x	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+x	pathfinder.h	/^	double x;$/;"	m	struct:__anon5	access:public
+x1	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+x2	spline.h	/^	double a, b, c, d, h, x1, x2;$/;"	m	struct:__anon4	access:public
+y	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+z	linalg.h	/^		double x, y, z;		\/* coordinates *\/$/;"	m	class:v3d	access:public
+~AbstractCar	mycar.h	/^		~AbstractCar() {};$/;"	f	class:AbstractCar	access:public	signature:()
+~Driver	berniw.cpp	/^Driver::~Driver()$/;"	f	class:Driver	signature:()
+~Driver	berniw.h	/^		~Driver();$/;"	p	class:Driver	access:public	signature:()
+~MyCar	mycar.cpp	/^MyCar::~MyCar()$/;"	f	class:MyCar	signature:()
+~MyCar	mycar.h	/^		~MyCar();$/;"	p	class:MyCar	access:public	signature:()
+~Pathfinder	pathfinder.cpp	/^Pathfinder::~Pathfinder()$/;"	f	class:Pathfinder	signature:()
+~Pathfinder	pathfinder.h	/^		~Pathfinder();$/;"	p	class:Pathfinder	access:public	signature:()
+~TrackDesc	trackdesc.cpp	/^TrackDesc::~TrackDesc()$/;"	f	class:TrackDesc	signature:()
+~TrackDesc	trackdesc.h	/^		~TrackDesc();$/;"	p	class:TrackDesc	access:public	signature:()
+~TrackSegment	trackdesc.cpp	/^TrackSegment::~TrackSegment()$/;"	f	class:TrackSegment	signature:()
+~TrackSegment	trackdesc.h	/^		~TrackSegment();$/;"	p	class:TrackSegment	access:public	signature:()

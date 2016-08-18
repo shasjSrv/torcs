@@ -501,7 +501,7 @@ int Pathfinder::initLeft(int id, double w)
 
 	double beta = acos(track->cosalpha(trtg, tr));
 
-	if (beta < 0.0) printf("error in initLeft: turn > 360° ??\n");
+	if (beta < 0.0) printf("error in initLeft: turn > 360? ??\n");
 
 	s1->dirVector(s2, &sdir);
 	sp = (*s2) - (*tr)*w;
@@ -561,7 +561,7 @@ int Pathfinder::initRight(int id, double w)
 
 	double beta = acos(track->cosalpha(trtg, tr));
 
-	if (beta < 0.0) printf("error in initRight: turn > 360° ??\n");
+	if (beta < 0.0) printf("error in initRight: turn > 360? ??\n");
 
 	s1->dirVector(s2, &sdir);
 	sp = (*s2) + (*tr)*w;
@@ -617,6 +617,7 @@ void Pathfinder::plan(MyCar* myc)
 	/* basic initialisation */
 	for (i = 0; i < nPathSeg; i++) {
 		ps[i].setLoc(track->getSegmentPtr(i)->getMiddle());
+//		ps[i].setLoc(track->getSegmentPtr(i)->getRLMiddle());
 		ps[i].setWeight(0.0);
 	}
 

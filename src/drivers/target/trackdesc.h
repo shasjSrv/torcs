@@ -52,7 +52,7 @@ class TrackSegment
 	public:
 		TrackSegment();
 		~TrackSegment();
-		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r);
+		void init(int id, const tTrackSeg* s, const v3d* l, const v3d* m, const v3d* r, const v3d* rlm);
 		inline void setLength(double len) { length = len; }
 		inline void setKbeta(double b) { kbeta = b; }
 		inline void setKgamma(double c) { kgamma = c; }
@@ -75,6 +75,7 @@ class TrackSegment
 		inline v3d* getLeftBorder() { return &l; }
 		inline v3d* getRightBorder() { return &r; }
 		inline v3d* getMiddle() { return &m; }
+		inline v3d* getRLMiddle() {return &rlm; }
 		inline v3d* getToRight() { return &tr; }
 
 		inline double sqr(double a) { return a*a; }
@@ -91,6 +92,7 @@ class TrackSegment
 		int type;				/* physical type (eg. straight, left or right) */
 		unsigned int raceType;	/* race type (eg. pitlane, speedlimit, ...) */
 		v3d l, m, r;			/* right, middle and left segment (road) border */
+		v3d rlm; 				/* 右车道中点 */
 		v3d tr;					/* normalized direction vector to the right side */
 		tdble radius;			/* radius */
 		tdble width;			/* width of the track segment*/

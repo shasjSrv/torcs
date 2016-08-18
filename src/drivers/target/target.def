@@ -1,0 +1,19 @@
+;
+;   file                 : target.def
+;   created              : 2016年 08月 18日 星期四 12:22:54 CST
+;   copyright            : (C) 2002 xxs
+;
+;
+;    This program is free software; you can redistribute it and/or modify
+;    it under the terms of the GNU General Public License as published by
+;    the Free Software Foundation; either version 2 of the License, or   
+;    (at your option) any later version.                                 
+;
+
+LIBRARY	target
+
+SECTIONS .data READ WRITE
+
+EXPORTS
+	target
+

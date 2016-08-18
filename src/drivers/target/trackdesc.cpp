@@ -29,13 +29,13 @@ TrackSegment::TrackSegment()
 	// nothing so far
 }
 
-void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp)
+void TrackSegment::init(int id, const tTrackSeg* s, const v3d* lp, const v3d* mp, const v3d* rp, const v3d* rlmp)
 {
 	/* pointer to the corresponding segment */
 	pTrackSeg = (tTrackSeg*) s;
 
 	/* right, middle and left segment (road) border, pointer to right side */
-	l = *lp; m = *mp; r = *rp;
+	l = *lp; m = *mp; r = *rp; rlm = *rlmp;
 	r.dirVector(&l, &tr);
 	tr.normalize();
 
@@ -100,7 +100,7 @@ TrackDesc::TrackDesc(const tTrack* track)
 	torcstrack = (tTrack*) track;
 
 	/* init all the segments of my track description */
-	v3d l, m, r;
+	v3d l, m, r, rlm;
 	int currentts = 0;
 	double lastseglen = 0.0;
 	double curseglen = 0.0;
@@ -126,8 +126,9 @@ TrackDesc::TrackDesc(const tTrack* track)
 				r.z = seg->vertex[TR_SR].z + dzr*curseglen;
 
 				m = (l + r)/2.0;
+				rlm = (r-l)*0.75+l;
 
-				ts[currentts].init(seg->id, seg, &l, &m, &r);
+				ts[currentts].init(seg->id, seg, &l, &m, &r, &rlm);
 				currentts++;
 
 				lastseglen = curseglen;
@@ -153,8 +154,9 @@ TrackDesc::TrackDesc(const tTrack* track)
 				r.z = seg->vertex[TR_SR].z + dzr*curseglen;
 
 				m = (l + r)/2.0;
+				rlm = (r-l)*0.75+l;
 
-				ts[currentts].init(seg->id, seg, &l, &m, &r);
+				ts[currentts].init(seg->id, seg, &l, &m, &r, &rlm);
 				currentts++;
 
 				lastseglen = curseglen;
@@ -287,13 +289,63 @@ int TrackDesc::getNearestId(v3d* p)
 
 void TrackDesc::SpecialIdgen(int num)
 {
-	int r;
-//	int i;
-	int j;
+/*	int sl[10];
+	int id[10];
+	int k;
+	int i;
+	int l;
 	int flag;
-	int d;
-	int s;   //用来更新rand生成种子
+	const int LONG = 500, SHORT = 100;
+	
+	l=0; flag=0; k=0;
 
+	for(i=0; i<10; i++)
+	{
+		sl[i]=id[i]=0;
+	}
+
+	for(i=0; i<nTrackSegments; i++)
+	{
+		if(k>=10)
+			break;
+
+		if(getSegmentPtr(i)->getType()==TR_STR)
+		{
+			if(l==0)
+			{
+				id[k] = i;
+				flag = 0;
+			}
+			l++;
+		}
+		else
+		{
+			flag++;
+			if(flag<3)
+				l++;
+			else
+			{
+				if(l>SHORT)
+				{	
+					sl[k]=l;
+					k++;
+				}
+				
+				l = 0;
+			}
+		}
+	}
+	printf("\n\n\n");
+	printf("nTrackSegments: %d, i: %d, k: %d",nTrackSegments,i,k);
+
+	for(i=0; i<k; i++)
+	{
+		if(i%3==0)
+			printf("\n");
+		printf("id[%d]: %d, sl[%d]: %d \t",i,id[i],i,sl[i]);		
+	}
+	printf("\n\n\n");
+*/
 	//打印赛道
 //	for(i=0; i<nTrackSegments; i+=10)
 //		printf("i: %i, type: %i \n", i,getSegmentPtr(i)->getType());
@@ -323,23 +375,43 @@ void TrackDesc::SpecialIdgen(int num)
 
 	
 	//区分两个特殊点，第一个用于加速，第二个用于减速
-	s=0;
+	int r;
+	int i;
+	int j;
+	int flag;
+	int ld=0, sd=0;
+	int max=0;
+	int s;   //用来更新rand生成种子
+
+	for(i=0; i<nTrackSegments; i++)
+	{
+		if(getSegmentPtr(i)->getType()==TR_STR)
+			ld++;
+		else
+		{
+			if(max<ld)
+				max=ld;
+			ld=0;
+		}
+	}
+	printf("\n\n\nmax: %d\n\n\n",max);
+ 	s=0;
 	while(1)
 	{
 		flag=0;
 		srand(s++);
 		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
 	
-		d = (nTrackSegments/5>500)?500:nTrackSegments/5;
+		ld = max*0.75;
 
-		for(j=0; j<d; j+=10)
+		for(j=0; j<ld; j+=10)
 		{
 			if(getSegmentPtr(r+j)->getType()!=TR_STR)
 				flag++;
 			if(flag>=3)
 				break;
 		}
-		if(j>=d)
+		if(j>=ld)
 			break;		
 //      printf("d: %i, j: %i, type: %i",d,j,getSegmentPtr(r+j)->getType());
 //		printf("\n");
@@ -348,25 +420,28 @@ void TrackDesc::SpecialIdgen(int num)
 	}
 	specialId[0]=r;
 	
-	s=0;
+	s=0; sd=150;
 	while(1)
 	{
 		flag=0;
 		srand(s++);
 		r = rand()%(nTrackSegments*8/10) + nTrackSegments/10;
 //		printf("r: %i\n",r);
-		for(j=0; j<150; j+=10)
+		for(j=0; j<sd; j+=10)
 		{
 			if(getSegmentPtr(r+j)->getType()!=TR_STR)
 				flag++;
 			if(flag>=2)
 				break;
 		}
-		if(j==150)
+		if(j>=sd)
 		{
-			if((r+150)<specialId[0]||r>(specialId[0]+d))
+			if((r+sd)<specialId[0]||r>(specialId[0]+ld))
 				break;
 		}
+		if(s%100==0)
+			sd-=10;
+
 //		printf("d: %i, j: %i, type: %i",d,j,getSegmentPtr(r+j)->getType());
 //		printf("Id1: %i, r: %i",specialId[0],r);
 //		printf("\n");
@@ -374,7 +449,6 @@ void TrackDesc::SpecialIdgen(int num)
         	printf("Trying to get special pots, please wait for a moment\n");
 	}
 	specialId[1]=r;
-	
-	
+
 
 }
