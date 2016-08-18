@@ -128,7 +128,8 @@ FollowJudge::FollowJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
         {
             for(int i=0;i<m_nCar;i++)
             {
-                if(strncmp(s->cars[i]->_name, "target 2", 4) == 0)
+                if(strncmp(s->cars[i]->_name, GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, targName,""), \
+								GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, targlength, NULL, 0)) == 0)
                 {
                     targetCar=s->cars[i];
                     cout<<"target player get"<<endl;
@@ -180,6 +181,10 @@ void FollowJudge::judge(tCarElt *car)
 
 void FollowJudge::figurOut(tCarElt *car)
 {
+	const char *race = m_ReInfo->_reRaceName;
+	const int BUFSIZE = 1024;
+	char path[BUFSIZE];
+	int	   demage = 0;
 	double total=0;
     vector<double>::iterator it;
 	double avg = 0;
@@ -206,17 +211,26 @@ void FollowJudge::figurOut(tCarElt *car)
 				);
 		deviation = sqrt(deviation/(distances.size()-1));
 		m_outfile<<"deviation:"<<deviation<<endl;
+		for(int i=0;i<m_nCar;i++){
+			snprintf(path, BUFSIZE, "%s/%s/%s/%s/%d", m_ReInfo->track->name, RE_SECT_RESULTS, race, RE_SECT_RANK, i + 1);
+			if(strstr(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"scr_server")!=0)
+				demage = (int)(GfParmGetNum(m_results, path, RE_ATTR_DAMMAGES, NULL, 0));
+			m_outfile<<"i:"<<i<<",    demage:"<<demage<<endl;
+			m_outfile<<GfParmGetStr(m_results, path, RE_ATTR_NAME, "")<<endl;
+		}	
 
-		if(min < 1)
-		  score = 10000/avg - deviation - max/distances.size() - 5;
-		else  
-		  score = 10000/avg - deviation - max/distances.size();
+		float w1 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
+		float w2 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
+		float w3 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
+		
 
-		float w1 = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
-		float w2 = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
+		if(min < m_min && max > m_max)
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - 2 * m_penalty - w3 * demage; 
+		else if(min < m_min || max > m_max)
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - m_penalty - w3 * demage; 
+		else
+			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
 
-
-		score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2;
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
@@ -263,7 +277,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     
     m_judge_result=GfParmGetStr(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,"");
     if(m_judge_result[0]!='\0'){
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"target 2")!=0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, targName,""))!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR_VAL,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x8, y, GFUI_ALIGN_HC_VB, 0);
@@ -275,7 +289,7 @@ short FollowJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,
     }
 
     if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
-        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),"target 2")!=0){  //is judge car
+        if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, targName,""))!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
                 x9, y, GFUI_ALIGN_HC_VB, 0);
@@ -472,10 +486,29 @@ short LightImageJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * 
 
 
 PassBasicJudge::PassBasicJudge(tRmInfo *ReInfo):DefaultJudge(ReInfo),
-                                        name("Limit Result"),
+                                        name("Pass Result"),
                                         factor("time")
 
 {
+	if(s!=NULL)
+	{
+		m_results=ReInfo->results;
+
+		//nCar=s->_ncars;
+		cout<<"number of player:  "<<m_nCar<<endl;
+		if(m_nCar>=2)
+		{
+			for(int i=0;i<m_nCar;i++)
+			{
+				if(strncmp(s->cars[i]->_name, GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, targName,""), \
+								GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, targlength, NULL, 0)) == 0)
+				{
+					targetCar=s->cars[i];
+					cout<<"target player get"<<endl;
+				}
+			}
+		}
+	}
 }
 
 
