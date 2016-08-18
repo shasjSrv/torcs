@@ -36,6 +36,7 @@
 #include <robot.h>
 #include <racescreens.h>
 #include <portability.h>
+#include <iostream>
 
 static void *scrHandle;
 static tRmDrvSelect	*ds;
@@ -376,9 +377,11 @@ void RmDriversSelect(void *vs)
 	nbSelectedDrivers = 0;
 	nbMaxSelectedDrivers = (int)GfParmGetNum(ds->param, RM_SECT_DRIVERS, RM_ATTR_MAXNUM, NULL, 0);
 	nCars = GfParmGetEltNb(ds->param, RM_SECT_DRIVERS);
+	std::cout<<"nCars:"<<nCars<<std::endl;
 	index = 1;
 	for (i = 1; i < nCars+1; i++) {
 		snprintf(dname, BUFSIZE, "%s/%d", RM_SECT_DRIVERS, i);
+		std::cout<<"dname:"<<dname<<std::endl;
 		const char* cardllname = GfParmGetStr(ds->param, dname, RM_ATTR_MODULE, "");
 		robotIdx = (int)GfParmGetNum(ds->param, dname, RM_ATTR_IDX, (char*)NULL, 0);
 	
