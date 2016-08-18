@@ -553,8 +553,8 @@ void Driver_berniw::drive(tSituation *s)
 {
 	switch(index)
 	{
-	case 1: drive_normal(s); break;
-	case 2: drive_follow(s); break;
+	case 1: drive_follow(s); break;
+	case 2: drive_normal(s); break;
 	default: drive_original(s); break;
 	}
 //	drive_original(s);

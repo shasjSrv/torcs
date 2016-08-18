@@ -53,6 +53,7 @@ const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;		// [m] if offset < this us
 
 const float Driver::TEAM_REAR_DIST = 50.0f;					//
 const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in the team?
+const float Driver::RL_OFFSET_INC = 0.15; 					// 行驶在右跑道的偏置单词增加量
 
 // Static variables.
 Cardata *Driver::cardata = NULL;
@@ -118,6 +119,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 
 	// Load and set parameters.
 	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69f);
+
 }
 
 
@@ -436,11 +438,18 @@ vec2f Driver::getTargetPoint()
 	float lookahead;
 	float length = getDistToSegEnd();	
     float width = seg->width;
-	static float offset;
-	
-	
-	
-	offset = getOffset();
+	float offset = getOffset();
+
+	if(!f_offset) 		//如果不需要超车等额外偏置
+	{
+		//尽量行驶在右跑道中央
+		if(seg->type != TR_STR)
+			offset = MIN((-0.1*width), offset+0.15);
+		else
+			offset = MAX((-0.25*width), offset-0.15);
+	}
+		
+//	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());
 	
 	if (pit->getInPit()) {
 		// To stop in the pit we need special lookahead values.
@@ -508,6 +517,7 @@ float Driver::getOffset()
 	int i;
 	float catchdist, mincatchdist = FLT_MAX, mindist = -1000.0f;
 	Opponent *o = NULL;
+	f_offset = false;
 
 	// Increment speed dependent.
 	float incfactor = MAX_INC_FACTOR - MIN(fabs(car->_speed_x)/MAX_INC_FACTOR, (MAX_INC_FACTOR - 1.0f));
@@ -543,6 +553,7 @@ float Driver::getOffset()
 				myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 			}
 		}
+		f_offset = true;
 		return myoffset;
 	}
 
@@ -624,6 +635,7 @@ float Driver::getOffset()
 					myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 				}
 			}
+			f_offset = true;
 		}
 	} else {
 		// There is no opponent to overtake, so the offset goes slowly back to zero.
