@@ -3,9 +3,16 @@
 
 #include "judge.h"
 #include <raceman.h>
-#include <vector>
+#include <list>
 #include <fstream>
 #include <iostream>
+
+typedef struct lengthInfo{
+	double			length;
+	double			width;
+	
+}LengthInfo;
+
 class DefaultJudge: public Judge
 {
 public:
@@ -59,7 +66,7 @@ private:
     std::string				name;
 	std::string				factor;
 	tCarElt					*targetCar;
-	std::vector<double>		distances;
+	std::list<double>		distances;
 };
 
 
@@ -133,6 +140,8 @@ private:
     std::string				name;
     std::string				factor;
 	tCarElt					*targetCar;
+	std::list<LengthInfo>	distances;
+
 };
 
 
