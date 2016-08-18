@@ -35,7 +35,12 @@ protected:
 	float			m_segLength;
 	std::ofstream	m_outfile;
 	int				m_nCar;
-	double			m_curTime; 
+	double			m_curTime;
+	const float		m_min = 1.0f;					//the min distance to target driver.
+	const float		m_max = 300.0f;					//the max distance to target driver.
+	const float		m_penalty = 5;					//To punish the score in some situation.
+	const char		*targName = "target name";		//Config the target driver.
+	const char		*targlength = "target length";	//config the length of target name.
 };
 
 
@@ -55,9 +60,6 @@ private:
 	std::string				factor;
 	tCarElt					*targetCar;
 	std::vector<double>		distances;
-	const float				m_min = 1.0f;					//the min distance to target driver.
-	const float				m_max = 300.0f;					//the max distance to target driver.
-	const float				m_penalty = 5;					//To punish the score in some situation.
 };
 
 
@@ -128,9 +130,9 @@ public:
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
     virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
 private:
-    std::string name;
-    std::string factor;
-
+    std::string				name;
+    std::string				factor;
+	tCarElt					*targetCar;
 };
 
 
@@ -147,8 +149,9 @@ public:
     virtual void showlable(void *rmScrHdle,int x8,int x9,int y);
     virtual short resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * buf,char * path);
 private:
-    std::string name;
-    std::string factor;
+    std::string				name;
+    std::string				factor;
+	tCarElt					*targetCar;
 
 };
 
