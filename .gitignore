@@ -61,6 +61,7 @@ src/linux/.depend
 src/drivers/berniw/.depend
 src/drivers/berniw2/.depend
 src/drivers/berniw3/.depend
+src/drivers/target/.depend
 src/drivers/bt/.depend
 src/drivers/damned/.depend
 src/drivers/human/.depend

@@ -1368,7 +1368,8 @@ grCamCreateSceneCameraList(class cGrScreen *myscreen, tGrCamHead *cams, tdble fo
 				      67.5,	/* fovy */
 				      50.0,	/* fovymin */
 				      95.0,	/* fovymax */
-				      0.3,	/* near */
+//				      0.3,	/* near */
+				      1.0,	/* near */
 				      600.0 * fovFactor,	/* far */
 				      300.0 * fovFactor,	/* fog */
 				      600.0 * fovFactor	/* fog */

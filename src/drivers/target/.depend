@@ -28,7 +28,7 @@ berniw.o: berniw.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
- /usr/include/string.h /home/youwu/work/torcs/export/include/tgf.h \
+ /usr/include/string.h /home/jzy/project/torcs1.1/export/include/tgf.h \
  /usr/include/x86_64-linux-gnu/sys/param.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
@@ -54,14 +54,14 @@ berniw.o: berniw.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /home/youwu/work/torcs/export/include/osspec.h \
- /home/youwu/work/torcs/export/include/track.h \
- /home/youwu/work/torcs/export/include/tmath/linalg_t.h \
- /home/youwu/work/torcs/export/include/tmath/v2_t.h \
- /home/youwu/work/torcs/export/include/tmath/v3_t.h \
- /home/youwu/work/torcs/export/include/tmath/v4_t.h \
- /home/youwu/work/torcs/export/include/tmath/straight2_t.h \
- /home/youwu/work/torcs/export/include/car.h /usr/include/plib/sg.h \
+ /home/jzy/project/torcs1.1/export/include/osspec.h \
+ /home/jzy/project/torcs1.1/export/include/track.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/linalg_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v2_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v3_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v4_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/straight2_t.h \
+ /home/jzy/project/torcs1.1/export/include/car.h /usr/include/plib/sg.h \
  /usr/include/plib/ul.h /usr/include/ctype.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -75,14 +75,14 @@ berniw.o: berniw.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/youwu/work/torcs/export/include/raceman.h \
- /home/youwu/work/torcs/export/include/graphic.h \
- /home/youwu/work/torcs/export/include/simu.h \
- /home/youwu/work/torcs/export/include/robot.h \
- /home/youwu/work/torcs/export/include/robottools.h spline.h trackdesc.h \
- linalg.h mycar.h pathfinder.h \
- /home/youwu/work/torcs/export/include/portability.h \
- /home/youwu/work/torcs/config.h
+ /home/jzy/project/torcs1.1/export/include/raceman.h \
+ /home/jzy/project/torcs1.1/export/include/graphic.h \
+ /home/jzy/project/torcs1.1/export/include/simu.h \
+ /home/jzy/project/torcs1.1/export/include/robot.h \
+ /home/jzy/project/torcs1.1/export/include/robottools.h spline.h \
+ trackdesc.h /usr/include/x86_64-linux-gnu/bits/timex.h linalg.h mycar.h \
+ pathfinder.h /home/jzy/project/torcs1.1/export/include/portability.h \
+ /home/jzy/project/torcs1.1/config.h
 spline.o: spline.cpp /usr/include/stdc-predef.h /usr/include/math.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -141,7 +141,8 @@ trackdesc.o: trackdesc.cpp /usr/include/stdc-predef.h trackdesc.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
- /usr/include/string.h /home/youwu/work/torcs/export/include/tgf.h \
+ /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/timex.h \
+ /home/jzy/project/torcs1.1/export/include/tgf.h \
  /usr/include/x86_64-linux-gnu/sys/param.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
@@ -167,14 +168,14 @@ trackdesc.o: trackdesc.cpp /usr/include/stdc-predef.h trackdesc.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /home/youwu/work/torcs/export/include/osspec.h \
- /home/youwu/work/torcs/export/include/track.h \
- /home/youwu/work/torcs/export/include/tmath/linalg_t.h \
- /home/youwu/work/torcs/export/include/tmath/v2_t.h \
- /home/youwu/work/torcs/export/include/tmath/v3_t.h \
- /home/youwu/work/torcs/export/include/tmath/v4_t.h \
- /home/youwu/work/torcs/export/include/tmath/straight2_t.h \
- /home/youwu/work/torcs/export/include/car.h /usr/include/plib/sg.h \
+ /home/jzy/project/torcs1.1/export/include/osspec.h \
+ /home/jzy/project/torcs1.1/export/include/track.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/linalg_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v2_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v3_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v4_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/straight2_t.h \
+ /home/jzy/project/torcs1.1/export/include/car.h /usr/include/plib/sg.h \
  /usr/include/plib/ul.h /usr/include/ctype.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -188,11 +189,11 @@ trackdesc.o: trackdesc.cpp /usr/include/stdc-predef.h trackdesc.h \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/youwu/work/torcs/export/include/raceman.h \
- /home/youwu/work/torcs/export/include/graphic.h \
- /home/youwu/work/torcs/export/include/simu.h \
- /home/youwu/work/torcs/export/include/robot.h \
- /home/youwu/work/torcs/export/include/robottools.h linalg.h berniw.h \
+ /home/jzy/project/torcs1.1/export/include/raceman.h \
+ /home/jzy/project/torcs1.1/export/include/graphic.h \
+ /home/jzy/project/torcs1.1/export/include/simu.h \
+ /home/jzy/project/torcs1.1/export/include/robot.h \
+ /home/jzy/project/torcs1.1/export/include/robottools.h linalg.h berniw.h \
  spline.h mycar.h pathfinder.h
 pathfinder.o: pathfinder.cpp /usr/include/stdc-predef.h pathfinder.h \
  /usr/include/stdio.h /usr/include/features.h \
@@ -224,7 +225,7 @@ pathfinder.o: pathfinder.cpp /usr/include/stdc-predef.h pathfinder.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
- /usr/include/string.h /home/youwu/work/torcs/export/include/tgf.h \
+ /usr/include/string.h /home/jzy/project/torcs1.1/export/include/tgf.h \
  /usr/include/x86_64-linux-gnu/sys/param.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
@@ -250,14 +251,14 @@ pathfinder.o: pathfinder.cpp /usr/include/stdc-predef.h pathfinder.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /home/youwu/work/torcs/export/include/osspec.h \
- /home/youwu/work/torcs/export/include/track.h \
- /home/youwu/work/torcs/export/include/tmath/linalg_t.h \
- /home/youwu/work/torcs/export/include/tmath/v2_t.h \
- /home/youwu/work/torcs/export/include/tmath/v3_t.h \
- /home/youwu/work/torcs/export/include/tmath/v4_t.h \
- /home/youwu/work/torcs/export/include/tmath/straight2_t.h \
- /home/youwu/work/torcs/export/include/car.h /usr/include/plib/sg.h \
+ /home/jzy/project/torcs1.1/export/include/osspec.h \
+ /home/jzy/project/torcs1.1/export/include/track.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/linalg_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v2_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v3_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v4_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/straight2_t.h \
+ /home/jzy/project/torcs1.1/export/include/car.h /usr/include/plib/sg.h \
  /usr/include/plib/ul.h /usr/include/ctype.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -271,12 +272,13 @@ pathfinder.o: pathfinder.cpp /usr/include/stdc-predef.h pathfinder.h \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/youwu/work/torcs/export/include/raceman.h \
- /home/youwu/work/torcs/export/include/graphic.h \
- /home/youwu/work/torcs/export/include/simu.h \
- /home/youwu/work/torcs/export/include/robot.h \
- /home/youwu/work/torcs/export/include/robottools.h trackdesc.h linalg.h \
- mycar.h spline.h berniw.h
+ /home/jzy/project/torcs1.1/export/include/raceman.h \
+ /home/jzy/project/torcs1.1/export/include/graphic.h \
+ /home/jzy/project/torcs1.1/export/include/simu.h \
+ /home/jzy/project/torcs1.1/export/include/robot.h \
+ /home/jzy/project/torcs1.1/export/include/robottools.h trackdesc.h \
+ /usr/include/x86_64-linux-gnu/bits/timex.h linalg.h mycar.h spline.h \
+ berniw.h
 mycar.o: mycar.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/stdio.h /usr/include/features.h \
  /usr/include/x86_64-linux-gnu/sys/cdefs.h \
@@ -307,7 +309,7 @@ mycar.o: mycar.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/os_defines.h \
  /usr/include/x86_64-linux-gnu/c++/4.8/bits/cpu_defines.h \
- /usr/include/string.h /home/youwu/work/torcs/export/include/tgf.h \
+ /usr/include/string.h /home/jzy/project/torcs1.1/export/include/tgf.h \
  /usr/include/x86_64-linux-gnu/sys/param.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
@@ -333,14 +335,14 @@ mycar.o: mycar.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /home/youwu/work/torcs/export/include/osspec.h \
- /home/youwu/work/torcs/export/include/track.h \
- /home/youwu/work/torcs/export/include/tmath/linalg_t.h \
- /home/youwu/work/torcs/export/include/tmath/v2_t.h \
- /home/youwu/work/torcs/export/include/tmath/v3_t.h \
- /home/youwu/work/torcs/export/include/tmath/v4_t.h \
- /home/youwu/work/torcs/export/include/tmath/straight2_t.h \
- /home/youwu/work/torcs/export/include/car.h /usr/include/plib/sg.h \
+ /home/jzy/project/torcs1.1/export/include/osspec.h \
+ /home/jzy/project/torcs1.1/export/include/track.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/linalg_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v2_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v3_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/v4_t.h \
+ /home/jzy/project/torcs1.1/export/include/tmath/straight2_t.h \
+ /home/jzy/project/torcs1.1/export/include/car.h /usr/include/plib/sg.h \
  /usr/include/plib/ul.h /usr/include/ctype.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -354,9 +356,10 @@ mycar.o: mycar.cpp /usr/include/stdc-predef.h berniw.h \
  /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
  /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
- /home/youwu/work/torcs/export/include/raceman.h \
- /home/youwu/work/torcs/export/include/graphic.h \
- /home/youwu/work/torcs/export/include/simu.h \
- /home/youwu/work/torcs/export/include/robot.h \
- /home/youwu/work/torcs/export/include/robottools.h spline.h trackdesc.h \
- linalg.h mycar.h pathfinder.h
+ /home/jzy/project/torcs1.1/export/include/raceman.h \
+ /home/jzy/project/torcs1.1/export/include/graphic.h \
+ /home/jzy/project/torcs1.1/export/include/simu.h \
+ /home/jzy/project/torcs1.1/export/include/robot.h \
+ /home/jzy/project/torcs1.1/export/include/robottools.h spline.h \
+ trackdesc.h /usr/include/x86_64-linux-gnu/bits/timex.h linalg.h mycar.h \
+ pathfinder.h
