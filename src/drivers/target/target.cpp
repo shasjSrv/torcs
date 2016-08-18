@@ -128,9 +128,9 @@ Target::Target(int index)
 	berniw = NULL;
 	bt = NULL;
 
-	if(index!=3)
+	if(index!=3) 	//target1和target2采用berniw模型
 		berniw = new Driver_berniw(index);
-	else
+	else 			//target3采用bt模型
 		bt = new Driver(index);
 }
 
@@ -169,10 +169,12 @@ void Target::newRace(tCarElt* car, tSituation *situation)
 /* pitstop callback */
 int Target::pitcmd(tSituation *s)
 {
+	int rt=0;
 	if(berniw != NULL )
-	    return berniw->pitcmd(s);
+	    rt = berniw->pitcmd(s);
 	else if (bt != NULL)
-		return bt->pitCommand(s);
+		rt = bt->pitCommand(s);
+	return rt;
 }
 
 void Target::drive(tSituation *s)

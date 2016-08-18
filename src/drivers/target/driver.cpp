@@ -164,6 +164,8 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 
 	// create the pit object.
 	pit = new Pit(s, this);
+
+	limitedspeed = 99.0/3.6;
 }
 
 
@@ -260,6 +262,7 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	float mu = segment->surface->kFriction*TIREMU*MU_FACTOR;
 	float r = radius[segment->id];
 	float dr = learn->getRadius(segment);
+	float allowedspeed;
 	if (dr < 0.0f) {
 		r += dr;
 	} else {
@@ -274,7 +277,8 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	}*/
 	r = MAX(1.0, r);
 
-	return sqrt((mu*G*r)/(1.0f - MIN(1.0f, r*CA*mu/mass)));
+	allowedspeed = sqrt((mu*G*r)/(1.0f - MIN(1.0f, r*CA*mu/mass)));
+	return MIN(allowedspeed,limitedspeed);
 }
 
 
@@ -430,9 +434,14 @@ vec2f Driver::getTargetPoint()
 {
 	tTrackSeg *seg = car->_trkPos.seg;
 	float lookahead;
-	float length = getDistToSegEnd();
-	float offset = getOffset();
-
+	float length = getDistToSegEnd();	
+    float width = seg->width;
+	static float offset;
+	
+	
+	
+	offset = getOffset();
+	
 	if (pit->getInPit()) {
 		// To stop in the pit we need special lookahead values.
 		if (currentspeedsqr > pit->getSpeedlimitSqr()) {

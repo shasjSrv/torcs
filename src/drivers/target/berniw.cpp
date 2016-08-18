@@ -462,30 +462,6 @@ void Driver_berniw::drive_original(tSituation *s)
 
 	Pit();
 
-	//控制车速，单位m/s
-/*	static double limitspeed;
-	double b = 0;
-	if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+500)
-	{
-		limitspeed = 200/3.6;
-	}
-	else if (specialid[1]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[1]+150)
-	{
-		limitspeed = 100/3.6;
-	}
-	else
-	{
-		limitspeed = 150/3.6;
-	}
-	if (myc->getSpeed() > limitspeed) {
-		b = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
-        if(specialid[0]+150<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+200)
-			b = 0.05;
-	}
-	if(b>b1)
-		b1 = b;
-*/	
-
 	if (isStuck(s)) {
 		getUnstuck();
 	}
@@ -497,42 +473,6 @@ void Driver_berniw::drive_original(tSituation *s)
 		car->_brakeCmd = brake;
 		car->_accelCmd = Accel(brake);
 	}
-	
-
-	//显示信息
-	static int ii=-1;
-	if(++ii==0)
-	{
-		int ntrackid = myTrackDesc->getnTrackSegments();
-		printf("the number of track segment: %i \n",ntrackid);
-		int specialid[2];
-		specialid[0] = myTrackDesc->getSpecialId(0);
-		specialid[1] = myTrackDesc->getSpecialId(1);
-		printf("the two id of the spcial segment: %i, %i \n",specialid[0],specialid[1]);
-	}
-
-/*	if(++ii%100==0)
-	{
-		double speed = myc->getSpeed()*3.6;
-		int tracktype = myc->currentseg->getType();
-		char typestr[]="TR_RGT";
-		if(tracktype==2)
-		{	typestr[3]='L';typestr[4]='F';}
-		else if(tracktype==3)
-		{   typestr[3]='S';typestr[4]='T';typestr[5]='R';}
-		int myccursegid = myc->getCurrentSegId();
-
-		printf("speed: %.2f km/h, type: %s, cursegid: %i \n", speed,typestr,myccursegid);
-		ii=0;
-
-		//int ocarcursegid[situation->_ncars];
-        printf("the segment id of the other car: ");
-	    for (int i = 0; i < situation->_ncars; i++) {
-		    printf("%i ",ocar[i].getCurrentSegId());
-		}
-		printf("\n");
-	}
-*/
 }
 
 
@@ -609,20 +549,13 @@ void Driver_berniw::drive_follow(tSituation *s)
 
 }
 
-void Driver_berniw::drive_overtake(tSituation *s)
-{
-	car->ctrl.gear = 3;
-}
-
 void Driver_berniw::drive(tSituation *s)
 {
 	switch(index)
 	{
 	case 1: drive_normal(s); break;
 	case 2: drive_follow(s); break;
-	case 3: drive_overtake(s); break;
 	default: drive_original(s); break;
 	}
-
 //	drive_original(s);
 }

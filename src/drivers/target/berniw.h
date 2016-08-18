@@ -64,8 +64,7 @@ class Driver_berniw {
 	private:
 		void drive_original(tSituation *s);
 		void drive_normal(tSituation *s);
-		void drive_follow(tSituation *s);
-		void drive_overtake(tSituation *s);
+		void drive_follow(tSituation *s);		
 		void update(tSituation *s);
 		float Gear();
 		float Steer();

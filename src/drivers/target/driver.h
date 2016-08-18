@@ -134,6 +134,8 @@ class Driver {
 		SegLearn *learn;
 		int alone;
 
+		float limitedspeed;
+
 		// Data that should stay constant after first initialization.
 		int MAX_UNSTUCK_COUNT;
 		int INDEX;
