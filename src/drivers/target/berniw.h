@@ -82,10 +82,14 @@ class Driver_berniw {
 		TrackDesc* myTrackDesc;
 		double currenttime;		
 		int specialid[2];
+		float limitspeed;
 
 		tdble parallel;
 		tdble cerror;
 		static const tdble waitToTurn; /* how long should i wait till i try to turn backwards */
+		static const float LIMITED_SPEED_NORMAL;
+		static const float LIMITED_SPEED_FOLLOW;
+		static const float ACCEL_NORMAL;
 
 };
 

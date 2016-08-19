@@ -33,6 +33,9 @@ static MyCar* mycar[maxBOTS] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 /**** implement of driver ******/
 
 const tdble Driver_berniw::waitToTurn = 1.0; // how long should i wait till i try to turn backwards 
+const float Driver_berniw::LIMITED_SPEED_NORMAL = 80.0;
+const float Driver_berniw::LIMITED_SPEED_FOLLOW = 99.0;
+const float Driver_berniw::ACCEL_NORMAL = 0.13;
 
 Driver_berniw::Driver_berniw(int index)
 {
@@ -94,7 +97,7 @@ void Driver_berniw::initTrack(tTrack* track, void *carHandle, void **carParmHand
 	fuel *= (situation->_totLaps + 1.0);
 	GfParmSetNum(*carParmHandle, SECT_CAR, PRM_FUEL, (char*)NULL, MIN(fuel, 100.0));
 
-	if(index == 2)
+	if(index == 1)
 	{
 		myTrackDesc->SpecialIdgen(2);
 		specialid[0] = myTrackDesc->getSpecialId(0);
@@ -118,6 +121,13 @@ void Driver_berniw::newRace(tCarElt* car, tSituation *situation)
 	myc = mycar[index-1];
 	mpf = myc->getPathfinderPtr();
 	currenttime = situation->currentTime;
+	
+	switch(index)
+	{
+	case 1: limitspeed = LIMITED_SPEED_FOLLOW; break;
+	case 2: limitspeed = LIMITED_SPEED_NORMAL; break;
+	default: limitspeed = 300; break;
+	}
 }
 
 /* pitstop callback */
@@ -478,14 +488,22 @@ void Driver_berniw::drive_original(tSituation *s)
 
 void Driver_berniw::drive_normal(tSituation *s)
 {
+	/* clear ctrl structure with zero */
+	memset(&car->ctrl, 0, sizeof(tCarCtrl));
+
 	float angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
 	NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
 	angle -= 1.0 * (car->_trkPos.toMiddle/car->_trkPos.seg->width + 0.25);
-	// setup the values to return
+	
 	car->ctrl.steer = angle/car->_steerLock;
-	car->ctrl.gear = 1;       // first gear
-	car->ctrl.accelCmd = 0.3; // 30% accelerator pedal
-	car->ctrl.brakeCmd = 0.0; // no brakes
+
+	car->ctrl.gear = Gear();    
+	float accel = (limitspeed/3.6 - car->_speed_x)/MAX(limitspeed/3.6,car->_speed_x);
+
+	if(accel>0)	
+		car->ctrl.accelCmd = MIN(1.0,accel)+ACCEL_NORMAL;  // 加点油门以抵消摩擦力
+	else
+		car->ctrl.brakeCmd = MIN(1.0,-accel);
 }
 
 void Driver_berniw::drive_follow(tSituation *s)
@@ -508,22 +526,21 @@ void Driver_berniw::drive_follow(tSituation *s)
 		float brake = Brake();
 		
 		//控制车速，单位m/s
-		static double limitspeed;
 		double b = 0;
 		if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+500)
 		{
-			limitspeed = 150.0/3.6;
+			limitspeed = LIMITED_SPEED_FOLLOW*1.25;
 		}
 		else if (specialid[1]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[1]+150)
 		{
-			limitspeed = 50.0/3.6;
+			limitspeed = LIMITED_SPEED_FOLLOW*0.75;
 		}
 		else
 		{
-			limitspeed = 99.0/3.6;
+			limitspeed = LIMITED_SPEED_FOLLOW;
 		}
-		if (myc->getSpeed() > limitspeed) {
-			b = (myc->getSpeed() - limitspeed)/ (myc->getSpeed());
+		if (myc->getSpeed() > limitspeed/3.6) {
+			b = (myc->getSpeed() - limitspeed/3.6)/ (myc->getSpeed());
 			if(specialid[0]+150<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+200)
 				b = 0.05;
 		}
