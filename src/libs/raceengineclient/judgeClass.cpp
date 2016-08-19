@@ -559,10 +559,9 @@ void PassBasicJudge::figurOut(tCarElt *car)
 	int			demage = 0;
 	double		total=0;
 	vector<LengthInfo>::iterator it;
-	double		avg = 0;
-	double		deviation = 0;
     int			max = 0;
-	int 		min = m_distances.size();
+	int 		min = 0;
+	int			time = m_distances.size();
 	short		cons = 0;
 	double		angle = 0;
 	int			judgenum = 0;
@@ -571,7 +570,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		float w2 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
 		float w3 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
 		//for(it=m_distances.begin();it!=m_distances.end();it++)
-		for(int i = 0; i < m_distances.size(); i++)
+		for(unsigned int i = 0; i < m_distances.size(); i++)
 		{
 			angle = m_distances[i].width / m_distances[i].length;
 			if(angle < 0 )
@@ -590,7 +589,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 						break;		
 					}
 					if(angle < 0 && angle > -std::tan(m_angle))
-						min = (m_condition + j) < min ? (m_condition + j) : min;
+						time = (m_condition + j) < time ? (m_condition + j) : time;
 				}
 				cons = 0;
 			}
@@ -604,7 +603,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 			m_outfile<<GfParmGetStr(m_results, path, RE_ATTR_NAME, "")<<endl;
 		}	
 
-		score =  std::exp( - min / judgenum) *100;	
+		score =  std::exp( - time / judgenum) *100;	
 		//score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
 
 	}
@@ -613,7 +612,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
     {
         GfParmSetStr(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_NAME,name.c_str());
         GfParmSetStr(m_results, RE_SECT_JUDGE,RE_ATTR_JUDGE_FACTOR,factor.c_str());        
-        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, avg);        
+        GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_FACTOR_VAL, NULL, min);        
         GfParmSetNum(m_results, RE_SECT_JUDGE, RE_ATTR_JUDGE_SCORE, NULL, score);
     }
 }
