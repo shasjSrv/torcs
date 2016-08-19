@@ -55,11 +55,11 @@ const float Driver::TEAM_REAR_DIST = 50.0f;					//
 const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in the team?
 
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
-const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
+const int Driver::OVERTAKE_HARD_FACTOR = 10; 				// 超车刁难的余数
 const float Driver::LIMITED_SPEED = 75; 					// 正常行驶限速值
-const float Driver::OVERTAKE_BACKHEAD_LOOK = -25.0; 		// 查看后方多少距离的车准备超车
+const float Driver::OVERTAKE_BACKHEAD_LOOK = -35.0; 		// 查看后方多少距离的车准备超车
 const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = -50.0; 	// 刁难之后多少距离之外就不在观察
-const float Driver::CHANGE_TRACKSIDE_MARGIN = 5; 			// 距离小于多少不允许变道
+const float Driver::CHANGE_TRACKSIDE_MARGIN = 10; 			// 距离小于多少不允许变道
 
 // Static variables.
 Cardata *Driver::cardata = NULL;
@@ -173,7 +173,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	// create the pit object.
 	pit = new Pit(s, this);
 
-	limitedspeed = LIMITED_SPEED;
+	limitedspeed = 300;
 	trackside = -1; 	//-1:right side, 1:left side
 	f_close = false;
 	speed_times = 0;
@@ -199,6 +199,9 @@ void Driver::drive(tSituation *s)
 		car->_clutchCmd = 0.0f;	// Full clutch (gearbox connected with engine).
 	}else
 	{
+		if(s->currentTime>8 && s->currentTime<10)
+			limitedspeed = LIMITED_SPEED;
+
 		if((opponents->getNOpponents() && s->currentTime>10))
 		{
 			float distance,location;
@@ -228,7 +231,7 @@ void Driver::drive(tSituation *s)
 						limitedspeed = LIMITED_SPEED*1.25;
 						track_times+=2;
 						rightside_time = s->currentTime;
-						printf("play a joke\n");
+						printf("play a joke1\n");
 					}
 				}
 				if(limitedspeed!=LIMITED_SPEED*1.25 && trackside != 1)
@@ -240,7 +243,7 @@ void Driver::drive(tSituation *s)
 					{
 						limitedspeed = LIMITED_SPEED*1.25;
 						speed_times++;
-						printf("play a joke\n");
+						printf("play a joke2\n");
 					}
 				}
 
@@ -258,7 +261,7 @@ void Driver::drive(tSituation *s)
 			{
 				trackside = -1;
 				limitedspeed = LIMITED_SPEED;
-				printf("back to right side\n");
+			//	printf("back to right side\n");
 			}
 
 	    }
@@ -779,10 +782,13 @@ bool Driver::isStuck()
 			stuck++;
 			return false;
 		}
-	} else {
+	} else if(car->_speed_x< MAX_UNSTUCK_SPEED){
+		return true;
+	}else{
 		stuck = 0;
 		return false;
 	}
+
 }
 
 
