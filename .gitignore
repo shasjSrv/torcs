@@ -15,7 +15,7 @@
 # Ctag
 .tags
 .tags_sorted_by_file
-
+tags
 ###########################
 Make-config
 config.h
