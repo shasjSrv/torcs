@@ -6,6 +6,8 @@
 #include <list>
 #include <fstream>
 #include <iostream>
+#include <vector>
+
 
 typedef struct lengthInfo{
 	double			length;
@@ -46,8 +48,8 @@ protected:
 	const float		m_min = 1.0f;					//the min distance to target driver.
 	const float		m_max = 300.0f;					//the max distance to target driver.
 	const float		m_penalty = 5;					//To punish the score in some situation.
-	const char		*targName = "target name";		//Config the target driver.
-	const char		*targlength = "target length";	//config the length of target name.
+	const char		*m_targName = "target name";		//Config the target driver.
+	const char		*m_targlength = "target length";	//config the length of target name.
 };
 
 
@@ -66,7 +68,7 @@ private:
     std::string				name;
 	std::string				factor;
 	tCarElt					*targetCar;
-	std::list<double>		distances;
+	std::list<double>		m_distances;
 };
 
 
@@ -140,7 +142,10 @@ private:
     std::string				name;
     std::string				factor;
 	tCarElt					*targetCar;
-	std::list<LengthInfo>	distances;
+	std::vector<LengthInfo>	m_distances;
+	const int				m_condition = 10;
+	const char*				m_judgeNum = "judge pot num";
+	const double			m_angle = 0.31415926;
 
 };
 

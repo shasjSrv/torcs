@@ -65,7 +65,7 @@
       <attstr name="module" val="scr_server"/>
     </section>
     <section name="2">
-      <attnum name="idx" val="2"/>
+      <attnum name="idx" val="1"/>
       <attstr name="module" val="target"/>
     </section>
 
@@ -99,7 +99,7 @@
   <section name="Judge">
     <attstr name="judge name" val="FollowJudge"/>
     <attstr name="target name" val="target 1"/>   <!-- target driver name -->
-    <attnum name="target length" val="8"/>
+    <attnum name="target length" val="8"/>      <!-- target driver name's length --> 
     <attnum name="wight1" val="0.5"/>
     <attnum name="wight2" val="0.5"/>
     <attnum name="wight3" val="0.001"/>  <!-- demage full score 10000 -->
