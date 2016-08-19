@@ -394,7 +394,7 @@ void TrackDesc::SpecialIdgen(int num)
 			ld=0;
 		}
 	}
-	printf("\n\n\nmax: %d\n\n\n",max);
+//	printf("\n\n\nmax: %d\n\n\n",max);
  	s=0;
 	while(1)
 	{

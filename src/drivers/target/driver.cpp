@@ -54,6 +54,13 @@ const float Driver::USE_LEARNED_OFFSET_RANGE = 0.2f;		// [m] if offset < this us
 const float Driver::TEAM_REAR_DIST = 50.0f;					//
 const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in the team?
 
+const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
+const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
+const float Driver::LIMITED_SPEED = 75; 					// 正常行驶限速值
+const float Driver::OVERTAKE_BACKHEAD_LOOK = -25.0; 		// 查看后方多少距离的车准备超车
+const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = -50.0; 	// 刁难之后多少距离之外就不在观察
+const float Driver::CHANGE_TRACKSIDE_MARGIN = 5; 			// 距离小于多少不允许变道
+
 // Static variables.
 Cardata *Driver::cardata = NULL;
 double Driver::currentsimtime;
@@ -118,6 +125,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 
 	// Load and set parameters.
 	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69f);
+
 }
 
 
@@ -165,13 +173,18 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	// create the pit object.
 	pit = new Pit(s, this);
 
-	limitedspeed = 99.0/3.6;
+	limitedspeed = LIMITED_SPEED;
+	trackside = -1; 	//-1:right side, 1:left side
+	f_close = false;
+	speed_times = 0;
+	track_times = 1;
 }
 
 
 // Drive during race.
 void Driver::drive(tSituation *s)
 {
+
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
 	update(s);
@@ -185,6 +198,56 @@ void Driver::drive(tSituation *s)
 		car->_brakeCmd = 0.0f;	// No brakes.
 		car->_clutchCmd = 0.0f;	// Full clutch (gearbox connected with engine).
 	} else {
+
+	if((opponents->getNOpponents() && s->currentTime>10))
+		{
+			float distance,location;
+			int r;
+
+			distance = opponent->getDistance();
+			location = opponent->getCarPtr()->_trkPos.toMiddle;
+
+			//printf("distance: %f, location: %f, limitspeed: %f \n",distance,location,limitedspeed);
+				
+			if(distance>OVERTAKE_BACKHEAD_LOOK && distance<0 && location<0)
+			{
+				f_close = true;
+				int s = (int(fabs(distance)*1000))%10;
+				
+				if(limitedspeed!=LIMITED_SPEED*1.25)
+				{
+					srand(s);
+					r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
+			//		printf("r1: %d ",r);
+					if(r==0)
+					{
+						limitedspeed = LIMITED_SPEED*1.25;
+						speed_times++;
+					}
+				}
+				if(trackside != 1 && distance<-CHANGE_TRACKSIDE_MARGIN)
+				{
+					srand(s+1);
+					r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
+			//		printf("r2: %d\n",r);
+					if(r==0)
+					{
+						trackside = 1;
+						track_times++;
+					}
+				}
+			}
+			else if(distance < OVERTAKE_BACKHEAD_LOOK_IGNORE || distance > CHANGE_TRACKSIDE_MARGIN)
+			{
+				if(f_close != false)
+				{
+					f_close = false;
+					trackside = -1;
+					limitedspeed = LIMITED_SPEED;
+				}
+			}
+	    }
+
 		car->_steerCmd = filterSColl(getSteer());
 		car->_gearCmd = getGear();
 		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
@@ -278,7 +341,7 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
 	r = MAX(1.0, r);
 
 	allowedspeed = sqrt((mu*G*r)/(1.0f - MIN(1.0f, r*CA*mu/mass)));
-	return MIN(allowedspeed,limitedspeed);
+	return MIN(allowedspeed,limitedspeed/3.6);
 }
 
 
@@ -436,11 +499,20 @@ vec2f Driver::getTargetPoint()
 	float lookahead;
 	float length = getDistToSegEnd();	
     float width = seg->width;
-	static float offset;
-	
-	
-	
-	offset = getOffset();
+	float offset = getOffset();
+	float toffset;
+
+	if(!f_offset) 		//如果不需要超车等额外偏置
+	{
+		toffset = fabs(offset);
+		//尽量行驶在右(左)跑道中央
+		if(seg->type != TR_STR)
+			offset = MAX((0.1*width), toffset-TS_OFFSET_INC)*trackside;
+		else
+			offset = MIN((0.25*width), toffset+TS_OFFSET_INC)*trackside;
+	}
+		
+//	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());
 	
 	if (pit->getInPit()) {
 		// To stop in the pit we need special lookahead values.
@@ -508,6 +580,7 @@ float Driver::getOffset()
 	int i;
 	float catchdist, mincatchdist = FLT_MAX, mindist = -1000.0f;
 	Opponent *o = NULL;
+	f_offset = false;
 
 	// Increment speed dependent.
 	float incfactor = MAX_INC_FACTOR - MIN(fabs(car->_speed_x)/MAX_INC_FACTOR, (MAX_INC_FACTOR - 1.0f));
@@ -543,6 +616,7 @@ float Driver::getOffset()
 				myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 			}
 		}
+		f_offset = true;
 		return myoffset;
 	}
 
@@ -624,6 +698,7 @@ float Driver::getOffset()
 					myoffset -= OVERTAKE_OFFSET_INC*incfactor;
 				}
 			}
+			f_offset = true;
 		}
 	} else {
 		// There is no opponent to overtake, so the offset goes slowly back to zero.

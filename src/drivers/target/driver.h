@@ -135,6 +135,11 @@ class Driver {
 		int alone;
 
 		float limitedspeed;
+		bool f_offset;
+		int trackside; 		//-1:rightside, 1:leftside
+		bool f_close;
+		int speed_times; 	//超车变速刁难次数
+		int track_times; 	//超车变道刁难次数
 
 		// Data that should stay constant after first initialization.
 		int MAX_UNSTUCK_COUNT;
@@ -182,6 +187,13 @@ class Driver {
 
 		static const float TEAM_REAR_DIST;
 		static const int TEAM_DAMAGE_CHANGE_LEAD;
+
+		static const float TS_OFFSET_INC;
+		static const int OVERTAKE_HARD_FACTOR;
+		static const float LIMITED_SPEED;
+		static const float OVERTAKE_BACKHEAD_LOOK;
+		static const float OVERTAKE_BACKHEAD_LOOK_IGNORE;
+		static const float CHANGE_TRACKSIDE_MARGIN;
 
 		// Track variables.
 		tTrack* track;
