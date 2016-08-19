@@ -154,15 +154,24 @@ SimpleDriver::overtakingSteer(CarState &cs)
 
 	if( ( (disSensor18 > 20 && disSensor18 < 40) || (disSensor17 > 20 && disSensor17 < 40))
 			&& !isTurning){
-		if(followTime >= 10)
+		if(followTime >= 100){
 			isFollow = true;
-		else
-			isFollow = false;
-		followTime = 0;
+			followTime = 0;
+		}
+		else 
+		{
+			if(driveTime >= 20){
+				driveTime = 0;
+				isFollow = false;
+			}
+			else{
+				driveTime++;
+				isFollow=true;
+			}
+		}
 		doOvertaking = true;
 		isOvertaking = false;
 		isBehind = false;
-		
 	}
 
 	if( (disSensor32 < 200)||  ( disSensor35 < 200) || (disSensor34 < 200) || (disSensor33 < 200))
@@ -237,8 +246,35 @@ SimpleDriver::overtakingAccel(CarState &cs)
 	{
 		if(disSensor18 < 35 || disSensor17 < 35)
 			return followAccel(cs);
-		else
-			return  normalAccel(cs);
+		else{
+			// 跟车的加速与减速
+			float disSensor15=cs.getOpponents(15);
+			float disSensor16=cs.getOpponents(16);
+			float disSensor17=cs.getOpponents(17);
+			float disSensor18=cs.getOpponents(18);
+			float disSensor19=cs.getOpponents(19);
+			float disSensor20=cs.getOpponents(20);
+
+			float disSensor = min(disSensor17,disSensor18);
+			disSensor = min(disSensor,disSensor19);
+			disSensor = min(disSensor,disSensor16);
+			disSensor = min(disSensor,disSensor15);
+			disSensor = min(disSensor,disSensor20);
+			
+			float tempDis;
+			float targetSpeed = cs.getSpeedX();
+			if(miniDistance == 0)
+				miniDistance=disSensor;
+			if(miniDistance != 0){
+				tempDis=disSensor;
+				tempDis-=miniDistance;
+				float relaVel=tempDis/0.002;
+				
+				targetSpeed +=relaVel;
+				miniDistance = 0;
+			}
+			return targetSpeed;
+		}
 	}
 	return normalAccel(cs);
 }
@@ -246,7 +282,6 @@ SimpleDriver::overtakingAccel(CarState &cs)
 float
 SimpleDriver::getSteer(CarState &cs)
 {
-	return normalSteer(cs);
 	return overtakingSteer(cs);
 }
 
@@ -438,14 +473,14 @@ SimpleDriver::followAccel(CarState &cs)
 		disSensor = min(disSensor,disSensor15);
 		disSensor = min(disSensor,disSensor20);
 
-		if(disSensor<30 || disSensor>50){
+		if(disSensor<25 || disSensor>50){
 			if(miniDistance == 0)
 				miniDistance=disSensor;
 			if(miniDistance != 0)
 				tempDis=disSensor;
 		}
 
-		if(disSensor<30 || disSensor>50)
+		if(disSensor<25 || disSensor>50)
 			stuckBrake++;
 		else
 			stuckBrake=0;
@@ -479,7 +514,6 @@ SimpleDriver::followAccel(CarState &cs)
 float
 SimpleDriver::getAccel(CarState &cs)
 {
-	return normalAccel(cs);
 	return overtakingAccel(cs);
 }
 

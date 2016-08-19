@@ -34,7 +34,7 @@ public:
 	
 	// Constructor
 	SimpleDriver(){stuck=0;clutch=0.0;stuckBrake=0;miniDistance=0;isOvertaking = false;
-		isFollow = false;doOvertaking = false;isTurning=false;isBehind=false;followTime=0;}
+		isFollow = false;doOvertaking = false;isTurning=false;isBehind=false;followTime=0;driveTime=0;}
 
 	// SimpleDriver implements a simple and heuristic controller for driving
 	virtual CarControl wDrive(CarState cs);
@@ -130,6 +130,8 @@ private:
 
 	// 跟车时间
 	int followTime;
+	// 超车左拐后行驶hi见
+	int driveTime;
 
 	//先跟一段
 	bool isFollow;

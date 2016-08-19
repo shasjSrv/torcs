@@ -197,45 +197,53 @@ void Driver::drive(tSituation *s)
 		car->_accelCmd = 1.0f;	// 100% accelerator pedal.
 		car->_brakeCmd = 0.0f;	// No brakes.
 		car->_clutchCmd = 0.0f;	// Full clutch (gearbox connected with engine).
-	} else {
-
-	if((opponents->getNOpponents() && s->currentTime>10))
+	}else
+	{
+		if((opponents->getNOpponents() && s->currentTime>10))
 		{
 			float distance,location;
 			int r;
+			static float rightside_time;
 
 			distance = opponent->getDistance();
 			location = opponent->getCarPtr()->_trkPos.toMiddle;
-
 			//printf("distance: %f, location: %f, limitspeed: %f \n",distance,location,limitedspeed);
 				
-			if(distance>OVERTAKE_BACKHEAD_LOOK && distance<0 && location<0)
+			if(distance>OVERTAKE_BACKHEAD_LOOK && distance<0 && location>0)
 			{
 				f_close = true;
-				int s = (int(fabs(distance)*1000))%10;
+
+				time_t t;
+				time(&t);
+				int sr= (int)(fabs(distance)*1000) + t;
 				
-				if(limitedspeed!=LIMITED_SPEED*1.25)
+				if(trackside != 1 && distance<-CHANGE_TRACKSIDE_MARGIN)
 				{
-					srand(s);
+					srand(sr);
+					r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
+				//	printf("r2: %d ",r);
+					if(r==0)
+					{
+						trackside = 1;
+						limitedspeed = LIMITED_SPEED*1.25;
+						track_times+=2;
+						rightside_time = s->currentTime;
+						printf("play a joke\n");
+					}
+				}
+				if(limitedspeed!=LIMITED_SPEED*1.25 && trackside != 1)
+				{
+					srand(sr);
 					r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
-			//		printf("r1: %d ",r);
+				//	printf("r1: %d ",r);
 					if(r==0)
 					{
 						limitedspeed = LIMITED_SPEED*1.25;
 						speed_times++;
+						printf("play a joke\n");
 					}
 				}
-				if(trackside != 1 && distance<-CHANGE_TRACKSIDE_MARGIN)
-				{
-					srand(s+1);
-					r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
-			//		printf("r2: %d\n",r);
-					if(r==0)
-					{
-						trackside = 1;
-						track_times++;
-					}
-				}
+
 			}
 			else if(distance < OVERTAKE_BACKHEAD_LOOK_IGNORE || distance > CHANGE_TRACKSIDE_MARGIN)
 			{
@@ -246,6 +254,13 @@ void Driver::drive(tSituation *s)
 					limitedspeed = LIMITED_SPEED;
 				}
 			}
+			if(trackside==1 && (s->currentTime-rightside_time)>=10 )
+			{
+				trackside = -1;
+				limitedspeed = LIMITED_SPEED;
+				printf("back to right side\n");
+			}
+
 	    }
 
 		car->_steerCmd = filterSColl(getSteer());
@@ -507,7 +522,7 @@ vec2f Driver::getTargetPoint()
 		toffset = fabs(offset);
 		//尽量行驶在右(左)跑道中央
 		if(seg->type != TR_STR)
-			offset = MAX((0.1*width), toffset-TS_OFFSET_INC)*trackside;
+			offset = MAX((0.2*width), toffset-TS_OFFSET_INC)*trackside;
 		else
 			offset = MIN((0.25*width), toffset+TS_OFFSET_INC)*trackside;
 	}
