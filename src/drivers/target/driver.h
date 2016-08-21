@@ -190,11 +190,15 @@ class Driver {
 		static const int TEAM_DAMAGE_CHANGE_LEAD;
 
 		static const float TS_OFFSET_INC;
+		static const float OVERTAKE_DELTATIME;
 		static const int OVERTAKE_HARD_FACTOR;
 		static const float LIMITED_SPEED;
 		static const float OVERTAKE_BACKHEAD_LOOK;
 		static const float OVERTAKE_BACKHEAD_LOOK_IGNORE;
-		static const float CHANGE_TRACKSIDE_MARGIN;
+		static const float TRACKSIDE_CHANGE_MARGIN;
+		static const float TRACKSIDE_CHANGE_TIME;
+		static const float TRACKSIDE_CHANGE_PRE_FACTOR;
+		static const float STARTUP_TIME;
 
 		// Track variables.
 		tTrack* track;
