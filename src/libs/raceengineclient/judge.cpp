@@ -35,7 +35,7 @@ Judge* JudgeFactory::createJudgementInst(string classname,tRmInfo *ReInfo)
 		return new PassBasicJudge(ReInfo);
 	}else if(classname == "PassHardJudge"){
 		cout<<"create PassHardJudge"<<endl;
-		return new PassHardJudge(ReInfo);
+		return new PassBasicJudge(ReInfo);
 	}
 //protect
     cout<<"no one matched    create DefaultJudge..."<<endl;
