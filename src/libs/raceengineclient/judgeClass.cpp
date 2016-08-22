@@ -524,7 +524,7 @@ void PassBasicJudge::judge(tCarElt *car)
 		if(targetCar==car)
 		{
 			//per 0.1 second record
-			if((GfTimeClock() - m_curTime> (double) 0.1) && targetCar->race.laps >=1)
+			if((GfTimeClock() - m_curTime> (double) 0.5) && targetCar->race.laps >=1)
 			{
 				//确定被跟的车 以及 距离
 				LengthInfo dis_sque ;
