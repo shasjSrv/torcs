@@ -1,3 +1,6 @@
 [submodule "data"]
 	path = data
 	url = https://code.csdn.net/yidian118/torcs_data.git
+[submodule "src/scr-client-cpp"]
+	path = src/scr-client-cpp
+	url = https://code.csdn.net/yidian118/scr_client.git
