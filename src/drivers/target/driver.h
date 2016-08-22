@@ -154,6 +154,7 @@ class Driver {
 		float (Driver::*GET_DRIVEN_WHEEL_SPEED)();
 		float OVERTAKE_OFFSET_INC;		// [m/timestep]
 		float MU_FACTOR;				// [-]
+		float LIMITED_SPEED;
 
 		// Class constants.
 		static const float MAX_UNSTUCK_ANGLE;
@@ -194,7 +195,7 @@ class Driver {
 		static const float TS_OFFSET_INC;
 		static const float OVERTAKE_DELTATIME;
 		static const int OVERTAKE_HARD_FACTOR;
-		static const float LIMITED_SPEED;
+		//static const float LIMITED_SPEED;
 		static const float OVERTAKE_BACKHEAD_LOOK;
 		static const float OVERTAKE_BACKHEAD_LOOK_IGNORE;
 		static const float TRACKSIDE_CHANGE_MARGIN;
@@ -204,6 +205,7 @@ class Driver {
 
 		static const char *TRACK_NAME[2];
 		static const float TRACK_OFFSET[2];
+		static const float TRACK_LIMIT_SPEED[2];
 		static const int NTRACK;
 
 		// Track variables.
