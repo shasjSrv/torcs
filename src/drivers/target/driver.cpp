@@ -65,6 +65,10 @@ const float Driver::TRACKSIDE_CHANGE_TIME = 1.0; 			// 变道预计所花时间
 const float Driver::TRACKSIDE_CHANGE_PRE_FACTOR = 1.5; 		// 变道时，后车有可能会加速，所以计算变道时两车间的距离应多计算些
 const float Driver::STARTUP_TIME = 5; 						// 起跑，该段时间不限速
 
+const char *Driver::TRACK_NAME[2] = {"CG Speedway number 1","Forza"};
+const float Driver::TRACK_OFFSET[2] = {1.25,0.5};
+const int Driver::NTRACK = 2;
+
 // Static variables.
 Cardata *Driver::cardata = NULL;
 double Driver::currentsimtime;
@@ -130,6 +134,15 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 	// Load and set parameters.
 	MU_FACTOR = GfParmGetNum(*carParmHandle, BT_SECT_PRIV, BT_ATT_MUFACTOR, (char*)NULL, 0.69f);
 
+	printf("\n\n\n\ntrackname: %s\n",track->name);
+	for(int i=0; i<NTRACK; i++)
+	{
+		if(strcmp(track->name,TRACK_NAME[i])==0)
+		{
+			route_offset = TRACK_OFFSET[i];
+			printf("route_offset: %f\n",route_offset);
+		}
+	}
 }
 
 
@@ -215,7 +228,7 @@ void Driver::drive(tSituation *s)
 
 				float distance,location,d,look_distance;
 				int r;
-				static float rightside_time = 0;
+	//			static float rightside_time = 0;
 
 				distance = opponent->getDistance();
 				location = opponent->getCarPtr()->_trkPos.toMiddle;
@@ -244,10 +257,15 @@ void Driver::drive(tSituation *s)
 							trackside = 1;
 							limitedspeed = LIMITED_SPEED*1.25;
 							track_times+=2;
-							rightside_time = s->currentTime;
+				//			rightside_time = s->currentTime;
 							printf("play a joke1\n");
 						}
 					}
+					if(trackside== 1 && distance>-TRACKSIDE_CHANGE_MARGIN)
+					{
+						trackside = -1;
+					}
+
 					if(limitedspeed!=LIMITED_SPEED*1.25)
 					{
 						srand(sr+1);
@@ -261,8 +279,13 @@ void Driver::drive(tSituation *s)
 						}
 					}
 				}
-				else if(distance < look_distance-OVERTAKE_BACKHEAD_LOOK_IGNORE || 
-						(s->currentTime-rightside_time >= 10 && trackside==1)||
+				
+				if(location<0)
+				{
+					trackside = -1;
+				}
+				if(distance < look_distance-OVERTAKE_BACKHEAD_LOOK_IGNORE || 
+					//	(s->currentTime-rightside_time >= 10 && trackside==1)||
 						distance > TRACKSIDE_CHANGE_MARGIN)
 				{
 					if(f_close != false)
@@ -533,7 +556,7 @@ vec2f Driver::getTargetPoint()
 	{
 		toffset = fabs(offset);
 	//	printf("r: %f\n",seg->radius);
-
+		
 		//尽量行驶在右(左)跑道中央
 		if(trackside == -1)
 		{
@@ -547,7 +570,7 @@ vec2f Driver::getTargetPoint()
 			if(seg->type != TR_STR && seg->radius<100)
 				offset = MAX((0.15*width), toffset-TS_OFFSET_INC)*trackside;
 			else
-				offset = MIN((0.5*width-0.5*car->_dimension_y-0.5), toffset+TS_OFFSET_INC)*trackside;
+				offset = MIN((0.5*width-0.5*car->_dimension_y-route_offset), toffset+TS_OFFSET_INC)*trackside;
 		}
 	}
 		

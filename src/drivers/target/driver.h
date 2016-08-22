@@ -25,6 +25,7 @@
 #include <cstring>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 #include <tgf.h>
 #include <track.h>
@@ -135,6 +136,7 @@ class Driver {
 		SegLearn *learn;
 		int alone;
 
+		float route_offset;
 		float limitedspeed;
 		bool f_offset;
 		int trackside; 		//-1:rightside, 1:leftside
@@ -199,6 +201,10 @@ class Driver {
 		static const float TRACKSIDE_CHANGE_TIME;
 		static const float TRACKSIDE_CHANGE_PRE_FACTOR;
 		static const float STARTUP_TIME;
+
+		static const char *TRACK_NAME[2];
+		static const float TRACK_OFFSET[2];
+		static const int NTRACK;
 
 		// Track variables.
 		tTrack* track;

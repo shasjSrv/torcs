@@ -382,6 +382,7 @@ void TrackDesc::SpecialIdgen(int num)
 	int ld=0, sd=0;
 	int max=0;
 	int s;   //用来更新rand生成种子
+	time_t t;
 
 	for(i=0; i<nTrackSegments; i++)
 	{
@@ -395,14 +396,15 @@ void TrackDesc::SpecialIdgen(int num)
 		}
 	}
 //	printf("\n\n\nmax: %d\n\n\n",max);
- 	s=0;
+	time(&t);
+ 	s=(int)t;
 	while(1)
 	{
 		flag=0;
 		srand(s++);
 		r = rand()%(nTrackSegments*4/6) + nTrackSegments/6;
 	
-		ld = max*0.75;
+		ld = MIN(300,max*0.75);
 
 		for(j=0; j<ld; j+=10)
 		{
