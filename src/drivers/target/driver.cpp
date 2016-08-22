@@ -56,7 +56,7 @@ const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in
 
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
 const float Driver::OVERTAKE_DELTATIME = 0.1; 				// 每过一定时间判断是否需要刁难
-const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
+const int Driver::OVERTAKE_HARD_FACTOR = 10; 				// 超车刁难的余数
 //const float Driver::LIMITED_SPEED = 100; 					// 正常行驶限速值
 const float Driver::OVERTAKE_BACKHEAD_LOOK = -50.0; 		// 查看后方多少距离的车准备超车
 const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = 20.0; 	// 刁难之后甩开多少距离之后就不在观察
