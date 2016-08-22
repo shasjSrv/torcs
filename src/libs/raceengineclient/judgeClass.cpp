@@ -19,7 +19,7 @@ using namespace std;
 
 
 DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
-                score(0),
+                score(-1),
                 s(NULL),
                 m_judge_result(NULL),
                 m_results(NULL),
@@ -648,7 +648,7 @@ void PassBasicJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
         GfuiLabelCreateEx(rmScrHdle, "Pit",       m_fgcolor, GFUI_FONT_MEDIUM_C, x8, y, GFUI_ALIGN_HC_VB, 0);
     }
     
-    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){                
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != -1){                
         GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
     }
     else{
