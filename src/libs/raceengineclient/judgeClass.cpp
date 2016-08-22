@@ -576,22 +576,28 @@ void PassBasicJudge::figurOut(tCarElt *car)
 				angle = m_distances[i].width / m_distances[i].length;
 			if(angle < 0 )
 				break;
-			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 40){						//static constant time which is the condition jumo into overtake judge 
+			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 50){						//static constant time which is the condition jumo into overtake judge 
 				cons++;
 			}
 			else{ 
 				cons = 0;
 			}
 			if(cons == m_condition){			
-				judgenum = (m_distances.size() -i > 0) ? GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0) : (m_distances.size() - i);
+				if (i >= m_distances.size()) 
+					break;
+				judgenum = (m_distances.size() -i > GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0)) \
+						   ? GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0) : (m_distances.size() - i);
 				for(int j = 0; j < judgenum; j++){
 					if(m_distances[i].length != 0)
 						angle = m_distances[j].width / m_distances[j].length;
 					if(angle < std::tan(m_angle) && angle > 0){
+						m_outfile<<"break j:"<<j<<endl;
 						break;		
 					}
 					if(angle < 0 && angle > -std::tan(m_angle))
 						time = (m_condition + j) < time ? (m_condition + j) : time;
+					m_outfile<<"break time:"<<m_condition + j<<endl;
+
 				}
 				cons = 0;
 			}
@@ -605,7 +611,9 @@ void PassBasicJudge::figurOut(tCarElt *car)
 			m_outfile<<GfParmGetStr(m_results, path, RE_ATTR_NAME, "")<<endl;
 		}	
 
-		score =  std::exp( - time / judgenum) *100;	
+		m_outfile<<"judgenum:"<<judgenum<<endl;
+
+		score = (1 - time / judgenum) *100;	
 		//score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
 
 	}

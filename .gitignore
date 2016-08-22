@@ -97,6 +97,10 @@ src/tools/nfsperf/nfsperf
 src/tools/texmapper/texmapper
 src/tools/trackgen/trackgen
 
+
+src/scr-client-cpp/scr_client
+src/scr-client-cpp/SimpleDriver.o
+
 setup_linux.sh
 
 scr_client
