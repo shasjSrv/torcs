@@ -531,13 +531,13 @@ void Driver_berniw::drive_follow(tSituation *s)
 		
 		//控制车速，单位m/s
 		double b = 0;
-		if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+500)
+		if(specialid[0]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[0]+300&&myc->getCurrentSegId()<specialid[1])
 		{
-			limitspeed = LIMITED_SPEED_FOLLOW*1.25;
+			limitspeed = LIMITED_SPEED_FOLLOW*1.5;
 		}
 		else if (specialid[1]<=myc->getCurrentSegId()&&myc->getCurrentSegId()<=specialid[1]+150)
 		{
-			limitspeed = LIMITED_SPEED_FOLLOW*0.75;
+			limitspeed = LIMITED_SPEED_FOLLOW*0.5;
 		}
 		else
 		{

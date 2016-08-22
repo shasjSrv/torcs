@@ -57,11 +57,11 @@ const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
 const float Driver::OVERTAKE_DELTATIME = 0.1; 				// 每过一定时间判断是否需要刁难
 const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
-const float Driver::LIMITED_SPEED = 75; 					// 正常行驶限速值
-const float Driver::OVERTAKE_BACKHEAD_LOOK = -35.0; 		// 查看后方多少距离的车准备超车
+const float Driver::LIMITED_SPEED = 100; 					// 正常行驶限速值
+const float Driver::OVERTAKE_BACKHEAD_LOOK = -50.0; 		// 查看后方多少距离的车准备超车
 const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = 20.0; 	// 刁难之后甩开多少距离之后就不在观察
 const float Driver::TRACKSIDE_CHANGE_MARGIN = 5.0; 			// 距离小于多少不允许变道
-const float Driver::TRACKSIDE_CHANGE_TIME = 1.0; 			// 变道预计所花时间
+const float Driver::TRACKSIDE_CHANGE_TIME = 1.5; 			// 变道预计所花时间
 const float Driver::TRACKSIDE_CHANGE_PRE_FACTOR = 1.5; 		// 变道时，后车有可能会加速，所以计算变道时两车间的距离应多计算些
 const float Driver::STARTUP_TIME = 5; 						// 起跑，该段时间不限速
 
@@ -194,7 +194,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	trackside = -1; 	//-1:right side, 1:left side
 	f_close = false;
 	speed_times = 0;
-	track_times = 1;
+	track_times = 0;
 }
 
 
