@@ -57,7 +57,7 @@ const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
 const float Driver::OVERTAKE_DELTATIME = 0.1; 				// 每过一定时间判断是否需要刁难
 const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
-const float Driver::LIMITED_SPEED = 100; 					// 正常行驶限速值
+//const float Driver::LIMITED_SPEED = 100; 					// 正常行驶限速值
 const float Driver::OVERTAKE_BACKHEAD_LOOK = -50.0; 		// 查看后方多少距离的车准备超车
 const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = 20.0; 	// 刁难之后甩开多少距离之后就不在观察
 const float Driver::TRACKSIDE_CHANGE_MARGIN = 5.0; 			// 距离小于多少不允许变道
@@ -67,6 +67,8 @@ const float Driver::STARTUP_TIME = 5; 						// 起跑，该段时间不限速
 
 const char *Driver::TRACK_NAME[2] = {"CG Speedway number 1","Forza"};
 const float Driver::TRACK_OFFSET[2] = {1.25,0.5};
+const float Driver::TRACK_LIMIT_SPEED[2] = {80,99};
+
 const int Driver::NTRACK = 2;
 
 // Static variables.
@@ -140,7 +142,8 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 		if(strcmp(track->name,TRACK_NAME[i])==0)
 		{
 			route_offset = TRACK_OFFSET[i];
-			printf("route_offset: %f\n",route_offset);
+			LIMITED_SPEED = TRACK_LIMIT_SPEED[i];
+			printf("route_offset: %f,LIMITED_SPEED\n",route_offset,LIMITED_SPEED);
 		}
 	}
 }
@@ -255,13 +258,13 @@ void Driver::drive(tSituation *s)
 						if(r==0)
 						{
 							trackside = 1;
-							limitedspeed = LIMITED_SPEED*1.25;
+							limitedspeed = LIMITED_SPEED*1.5;
 							track_times+=2;
 				//			rightside_time = s->currentTime;
 							printf("play a joke1\n");
 						}
 					}
-					if(trackside== 1 && distance>-TRACKSIDE_CHANGE_MARGIN)
+					if(trackside == 1 && distance>-TRACKSIDE_CHANGE_MARGIN)
 					{
 						trackside = -1;
 					}
@@ -275,7 +278,7 @@ void Driver::drive(tSituation *s)
 						{
 							limitedspeed = LIMITED_SPEED*1.25;
 							speed_times++;
-							printf("play a joke2\n");
+					//		printf("play a joke2\n");
 						}
 					}
 				}
