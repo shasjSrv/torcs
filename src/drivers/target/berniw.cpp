@@ -121,13 +121,8 @@ void Driver_berniw::newRace(tCarElt* car, tSituation *situation)
 	myc = mycar[index-1];
 	mpf = myc->getPathfinderPtr();
 	currenttime = situation->currentTime;
-	
-	switch(index)
-	{
-	case 1: limitspeed = LIMITED_SPEED_FOLLOW; break;
-	case 2: limitspeed = LIMITED_SPEED_NORMAL; break;
-	default: limitspeed = 300; break;
-	}
+
+	limitspeed = 300;
 }
 
 /* pitstop callback */
@@ -491,6 +486,11 @@ void Driver_berniw::drive_normal(tSituation *s)
 	/* clear ctrl structure with zero */
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
+	if(s->currentTime>8 && s->currentTime<10)
+	{
+		limitspeed = LIMITED_SPEED_NORMAL;
+	}
+
 	float angle = RtTrackSideTgAngleL(&(car->_trkPos)) - car->_yaw;
 	NORM_PI_PI(angle); // put the angle back in the range from -PI to PI
 	angle -= 1.0 * (car->_trkPos.toMiddle/car->_trkPos.seg->width + 0.25);
@@ -514,7 +514,11 @@ void Driver_berniw::drive_follow(tSituation *s)
 	memset(&car->ctrl, 0, sizeof(tCarCtrl));
 
 	Pit();
-
+	
+	if(s->currentTime<5)
+	{
+		limitspeed = LIMITED_SPEED_FOLLOW;
+	}
 
 	if (isStuck(s)) {
 		getUnstuck();

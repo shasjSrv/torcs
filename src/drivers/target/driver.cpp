@@ -55,11 +55,15 @@ const float Driver::TEAM_REAR_DIST = 50.0f;					//
 const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in the team?
 
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
+const float Driver::OVERTAKE_DELTATIME = 0.1; 				// 每过一定时间判断是否需要刁难
 const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
 const float Driver::LIMITED_SPEED = 75; 					// 正常行驶限速值
-const float Driver::OVERTAKE_BACKHEAD_LOOK = -25.0; 		// 查看后方多少距离的车准备超车
-const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = -50.0; 	// 刁难之后多少距离之外就不在观察
-const float Driver::CHANGE_TRACKSIDE_MARGIN = 5; 			// 距离小于多少不允许变道
+const float Driver::OVERTAKE_BACKHEAD_LOOK = -35.0; 		// 查看后方多少距离的车准备超车
+const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = 20.0; 	// 刁难之后甩开多少距离之后就不在观察
+const float Driver::TRACKSIDE_CHANGE_MARGIN = 5.0; 			// 距离小于多少不允许变道
+const float Driver::TRACKSIDE_CHANGE_TIME = 1.0; 			// 变道预计所花时间
+const float Driver::TRACKSIDE_CHANGE_PRE_FACTOR = 1.5; 		// 变道时，后车有可能会加速，所以计算变道时两车间的距离应多计算些
+const float Driver::STARTUP_TIME = 5; 						// 起跑，该段时间不限速
 
 // Static variables.
 Cardata *Driver::cardata = NULL;
@@ -173,7 +177,7 @@ void Driver::newRace(tCarElt* car, tSituation *s)
 	// create the pit object.
 	pit = new Pit(s, this);
 
-	limitedspeed = LIMITED_SPEED;
+	limitedspeed = 300;
 	trackside = -1; 	//-1:right side, 1:left side
 	f_close = false;
 	speed_times = 0;
@@ -192,77 +196,85 @@ void Driver::drive(tSituation *s)
 	//pit->setPitstop(true);
 
 	if (isStuck()) {
-		car->_steerCmd = -mycardata->getCarAngle() / car->_steerLock;
+		car->_steerCmd = -mycardata->getCarAngle() / car->_steerLock - (car->_trkPos.toMiddle>0)?0.1:-0.1;
 		car->_gearCmd = -1;		// Reverse gear.
 		car->_accelCmd = 1.0f;	// 100% accelerator pedal.
 		car->_brakeCmd = 0.0f;	// No brakes.
 		car->_clutchCmd = 0.0f;	// Full clutch (gearbox connected with engine).
 	}else
 	{
+		if(s->currentTime>STARTUP_TIME && s->currentTime<STARTUP_TIME+2)
+			limitedspeed = LIMITED_SPEED;
+
 		if((opponents->getNOpponents() && s->currentTime>10))
 		{
-			float distance,location;
-			int r;
-			static float rightside_time;
-
-			distance = opponent->getDistance();
-			location = opponent->getCarPtr()->_trkPos.toMiddle;
-			//printf("distance: %f, location: %f, limitspeed: %f \n",distance,location,limitedspeed);
-				
-			if(distance>OVERTAKE_BACKHEAD_LOOK && distance<0 && location>0)
+			static float deltatime = 0;
+			if(s->currentTime - deltatime > OVERTAKE_DELTATIME)
 			{
-				f_close = true;
+				deltatime = s->currentTime;
 
-				time_t t;
-				time(&t);
-				int sr= (int)(fabs(distance)*1000) + t;
-				
-				if(trackside != 1 && distance<-CHANGE_TRACKSIDE_MARGIN)
+				float distance,location,d,look_distance;
+				int r;
+				static float rightside_time = 0;
+
+				distance = opponent->getDistance();
+				location = opponent->getCarPtr()->_trkPos.toMiddle;
+				d = (car->_speed_x - opponent->getSpeed()) * TRACKSIDE_CHANGE_TIME * TRACKSIDE_CHANGE_PRE_FACTOR;  
+				//若变道，两车之间的距离变化量，若欲超车车辆速度快，则d<0
+				look_distance = MIN(OVERTAKE_BACKHEAD_LOOK,2*d);
+			
+	//			printf("ocar_speed: %f mycar_speed: %f\n",opponent->getSpeed(),car->_speed_x);
+	//			printf("distance: %f, location: %f, d: %f \n",distance,location,d);
+					
+				if(distance<0 && location>0 && d<0 && distance>look_distance)
 				{
-					srand(sr);
-					r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
-				//	printf("r2: %d ",r);
-					if(r==0)
+					f_close = true;
+
+					time_t t;
+					time(&t);
+					int sr= (int)(fabs(distance)*1000) + t;
+					
+					if(trackside!= 1 && distance<d-TRACKSIDE_CHANGE_MARGIN)
 					{
-						trackside = 1;
-						limitedspeed = LIMITED_SPEED*1.25;
-						track_times+=2;
-						rightside_time = s->currentTime;
-						printf("play a joke\n");
+						srand(sr);
+						r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
+					//	printf("r1: %d ",r);
+						if(r==0)
+						{
+							trackside = 1;
+							limitedspeed = LIMITED_SPEED*1.25;
+							track_times+=2;
+							rightside_time = s->currentTime;
+							printf("play a joke1\n");
+						}
+					}
+					if(limitedspeed!=LIMITED_SPEED*1.25)
+					{
+						srand(sr+1);
+						r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
+					//	printf("r2: %d ",r);
+						if(r==0)
+						{
+							limitedspeed = LIMITED_SPEED*1.25;
+							speed_times++;
+							printf("play a joke2\n");
+						}
 					}
 				}
-				if(limitedspeed!=LIMITED_SPEED*1.25 && trackside != 1)
+				else if(distance < look_distance-OVERTAKE_BACKHEAD_LOOK_IGNORE || 
+						(s->currentTime-rightside_time >= 10 && trackside==1)||
+						distance > TRACKSIDE_CHANGE_MARGIN)
 				{
-					srand(sr);
-					r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
-				//	printf("r1: %d ",r);
-					if(r==0)
+					if(f_close != false)
 					{
-						limitedspeed = LIMITED_SPEED*1.25;
-						speed_times++;
-						printf("play a joke\n");
+						f_close = false;
+						trackside = -1;
+						limitedspeed = LIMITED_SPEED;
+						printf("joke over\n");
 					}
 				}
-
 			}
-			else if(distance < OVERTAKE_BACKHEAD_LOOK_IGNORE || distance > CHANGE_TRACKSIDE_MARGIN)
-			{
-				if(f_close != false)
-				{
-					f_close = false;
-					trackside = -1;
-					limitedspeed = LIMITED_SPEED;
-				}
-			}
-			if(trackside==1 && (s->currentTime-rightside_time)>=10 )
-			{
-				trackside = -1;
-				limitedspeed = LIMITED_SPEED;
-				printf("back to right side\n");
-			}
-
-	    }
-
+		}
 		car->_steerCmd = filterSColl(getSteer());
 		car->_gearCmd = getGear();
 		car->_brakeCmd = filterABS(filterBrakeSpeed(filterBColl(filterBPit(getBrake()))));
@@ -520,11 +532,23 @@ vec2f Driver::getTargetPoint()
 	if(!f_offset) 		//如果不需要超车等额外偏置
 	{
 		toffset = fabs(offset);
+	//	printf("r: %f\n",seg->radius);
+
 		//尽量行驶在右(左)跑道中央
-		if(seg->type != TR_STR)
-			offset = MAX((0.2*width), toffset-TS_OFFSET_INC)*trackside;
+		if(trackside == -1)
+		{
+			if(seg->type != TR_STR && seg->radius<100)
+				offset = MAX((0.15*width), toffset-TS_OFFSET_INC)*trackside;
+			else
+				offset = MIN((0.25*width), toffset+TS_OFFSET_INC)*trackside;
+		}
 		else
-			offset = MIN((0.25*width), toffset+TS_OFFSET_INC)*trackside;
+		{
+			if(seg->type != TR_STR && seg->radius<100)
+				offset = MAX((0.15*width), toffset-TS_OFFSET_INC)*trackside;
+			else
+				offset = MIN((0.5*width-0.5*car->_dimension_y-0.5), toffset+TS_OFFSET_INC)*trackside;
+		}
 	}
 		
 //	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());
@@ -779,10 +803,25 @@ bool Driver::isStuck()
 			stuck++;
 			return false;
 		}
-	} else {
+	} else if(fabs(car->_speed_x< MAX_UNSTUCK_SPEED)){
+		static int flag=0;
+		if(++stuck>100)
+		{
+			stuck=0;
+			if(flag==0)
+			{  	flag=1;	return true; }
+			else
+			{	flag=0; return false;}
+		}
+		else
+		{
+			return (flag==1)?true:false;
+		}
+	}else{
 		stuck = 0;
 		return false;
 	}
+
 }
 
 
