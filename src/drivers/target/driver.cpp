@@ -143,7 +143,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 		{
 			route_offset = TRACK_OFFSET[i];
 			LIMITED_SPEED = TRACK_LIMIT_SPEED[i];
-			printf("route_offset: %f,LIMITED_SPEED\n",route_offset,LIMITED_SPEED);
+			printf("route_offset: %f,LIMITED_SPEED: %f\n",route_offset,LIMITED_SPEED);
 		}
 	}
 }
@@ -253,8 +253,8 @@ void Driver::drive(tSituation *s)
 					if(trackside!= 1 && distance<d-TRACKSIDE_CHANGE_MARGIN)
 					{
 						srand(sr);
-						r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
-					//	printf("r1: %d ",r);
+						r = (track_times==0)?0:rand()%((track_times)*OVERTAKE_HARD_FACTOR);
+				//		printf("r1: %d ",r);
 						if(r==0)
 						{
 							trackside = 1;
@@ -272,13 +272,13 @@ void Driver::drive(tSituation *s)
 					if(limitedspeed!=LIMITED_SPEED*1.25)
 					{
 						srand(sr+1);
-						r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
+						r = (speed_times==0)?0:rand()%((speed_times)*OVERTAKE_HARD_FACTOR);
 					//	printf("r2: %d ",r);
 						if(r==0)
 						{
 							limitedspeed = LIMITED_SPEED*1.25;
 							speed_times++;
-					//		printf("play a joke2\n");
+							printf("play a joke2\n");
 						}
 					}
 				}
@@ -296,7 +296,7 @@ void Driver::drive(tSituation *s)
 						f_close = false;
 						trackside = -1;
 						limitedspeed = LIMITED_SPEED;
-						printf("joke over\n");
+				//		printf("joke over\n");
 					}
 				}
 			}
