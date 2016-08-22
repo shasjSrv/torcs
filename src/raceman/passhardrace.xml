@@ -61,12 +61,12 @@
     <attnum name="focused idx" val="0"/>
     <attstr name="focused module" val="scr_server"/>
     <section name="1">
-      <attnum name="idx" val="6"/>
-      <attstr name="module" val="scr_server"/>
+      <attnum name="idx" val="3"/>
+      <attstr name="module" val="target"/>
     </section>
     <section name="2">
-      <attnum name="idx" val="0"/>
-      <attstr name="module" val="bt"/>
+      <attnum name="idx" val="6"/>
+      <attstr name="module" val="scr_server"/>
     </section>
 
   </section>
@@ -98,5 +98,11 @@
   <!-- fun      :use to chose which judgement -->
   <section name="Judge">
     <attstr name="judge name" val="PassHardJudge"/>
+    <attstr name="target name" val="target 3"/>   <!-- target driver name -->
+    <attnum name="target length" val="8"/>    <!-- target driver name's length -->   
+    <attnum name="wight1" val="0.5"/>
+    <attnum name="wight2" val="0.5"/>
+    <attnum name="wight3" val="0.001"/>  <!-- demage full score 10000 -->
+    <attnum name="judge pot num" val="100"/>
   </section>
 </params>
