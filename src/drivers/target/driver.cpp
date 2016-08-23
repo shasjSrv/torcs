@@ -56,7 +56,7 @@ const int Driver::TEAM_DAMAGE_CHANGE_LEAD = 700;			// When to change position in
 
 const float Driver::TS_OFFSET_INC = 0.15; 					// 行驶在右（左）跑道的偏置单词增加量
 const float Driver::OVERTAKE_DELTATIME = 0.1; 				// 每过一定时间判断是否需要刁难
-const int Driver::OVERTAKE_HARD_FACTOR = 5; 				// 超车刁难的余数
+const int Driver::OVERTAKE_HARD_FACTOR = 10; 				// 超车刁难的余数
 //const float Driver::LIMITED_SPEED = 100; 					// 正常行驶限速值
 const float Driver::OVERTAKE_BACKHEAD_LOOK = -50.0; 		// 查看后方多少距离的车准备超车
 const float Driver::OVERTAKE_BACKHEAD_LOOK_IGNORE = 20.0; 	// 刁难之后甩开多少距离之后就不在观察
@@ -143,7 +143,7 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 		{
 			route_offset = TRACK_OFFSET[i];
 			LIMITED_SPEED = TRACK_LIMIT_SPEED[i];
-			printf("route_offset: %f,LIMITED_SPEED\n",route_offset,LIMITED_SPEED);
+			printf("route_offset: %f,LIMITED_SPEED: %f\n",route_offset,LIMITED_SPEED);
 		}
 	}
 }
@@ -253,8 +253,8 @@ void Driver::drive(tSituation *s)
 					if(trackside!= 1 && distance<d-TRACKSIDE_CHANGE_MARGIN)
 					{
 						srand(sr);
-						r = rand()%((track_times+1)*OVERTAKE_HARD_FACTOR);
-					//	printf("r1: %d ",r);
+						r = (track_times==0)?0:rand()%((track_times)*OVERTAKE_HARD_FACTOR);
+				//		printf("r1: %d ",r);
 						if(r==0)
 						{
 							trackside = 1;
@@ -272,13 +272,13 @@ void Driver::drive(tSituation *s)
 					if(limitedspeed!=LIMITED_SPEED*1.25)
 					{
 						srand(sr+1);
-						r = rand()%((speed_times+1)*OVERTAKE_HARD_FACTOR);
+						r = (speed_times==0)?0:rand()%((speed_times)*OVERTAKE_HARD_FACTOR);
 					//	printf("r2: %d ",r);
 						if(r==0)
 						{
 							limitedspeed = LIMITED_SPEED*1.25;
 							speed_times++;
-					//		printf("play a joke2\n");
+							printf("play a joke2\n");
 						}
 					}
 				}
@@ -296,7 +296,7 @@ void Driver::drive(tSituation *s)
 						f_close = false;
 						trackside = -1;
 						limitedspeed = LIMITED_SPEED;
-						printf("joke over\n");
+				//		printf("joke over\n");
 					}
 				}
 			}
