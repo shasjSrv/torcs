@@ -578,6 +578,8 @@ void PassBasicJudge::figurOut(tCarElt *car)
 				break;
 			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 50){						//static constant time which is the condition jumo into overtake judge 
 				cons++;
+				m_outfile<<"cons:"<<cons<<endl;
+				
 			}
 			else{ 
 				cons = 0;
@@ -590,7 +592,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 				for(int j = 0; j < judgenum; j++){
 					if(m_distances[i].length != 0)
 						angle = m_distances[j].width / m_distances[j].length;
-					if(angle < std::tan(m_angle) && angle > 0){
+					if(angle < std::tan(m_angle) && angle > 0 || m_distances[i].length > 50 ){
 						m_outfile<<"break j:"<<j<<endl;
 						break;		
 					}
@@ -671,7 +673,7 @@ short PassBasicJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * b
         }
     }
 
-    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != -1){            
         if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, m_targName,""))!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,

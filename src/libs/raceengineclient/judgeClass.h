@@ -143,9 +143,9 @@ private:
     std::string				factor;
 	tCarElt					*targetCar;
 	std::vector<LengthInfo>	m_distances;
-	const int				m_condition = 10;
+	const int				m_condition = 2;
 	const char*				m_judgeNum = "judge pot num";
-	const double			m_angle = 0.31415926;
+	const double			m_angle = 3.1415926/12;
 
 };
 
