@@ -574,7 +574,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		{
 			if(m_distances[i].length != 0)
 				angle = m_distances[i].width / m_distances[i].length;
-			if(angle < 0 )
+			if(angle < 0 && m_distances[i].length < -50 ) 
 				break;
 			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 50){						//static constant time which is the condition jumo into overtake judge 
 				cons++;
@@ -592,13 +592,15 @@ void PassBasicJudge::figurOut(tCarElt *car)
 				for(int j = 0; j < judgenum; j++){
 					if(m_distances[i].length != 0)
 						angle = m_distances[j].width / m_distances[j].length;
-					if(angle < std::tan(m_angle) && angle > 0 || m_distances[i].length > 50 ){
+					if(angle < std::tan(m_angle) && angle > 0 || m_distances[i].length < -50 ){
 						m_outfile<<"break j:"<<j<<endl;
 						break;		
 					}
-					if(angle < 0 && angle > -std::tan(m_angle))
+					if(angle < 0 && angle > -std::tan(m_angle)){
 						time = (m_condition + j) < time ? (m_condition + j) : time;
-					m_outfile<<"break time:"<<m_condition + j<<endl;
+						m_outfile<<"break time:"<<time<<endl;
+						break;
+					}
 
 				}
 				cons = 0;
@@ -615,7 +617,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 
 		m_outfile<<"judgenum:"<<judgenum<<endl;
 
-		score = (1 - time / judgenum) *100;	
+		score = (1 - (float) time / judgenum) *100;	
 		//score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
 
 	}
