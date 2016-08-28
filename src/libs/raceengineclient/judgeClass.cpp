@@ -622,7 +622,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		else
 			time += 2;			//add the judging condition's times
 		
-		//the max speed is 300km/h ,the target car's speed is 80km/h ,so it must record 4 times in judge time.	
+		//the max speed is 300km/h ,the target car's speed is 80km/h ,so it must record m_bestRecord times in judge time.	
 		score = w1 * m_fullScore + w2 * (1 - (float) (time - m_bestRecord) / judgenum) * m_fullScore - w3 * demage;		
 
 	}
