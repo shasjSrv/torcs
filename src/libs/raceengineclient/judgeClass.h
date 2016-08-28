@@ -69,6 +69,8 @@ private:
 	std::string				factor;
 	tCarElt					*targetCar;
 	std::list<double>		m_distances;
+	const int				m_fullScore = 100;			//the full score in our judgement
+	const int				m_expectDis = 50;			//the expect distance to target car in our judgement
 };
 
 
@@ -143,9 +145,13 @@ private:
     std::string				factor;
 	tCarElt					*targetCar;
 	std::vector<LengthInfo>	m_distances;
-	const int				m_condition = 2;
+	//According to our time is per 0.5s to record 1 time ,so our condition is that the car should follow the target car 2 times.
+	const int				m_condition = 2;							
+	//The max judge times in our judgement config file's name
 	const char*				m_judgeNum = "judge pot num";
+	//The angle we consider that is suitable in follow action.
 	const double			m_angle = 3.1415926/9;
+	//THe distance we design that should judge the action whether start or end.
 	const int				m_safeDistance = 50;
 
 };

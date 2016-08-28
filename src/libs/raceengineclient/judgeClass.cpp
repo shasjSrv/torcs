@@ -225,11 +225,11 @@ void FollowJudge::figurOut(tCarElt *car)
 		
 
 		if(min < m_min && max > m_max)
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - 2 * m_penalty - w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 - 2 * m_penalty - w3 * demage; 
 		else if(min < m_min || max > m_max)
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - m_penalty - w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 - m_penalty - w3 * demage; 
 		else
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 -w3 * demage; 
 
 	}
 	/* 设置m_results */
