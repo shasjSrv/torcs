@@ -264,7 +264,7 @@ void Driver::drive(tSituation *s)
 							printf("play a joke1\n");
 						}
 					}
-					if(trackside == 1 && distance>-TRACKSIDE_CHANGE_MARGIN)
+					if(trackside == 1 && f_half_changeside == true && distance>-TRACKSIDE_CHANGE_MARGIN)
 					{
 						trackside = -1;
 					}
@@ -575,6 +575,10 @@ vec2f Driver::getTargetPoint()
 			else
 				offset = MIN((0.5*width-0.5*car->_dimension_y-route_offset), toffset+TS_OFFSET_INC)*trackside;
 		}
+		if(offset>-0.125*width && offset<0.125*width)
+			f_half_changeside = true;
+		else
+			f_half_changeside = false;
 	}
 		
 //	printf("type: %d, offset: %f, myoffset: %f \n",seg->type,offset,getOffset());

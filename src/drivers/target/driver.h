@@ -139,6 +139,7 @@ class Driver {
 		float route_offset;
 		float limitedspeed;
 		bool f_offset;
+		bool f_half_changeside;
 		int trackside; 		//-1:rightside, 1:leftside
 		bool f_close;
 		int speed_times; 	//超车变速刁难次数
