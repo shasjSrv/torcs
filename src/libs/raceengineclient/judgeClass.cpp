@@ -559,7 +559,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 	char		path[BUFSIZE];
 	int			demage = 0;
 	vector<LengthInfo>::iterator it;
-	int			time = m_distances.size();
+	unsigned int	time = m_distances.size();
 	short		cons = 0;
 	double		angle = 0;
 	int			judgenum = m_distances.size();
@@ -572,9 +572,10 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		{
 			if(m_distances[i].length != 0)
 				angle = m_distances[i].width / m_distances[i].length;
-			if(angle < 0 && m_distances[i].length < -50 ) 
+			if(angle < 0 && m_distances[i].length < -m_safeDistance ) 
 				break;
-			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 50){						//static constant time which is the condition jumo into overtake judge 
+			//static constant time which is the condition jumo into overtake judge
+			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < m_safeDistance){						
 				cons++;
 				m_outfile<<"cons:"<<cons<<endl;
 				
@@ -587,11 +588,11 @@ void PassBasicJudge::figurOut(tCarElt *car)
 					break;
 				judgenum = (m_distances.size() -i + m_condition > GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0)) \
 						   ? GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0) : (m_distances.size() - i + m_condition);
-				for(int j = i; j < judgenum + i; j++){
+				for(unsigned int j = i; j < judgenum + i; j++){
 					if(m_distances[j].length != 0)
 						angle = m_distances[j].width / m_distances[j].length;
 					m_outfile<<"angle:"<<angle<<"   tan(m_angle):"<<std::tan(m_angle)<<endl;
-					if(m_distances[j].length < -50 ){
+					if(m_distances[j].length < -m_safeDistance ){
 						m_outfile<<"break j:"<<j<<endl;
 						break;		
 					}

@@ -146,6 +146,7 @@ private:
 	const int				m_condition = 2;
 	const char*				m_judgeNum = "judge pot num";
 	const double			m_angle = 3.1415926/9;
+	const int				m_safeDistance = 50;
 
 };
 
