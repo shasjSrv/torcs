@@ -145,7 +145,7 @@ private:
 	std::vector<LengthInfo>	m_distances;
 	const int				m_condition = 2;
 	const char*				m_judgeNum = "judge pot num";
-	const double			m_angle = 3.1415926/12;
+	const double			m_angle = 3.1415926/9;
 
 };
 
