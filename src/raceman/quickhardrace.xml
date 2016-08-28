@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Limit Sensor Race">
+<params name="Quick Advance Race">
   <section name="Header">
-    <attstr name="name" val="Limit Sensor Race"/>
-    <attstr name="description" val="Limit Sensor Race"/>
+    <attstr name="name" val="Quick Advance Race"/>
+    <attstr name="description" val="Quick Advance Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -26,7 +26,7 @@
   <section name="Tracks">
     <attnum name="maximum number" val="1"/>
     <section name="1">
-      <attstr name="name" val="forza"/>
+      <attstr name="name" val="g-track-1"/>
       <attstr name="category" val="road"/>
     </section>
 
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Limit Sensor Race"/>
+      <attstr name="name" val="Quick Advance Race"/>
     </section>
 
   </section>
 
-  <section name="Limit Sensor Race">
+  <section name="Quick Advance Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -61,14 +61,9 @@
     <attnum name="focused idx" val="0"/>
     <attstr name="focused module" val="scr_server"/>
     <section name="1">
-      <attnum name="idx" val="2"/>
+      <attnum name="idx" val="1"/>
       <attstr name="module" val="scr_server"/>
     </section>
-    <section name="2">
-      <attnum name="idx" val="0"/>
-      <attstr name="module" val="bt"/>
-    </section>
-
   </section>
 
   <section name="Configuration">
@@ -83,7 +78,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="Limit Sensor Race"/>
+      <attstr name="race" val="Quick Advance Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>

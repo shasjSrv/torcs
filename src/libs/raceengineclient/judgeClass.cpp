@@ -225,11 +225,11 @@ void FollowJudge::figurOut(tCarElt *car)
 		
 
 		if(min < m_min && max > m_max)
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - 2 * m_penalty - w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 - 2 * m_penalty - w3 * demage; 
 		else if(min < m_min || max > m_max)
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 - m_penalty - w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 - m_penalty - w3 * demage; 
 		else
-			score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
+			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 -w3 * demage; 
 
 	}
 	/* 设置m_results */
@@ -524,7 +524,7 @@ void PassBasicJudge::judge(tCarElt *car)
 		if(targetCar==car)
 		{
 			//per 0.1 second record
-			if((GfTimeClock() - m_curTime> (double) 0.5) && targetCar->race.laps >=1)
+			if((GfTimeClock() - m_curTime> (double) 0.2) && targetCar->race.laps >=1)
 			{
 				//确定被跟的车 以及 距离
 				LengthInfo dis_sque ;
@@ -542,6 +542,7 @@ void PassBasicJudge::judge(tCarElt *car)
 				if(m_outfile.is_open()){							
 					m_outfile<<"distances.length:"<<dis_sque.length<<endl;								
 					m_outfile<<"distances.width:"<<dis_sque.width<<endl;
+					m_outfile<<"m_distances.size()"<<m_distances.size()<<endl;
 					m_outfile<<endl;
 				}
 
@@ -557,11 +558,8 @@ void PassBasicJudge::figurOut(tCarElt *car)
 	const int	BUFSIZE = 1024;
 	char		path[BUFSIZE];
 	int			demage = 0;
-	double		total=0;
 	vector<LengthInfo>::iterator it;
-    int			max = 0;
-	int 		min = 0;
-	int			time = m_distances.size();
+	unsigned int	time = m_distances.size();
 	short		cons = 0;
 	double		angle = 0;
 	int			judgenum = m_distances.size();
@@ -569,15 +567,17 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		float w1 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
 		float w2 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
 		float w3 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
-		//for(it=m_distances.begin();it!=m_distances.end();it++)
 		for(unsigned int i = 0; i < m_distances.size(); i++)
 		{
 			if(m_distances[i].length != 0)
 				angle = m_distances[i].width / m_distances[i].length;
-			if(angle < 0 )
+			if(angle < 0 && m_distances[i].length < -m_safeDistance ) 
 				break;
-			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < 50){						//static constant time which is the condition jumo into overtake judge 
+			//static constant time which is the condition jumo into overtake judge
+			if(angle < std::tan(m_angle) && angle > 0 && m_distances[i].length < m_safeDistance){						
 				cons++;
+				m_outfile<<"cons:"<<cons<<endl;
+				
 			}
 			else{ 
 				cons = 0;
@@ -585,18 +585,22 @@ void PassBasicJudge::figurOut(tCarElt *car)
 			if(cons == m_condition){			
 				if (i >= m_distances.size()) 
 					break;
-				judgenum = (m_distances.size() -i > GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0)) \
-						   ? GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0) : (m_distances.size() - i);
-				for(int j = 0; j < judgenum; j++){
-					if(m_distances[i].length != 0)
+				judgenum = (m_distances.size() -i + m_condition > GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0)) \
+						   ? GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, m_judgeNum, NULL, 0) : (m_distances.size() - i + m_condition);
+				for(unsigned int j = i; j < judgenum + i; j++){
+					if(m_distances[j].length != 0)
 						angle = m_distances[j].width / m_distances[j].length;
-					if(angle < std::tan(m_angle) && angle > 0){
+					m_outfile<<"angle:"<<angle<<"   tan(m_angle):"<<std::tan(m_angle)<<endl;
+					if(m_distances[j].length < -m_safeDistance ){
 						m_outfile<<"break j:"<<j<<endl;
 						break;		
 					}
-					if(angle < 0 && angle > -std::tan(m_angle))
-						time = (m_condition + j) < time ? (m_condition + j) : time;
-					m_outfile<<"break time:"<<m_condition + j<<endl;
+					if(angle < 0 && angle > -std::tan(m_angle) && m_distances[j].length < 0){
+						time = (m_condition + j - i) < time ? (m_condition + j - i) : time;
+						m_outfile<<"break time:"<<time<<endl;
+						m_outfile<<"break j:"<<j<<endl;
+						break;
+					}
 
 				}
 				cons = 0;
@@ -611,10 +615,15 @@ void PassBasicJudge::figurOut(tCarElt *car)
 			m_outfile<<GfParmGetStr(m_results, path, RE_ATTR_NAME, "")<<endl;
 		}	
 
+		judgenum = judgenum + m_condition;	
 		m_outfile<<"judgenum:"<<judgenum<<endl;
-
-		score = (1 - time / judgenum) *100;	
-		//score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
+		if(time == m_distances.size())
+			time = judgenum + m_bestRecord;
+		else
+			time += 2;			//add the judging condition's times
+		
+		//the max speed is 300km/h ,the target car's speed is 80km/h ,so it must record m_bestRecord times in judge time.	
+		score = w1 * m_fullScore + w2 * (1 - (float) (time - m_bestRecord) / judgenum) * m_fullScore - w3 * demage;		
 
 	}
 	/* 设置m_results */
@@ -671,7 +680,7 @@ short PassBasicJudge::resualt(void *rmScrHdle,int x8,int x9,int y,int i,char * b
         }
     }
 
-    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != 0){            
+    if(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0) != -1){            
         if(strcmp(GfParmGetStr(m_results, path, RE_ATTR_NAME, ""),GfParmGetStr(m_ReInfo->params, RE_SECT_JUDGE, m_targName,""))!=0){  //is judge car
             snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(m_results,RE_SECT_JUDGE,RE_ATTR_JUDGE_SCORE,NULL,0)));
             GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,

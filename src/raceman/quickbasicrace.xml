@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- 
-	 file        : quickrace.xml
+	 file        : Quick basicrace.xml
 	 created     : Sun Jan  5 11:52:32 CET 2003
 	 copyright   : (C) 2003-2014 by Eric Espie, Bernhard Wymann                         
 	 email       : Eric.Espie@torcs.org   
-	 version     : $Id: quickrace.xml,v 1.5.2.2 2014/03/19 10:41:00 berniw Exp $                                  
+	 version     : $Id: Quick basicrace.xml,v 1.5.2.2 2014/03/19 10:41:00 berniw Exp $                                  
 	 -->
 
 <!--    This program is free software; you can redistribute it and/or modify  -->
@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Quick Race">
+<params name="Quick basic Race">
   <section name="Header">
-    <attstr name="name" val="Quick Race"/>
-    <attstr name="description" val="Quick Race"/>
+    <attstr name="name" val="Quick basic Race"/>
+    <attstr name="description" val="Quick basic Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -26,7 +26,7 @@
   <section name="Tracks">
     <attnum name="maximum number" val="1"/>
     <section name="1">
-      <attstr name="name" val="forza"/>
+      <attstr name="name" val="g-track-1"/>
       <attstr name="category" val="road"/>
     </section>
 
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Quick Race"/>
+      <attstr name="name" val="Quick basic Race"/>
     </section>
 
   </section>
 
-  <section name="Quick Race">
+  <section name="Quick basic Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -61,8 +61,8 @@
     <attnum name="focused idx" val="0"/>
     <attstr name="focused module" val="scr_server"/>
     <section name="1">
-      <attnum name="idx" val="3"/>
-      <attstr name="module" val="target"/>
+      <attnum name="idx" val="0"/>
+      <attstr name="module" val="scr_server"/>
     </section>
 
   </section>
@@ -79,7 +79,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="Quick Race"/>
+      <attstr name="race" val="Quick basic Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>

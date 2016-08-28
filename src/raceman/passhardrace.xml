@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Pass Hard Race">
+<params name="Overtake Advance Race">
   <section name="Header">
-    <attstr name="name" val="Pass Hard Race"/>
-    <attstr name="description" val="Pass Hard Race"/>
+    <attstr name="name" val="Overtake Advance Race"/>
+    <attstr name="description" val="Overtake Advance Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Pass Hard Race"/>
+      <attstr name="name" val="Overtake Advance Race"/>
     </section>
 
   </section>
 
-  <section name="Pass Hard Race">
+  <section name="Overtake Advance Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -65,7 +65,7 @@
       <attstr name="module" val="target"/>
     </section>
     <section name="2">
-      <attnum name="idx" val="6"/>
+      <attnum name="idx" val="4"/>
       <attstr name="module" val="scr_server"/>
     </section>
 
@@ -83,7 +83,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="Pass Hard Race"/>
+      <attstr name="race" val="Overtake Advance Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>
@@ -100,9 +100,9 @@
     <attstr name="judge name" val="PassHardJudge"/>
     <attstr name="target name" val="target 3"/>   <!-- target driver name -->
     <attnum name="target length" val="8"/>    <!-- target driver name's length -->   
-    <attnum name="wight1" val="0.5"/>
-    <attnum name="wight2" val="0.5"/>
+    <attnum name="wight1" val="0.1"/>
+    <attnum name="wight2" val="0.9"/>
     <attnum name="wight3" val="0.001"/>  <!-- demage full score 10000 -->
-    <attnum name="judge pot num" val="100"/>
+    <attnum name="judge pot num" val="48"/>
   </section>
 </params>
