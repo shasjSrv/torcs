@@ -45,6 +45,7 @@ protected:
 	std::ofstream	m_outfile;
 	int				m_nCar;
 	double			m_curTime;
+	const int				m_fullScore = 100;			//the full score in our judgement
 	const float		m_min = 1.0f;					//the min distance to target driver.
 	const float		m_max = 300.0f;					//the max distance to target driver.
 	const float		m_penalty = 5;					//To punish the score in some situation.
@@ -69,7 +70,6 @@ private:
 	std::string				factor;
 	tCarElt					*targetCar;
 	std::list<double>		m_distances;
-	const int				m_fullScore = 100;			//the full score in our judgement
 	const int				m_expectDis = 50;			//the expect distance to target car in our judgement
 };
 
@@ -151,8 +151,10 @@ private:
 	const char*				m_judgeNum = "judge pot num";
 	//The angle we consider that is suitable in follow action.
 	const double			m_angle = 3.1415926/9;
-	//THe distance we design that should judge the action whether start or end.
+	//The distance we design that should judge the action whether start or end.
 	const int				m_safeDistance = 50;
+	//The time that overtaking target car which using the queckest speed to take.  
+	const int				m_bestRecord = 8;
 
 };
 

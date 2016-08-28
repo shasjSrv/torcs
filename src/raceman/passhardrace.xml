@@ -103,6 +103,6 @@
     <attnum name="wight1" val="0.1"/>
     <attnum name="wight2" val="0.9"/>
     <attnum name="wight3" val="0.001"/>  <!-- demage full score 10000 -->
-    <attnum name="judge pot num" val="18"/>
+    <attnum name="judge pot num" val="48"/>
   </section>
 </params>

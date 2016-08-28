@@ -524,7 +524,7 @@ void PassBasicJudge::judge(tCarElt *car)
 		if(targetCar==car)
 		{
 			//per 0.1 second record
-			if((GfTimeClock() - m_curTime> (double) 0.5) && targetCar->race.laps >=1)
+			if((GfTimeClock() - m_curTime> (double) 0.2) && targetCar->race.laps >=1)
 			{
 				//确定被跟的车 以及 距离
 				LengthInfo dis_sque ;
@@ -567,7 +567,6 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		float w1 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
 		float w2 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
 		float w3 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
-		//for(it=m_distances.begin();it!=m_distances.end();it++)
 		for(unsigned int i = 0; i < m_distances.size(); i++)
 		{
 			if(m_distances[i].length != 0)
@@ -619,11 +618,12 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		judgenum = judgenum + m_condition;	
 		m_outfile<<"judgenum:"<<judgenum<<endl;
 		if(time == m_distances.size())
-			time = judgenum;
+			time = judgenum + m_bestRecord;
+		else
+			time += 2;			//add the judging condition's times
 		
 		//the max speed is 300km/h ,the target car's speed is 80km/h ,so it must record 4 times in judge time.	
-		score = w1 * 100 + w2 * (1 - (float) (time - 4) / judgenum) *100 - w3 * demage;		
-		//score = (std::exp(-std::fabs(50-avg)/100))* 100* w1 + std::exp(-deviation/100.0) * 100 * w2 -w3 * demage; 
+		score = w1 * m_fullScore + w2 * (1 - (float) (time - m_bestRecord) / judgenum) * m_fullScore - w3 * demage;		
 
 	}
 	/* 设置m_results */
