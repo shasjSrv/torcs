@@ -229,7 +229,7 @@ void Driver::drive(tSituation *s)
 			{
 				deltatime = s->currentTime;
 
-				float distance,location,d,look_distance;
+				float distance,location,d,look_distance,catchdist;
 				int r;
 	//			static float rightside_time = 0;
 
@@ -238,6 +238,7 @@ void Driver::drive(tSituation *s)
 				d = (car->_speed_x - opponent->getSpeed()) * TRACKSIDE_CHANGE_TIME * TRACKSIDE_CHANGE_PRE_FACTOR;  
 				//若变道，两车之间的距离变化量，若欲超车车辆速度快，则d<0
 				look_distance = MIN(OVERTAKE_BACKHEAD_LOOK,2*d);
+				catchdist = opponent->getCatchDist();
 			
 	//			printf("ocar_speed: %f mycar_speed: %f\n",opponent->getSpeed(),car->_speed_x);
 	//			printf("distance: %f, location: %f, d: %f \n",distance,location,d);
@@ -264,7 +265,7 @@ void Driver::drive(tSituation *s)
 							printf("play a joke1\n");
 						}
 					}
-					if(trackside == 1 && f_half_changeside == true && distance>-TRACKSIDE_CHANGE_MARGIN)
+					if(trackside == 1 && f_half_changeside == true && opponent->getSpeed()>1.5*car->_speed_x)
 					{
 						trackside = -1;
 					}
