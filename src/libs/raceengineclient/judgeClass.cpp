@@ -232,6 +232,8 @@ void FollowJudge::figurOut(tCarElt *car)
 			score = (std::exp(-std::fabs(m_expectDis-avg)/100))* m_fullScore* w1 + std::exp(-deviation/100.0) * m_fullScore * w2 -w3 * demage; 
 
 	}
+	if(score < 0 )
+		score = 0;
 	/* 设置m_results */
 	if(m_results!=NULL)
     {
@@ -625,6 +627,8 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		//the max speed is 300km/h ,the target car's speed is 80km/h ,so it must record m_bestRecord times in judge time.	
 		score = w1 * m_fullScore + w2 * (1 - (float) (time - m_bestRecord) / judgenum) * m_fullScore - w3 * demage;		
 
+		if(score < 0)
+			score = 0;
 	}
 	/* 设置m_results */
 	if(m_results!=NULL)
