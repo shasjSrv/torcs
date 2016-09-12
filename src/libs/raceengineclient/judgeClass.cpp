@@ -569,7 +569,7 @@ void PassBasicJudge::figurOut(tCarElt *car)
 		float w1 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight1", NULL, 0);
 		float w2 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight2", NULL, 0);
 		float w3 = GfParmGetNum(m_ReInfo->params, RE_SECT_JUDGE, "wight3", NULL, 0);
-		for(unsigned int i = 0; i < m_distances.size(); i++)
+		for(unsigned int i = 25; i < m_distances.size(); i++)				//after 25s ,we begin to judge the game.
 		{
 			if(m_distances[i].length != 0)
 				angle = m_distances[i].width / m_distances[i].length;
