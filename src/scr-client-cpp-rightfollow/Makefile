@@ -1,5 +1,5 @@
 CC            =  g++
-CPPFLAGS      = -Wall -g 
+CPPFLAGS      = -Wall -g `pkg-config --cflags opencv`
 LIBS = `pkg-config --libs opencv`
 
 # Uncomment the following line for a verbose client
@@ -13,7 +13,7 @@ DRIVER_OBJ = $(DRIVER_CLASS).o
 
 EXTFLAGS = -D __DRIVER_CLASS__=$(DRIVER_CLASS) -D __DRIVER_INCLUDE__=$(DRIVER_INCLUDE)
 
-OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o PidControl.o DriveController.o ProcessImage.o $(DRIVER_OBJ)
+OBJECTS = WrapperBaseDriver.o SimpleParser.o CarState.o CarControl.o ProcessImage.o $(DRIVER_OBJ)
 
 all: $(OBJECTS) client
 

@@ -26,14 +26,11 @@ class WrapperBaseDriver : public BaseDriver
 {
 public:
 	
-	// the drive function with string input and output
-            // The main function: （in BaseDriver）
-	    //     - the input variable sensors represents the current world sate
-	    //     - it returns a string representing the controlling action to perform  
+	// the drive function wiht string input and output
 	virtual string drive(string sensors);
 	
 	// drive function that exploits the CarState and CarControl wrappers as input and output.
-	virtual CarControl wDrive(CarState &cs)=0;
+	virtual CarControl wDrive(CarState cs)=0;
 };
 
 #endif /*WRAPPERBASEDRIVER_H_*/

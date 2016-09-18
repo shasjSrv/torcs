@@ -15,8 +15,6 @@
  ***************************************************************************/
 #include "CarState.h"
 
-#include <iostream>
-
 
 CarState::CarState(string sensors)
 {
@@ -39,20 +37,6 @@ CarState::CarState(string sensors)
         SimpleParser::parse(sensors, "trackPos", this->trackPos);
         SimpleParser::parse(sensors, "wheelSpinVel", this->wheelSpinVel, 4);
         SimpleParser::parse(sensors, "z", this->z);
-        if(!SimpleParser::parse(sensors, "posX",this->posX)){
-                //std::cout<<"can not find posX\n";
-        }
-        if(!SimpleParser::parse(sensors, "posY",this->posY)){
-                //std::cout<<"can not find posY\n";
-        }
-        if(!SimpleParser::parse(sensors, "posZ",this->posZ)){
-                //std::cout<<"can not find posZ\n";
-        }
-        //cout<<posX<<"\t"<<posY<<"\t"<<posZ<<endl;
-        
-        
-        maxAccel=5;               //m/s
-        maxSteer=0.366519;        //21度rad
 }
 
 string
@@ -78,10 +62,7 @@ CarState::toString()
 	str += SimpleParser::stringify("trackPos", this->trackPos);
 	str += SimpleParser::stringify("wheelSpinVel", this->wheelSpinVel, 4);
 	str += SimpleParser::stringify("z", this->z);
-	str += SimpleParser::stringify("posX", this->posX);
-        str += SimpleParser::stringify("posY", this->posY);
-        str += SimpleParser::stringify("posZ", this->posZ);
-        
+	
 	return str;
 	        
 }
@@ -325,75 +306,3 @@ CarState::setZ(float z)
 {
     this->z = z;
 };
-
-float
-CarState::getPosX()
-{
-    return posX;
-}
-
-void
-CarState::setPosX(float x)
-{
-    this->posX=x;
-}
-
-float
-CarState::getPosY()
-{
-    return posY;
-}
-
-void
-CarState::setPosY(float y)
-{
-    this->posY=y;
-}
-
-float
-CarState::getPosZ()
-{
-    return posZ;
-}
-
-void
-CarState::setPosZ(float z)
-{
-    this->posZ=z;
-}
-
-float
-CarState::getMaxAccel()
-{
-        return maxAccel;
-}
-
-void
-CarState::setMaxAccel(float maxAccel)
-{
-        this->maxAccel=maxAccel;
-}
-
-float
-CarState::getMaxSteer()
-{
-        return maxSteer;
-}
-
-void 
-CarState::setMaxSteer(float maxSteer)
-{
-        this->maxSteer=maxSteer;
-}
-
-float
-CarState::getL()
-{
-        return L;
-}
-
-void
-CarState::setL(float L)
-{
-        this->L=L;
-}

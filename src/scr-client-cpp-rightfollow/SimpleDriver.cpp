@@ -14,8 +14,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "SimpleDriver.h"
-#include "PidControl.h"
-#include <iostream>
 
 
 /* Gear Changing Constants*/
@@ -29,21 +27,20 @@ const int SimpleDriver::gearDown[6]=
     };
 
 /* Stuck constants*/
-const int SimpleDriver::stuckTime = 25;
+const int SimpleDriver::stuckTime = 2;
 const float SimpleDriver::stuckAngle = .523598775; //PI/6
+const int SimpleDriver::stuckBrakeTime = 2;
 
 /* Accel and Brake Constants*/
-//const float SimpleDriver::maxSpeedDist=70;
-const float SimpleDriver::maxSpeedDist=120;
-const float SimpleDriver::maxSpeed=180;
-const float minTurnDist=5;
+const float SimpleDriver::maxSpeedDist=150;
+const float SimpleDriver::maxSpeed=220;
 const float SimpleDriver::sin5 = 0.08716;
 const float SimpleDriver::cos5 = 0.99619;
 
 /* Steering constants*/
-const float SimpleDriver::steerLock=0.366519 ;          //最大转角  21度的弧度
+const float SimpleDriver::steerLock=0.366519 ;
 const float SimpleDriver::steerSensitivityOffset=80.0;
-const float SimpleDriver::wheelSensitivityCoeff=1;
+const float SimpleDriver::wheelSensitivityCoeff=0.8;
 
 /* ABS Filter Constants */
 const float SimpleDriver::wheelRadius[4]={0.3306,0.3306,0.3276,0.3276};
@@ -85,59 +82,102 @@ SimpleDriver::getGear(CarState &cs)
             return gear;
 }
 
+
 float
 SimpleDriver::getSteer(CarState &cs)
 {
-    float targetAngle;
-    if(cs.getTrackPos()<=1&&cs.getTrackPos()>=-1)
-    {
-        if(side_pid==NULL)
-        {
-            side_pid=new PidControl(cs.getTrackPos(),arg_p,arg_i,arg_d);
-        }
-        else{
-            targetAngle=side_pid->refresh(cs.getTrackPos()+0.6,0.02);  //正的要向右转
-            targetAngle=-targetAngle;
-            targetAngle=targetAngle+cs.getAngle();
-            targetAngle= (targetAngle)/steerLock;
-            return targetAngle;
-        }
-    }
-    // steering angle is compute by correcting the actual car angle w.r.t. to track 
+	// steering angle is compute by correcting the actual car angle w.r.t. to track 
 	// axis [cs.getAngle()] and to adjust car position w.r.t to middle of track [cs.getTrackPos()*0.5]
-    targetAngle=(cs.getAngle()-cs.getTrackPos()*0.5);
-    // at high speed reduce the steering command to avoid loosing the control
-    if (cs.getSpeedX() > steerSensitivityOffset)
-        targetAngle= targetAngle/(steerLock*(cs.getSpeedX()-steerSensitivityOffset)*wheelSensitivityCoeff);
+    float targetAngle=(cs.getAngle()-cs.getTrackPos()*0.5);
+
+	// reading of sensor at +5 degree w.r.t. car axis
+    float rxSensor=cs.getTrack(10);
+    // reading of sensor parallel to car axis
+    float cSensor=cs.getTrack(9);
+    // reading of sensor at -5 degree w.r.t. car axis
+    float sxSensor=cs.getTrack(8);
+	
+	
+	// 跟车
+	float disSensor16=cs.getOpponents(16);
+	float disSensor17=cs.getOpponents(17);
+	float disSensor18=cs.getOpponents(18);
+	float disSensor19=cs.getOpponents(19);
+	float disSensor20=cs.getOpponents(20);
+
+	if(disSensor18==200 && (disSensor16 < 200 || disSensor17 < 200 ) && cs.getTrackPos() < 0){
+		calLAngle(rxSensor, cSensor, sxSensor, cs, targetAngle);
+		cout<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&left"<<endl;
+		return targetAngle/steerLock*0.5;
+	}
+	
+	if(disSensor18==200 && (disSensor19 <200 || disSensor20 <200 ) && cs.getTrackPos() > 0){
+		calRAngle(rxSensor, cSensor, sxSensor, cs, targetAngle);
+		cout<<"&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&right"<<endl;
+		return targetAngle/steerLock*0.5;
+	}
+
+	// check if the car is going to be stucken slowly
+
+	if(rxSensor>sxSensor && cSensor < 65 && (cs.getAngle()<0.001 || cs.getTrackPos()<0) ) 
+		// approaching a turn on right
+	{      	
+		if( sxSensor < 3){
+			calRAngle(rxSensor, cSensor, sxSensor, cs, targetAngle);
+			return (targetAngle)/steerLock * 0.07;
+		}
+		else if( sxSensor < 10 ){
+			calRAngle(rxSensor, cSensor, sxSensor, cs, targetAngle) ;
+			return (targetAngle)/steerLock * 0.2;
+		}
+		calRAngle(rxSensor, cSensor, sxSensor, cs, targetAngle) ;
+		return (targetAngle)/steerLock * 0.5;
+	}
+	else if(rxSensor<sxSensor && cSensor < 100 && (cs.getAngle()>-0.001 || cs.getTrackPos()>0) )
+		// approaching a turn on left
+	{
+		if( rxSensor < 3){
+			calLAngle(rxSensor, cSensor, sxSensor, cs, targetAngle);
+			return (targetAngle)/steerLock * 0.07;
+		}
+		else if( rxSensor < 10 ){
+			calLAngle(rxSensor, cSensor, sxSensor, cs, targetAngle) ;
+			return (targetAngle)/steerLock * 0.2;
+		}
+		calLAngle(rxSensor, cSensor, sxSensor, cs, targetAngle) ;
+		return (targetAngle)/steerLock * 0.5;
+	}
+ 	else if (cs.getSpeedX() > steerSensitivityOffset) 
+		// at high speed reduce the steering command to avoid loosing the control
+        return targetAngle/(steerLock*(cs.getSpeedX()-steerSensitivityOffset)*wheelSensitivityCoeff);
     else
-        targetAngle= (targetAngle)/steerLock;
-    return targetAngle;
+        return (targetAngle)/steerLock ;
+
 }
+
+void SimpleDriver::calLAngle(float rxSensor, float cSensor, float sxSensor, CarState &cs, float &targetAngle)
+{
+	float h = cSensor*sin5;
+    float b = sxSensor - cSensor*cos5;
+    float sinAngle = b*b/(h*h+b*b);
+	targetAngle = targetAngle * 0.5 +  sinAngle*0.3;	
+}
+
+void SimpleDriver::calRAngle(float rxSensor, float cSensor, float sxSensor, CarState &cs, float &targetAngle)
+{
+ 	float h = cSensor*sin5;
+    float b = rxSensor - cSensor*cos5;
+    float sinAngle = b*b/(h*h+b*b);//in fact, sinAngle is sina^2
+	targetAngle = targetAngle * 0.5 - sinAngle*0.3;
+}
+
+
 float
 SimpleDriver::getAccel(CarState &cs)
 {
     // checks if car is out of track
     if (cs.getTrackPos() < 1 && cs.getTrackPos() > -1)
     {
-        float targetSpeed;
-        float normal_targetSpeed;
-        float follow_targetSpeed=maxSpeed+1.0;
-
-        /* calculate follow_targetSpeed */
-        float oppo=201;  /*select min opponets to prevent turn error*/
-        if(cs.getOpponents(18)<oppo) oppo=cs.getOpponents(18);
-        if(cs.getOpponents(19)<oppo) oppo=cs.getOpponents(19);
-        if(cs.getOpponents(17)<oppo) oppo=cs.getOpponents(17);
-        if(cs.getOpponents(16)<oppo) oppo=cs.getOpponents(17);
-        if(cs.getOpponents(20)<oppo) oppo=cs.getOpponents(17);
-        if(oppo<30){  //there is a car near   then calculate follow_targetSpeed
-            follow_targetSpeed=maxSpeed*(1-exp(-(40*(oppo)/maxSpeed)+2));
-            if(oppo<=1){
-                return -1;
-            }
-        }
-
-        /* calculate normal_targetSpeed */
         // reading of sensor at +5 degree w.r.t. car axis
         float rxSensor=cs.getTrack(10);
         // reading of sensor parallel to car axis
@@ -145,52 +185,123 @@ SimpleDriver::getAccel(CarState &cs)
         // reading of sensor at -5 degree w.r.t. car axis
         float sxSensor=cs.getTrack(8);
 
+        float targetSpeed;
+
         // track is straight and enough far from a turn so goes to max speed
         if (cSensor>maxSpeedDist || (cSensor>=rxSensor && cSensor >= sxSensor))
-            normal_targetSpeed = maxSpeed;
-        else
+            targetSpeed = maxSpeed;
+		else if(fabs(cs.getAngle()) < sin5 ){
+			float h = cSensor*sin5;
+            float b = max(rxSensor,sxSensor) - cSensor*cos5;
+            float sinAngle = b*b/(h*h+b*b);
+			targetSpeed = 2.2*maxSpeed*(cSensor*sqrt(sinAngle)/maxSpeedDist);
+		}
+			else
         {
             // approaching a turn on right
             if(rxSensor>sxSensor)
             {
+
                 // computing approximately the "angle" of turn
                 float h = cSensor*sin5;
                 float b = rxSensor - cSensor*cos5;
-                float sinAngle = b*b/(h*h+b*b);
+                float sinAngle = b*b/(h*h+b*b);//in fact, sinAngle is sina^2
+
+				if(cSensor<40 && rxSensor-sxSensor<5)
+					return maxSpeed*(cSensor*sqrt(sinAngle)/maxSpeedDist);
+
+
                 // estimate the target speed depending on turn and on how close it is
-                normal_targetSpeed = maxSpeed*(cSensor*sinAngle/maxSpeedDist); 
+                targetSpeed = 1.8*maxSpeed*(cSensor*sqrt(sinAngle)/maxSpeedDist); 
             }
             // approaching a turn on left
             else
             {
+
                 // computing approximately the "angle" of turn
                 float h = cSensor*sin5;
                 float b = sxSensor - cSensor*cos5;
                 float sinAngle = b*b/(h*h+b*b);
+
+				if(cSensor<40 && sxSensor-rxSensor<5)
+					return maxSpeed*(cSensor*sqrt(sinAngle)/maxSpeedDist);
+
                 // estimate the target speed depending on turn and on how close it is
-                normal_targetSpeed = maxSpeed*(cSensor*sinAngle/maxSpeedDist);
+                targetSpeed = 1.8*maxSpeed*(cSensor*sqrt(sinAngle)/maxSpeedDist);
             }
+
         }
-        
-        //targetSpeed = normal_targetSpeed<follow_targetSpeed?normal_targetSpeed:follow_targetSpeed;
-        //debug
-        if(oppo<30){
-            targetSpeed = follow_targetSpeed;
-        }
-        else{
-            targetSpeed = normal_targetSpeed;
-        }
+
+		if(cs.getCurLapTime() < 5)
+			return  2/(1+exp(cs.getSpeedX() - targetSpeed)) - 1;
+
+		
+		// 跟车的加速与减速
+		float disSensor16=cs.getOpponents(16);
+		float disSensor17=cs.getOpponents(17);
+		float disSensor18=cs.getOpponents(18);
+		float disSensor19=cs.getOpponents(19);
+		float disSensor20=cs.getOpponents(20);
+
+
+		// 跟车超过目标车辆时的后方传感器
+		float disSensor35=cs.getOpponents(35);
+		float disSensor0=cs.getOpponents(0);
+		float disSensor1=cs.getOpponents(1);
+	
+		if(disSensor35!=200 || disSensor0!=200 || disSensor1!=200)
+			return -1; 
+		
+		
+		float tempDis;
+
+		float disSensor = min(disSensor17,disSensor18);
+		disSensor = min(disSensor,disSensor19);
+		disSensor = min(disSensor,disSensor20);
+		disSensor = min(disSensor,disSensor16);
+
+		cout << "*************************************************" << disSensor << endl;
+		
+		if(disSensor<30 || disSensor>50){
+			if(miniDistance == 0)
+				miniDistance=disSensor;
+			if(miniDistance != 0)
+				tempDis=disSensor;
+		}
+
+		if(disSensor<30 || disSensor>50)
+			stuckBrake++;
+		else
+			stuckBrake=0;
+
+		if(stuckBrake>stuckBrakeTime){				
+			stuckBrake=0;
+			tempDis-=miniDistance;
+			float relaVel=tempDis/0.002;
+				
+			targetSpeed +=relaVel;
+			
+			if(disSensor<20)
+				return -0.8;
+			if(disSensor>50)
+				targetSpeed = fabs(targetSpeed)*1.2;
+			if(disSensor>80)
+				return 1;
+			miniDistance = 0;
+			return  2/(1+exp(cs.getSpeedX() - targetSpeed)) - 1;
+			
+		}
+
         // accel/brake command is expontially scaled w.r.t. the difference between target speed and current one
-        //return 2/(1+exp(cs.getSpeedX() - targetSpeed)) - 1;
         return 2/(1+exp(cs.getSpeedX() - targetSpeed)) - 1;
     }
     else
-        //return 0.3; // when out of track returns a moderate acceleration command
-        return 0.8;
+        return 0.5; // when out of track returns a moderate acceleration command
+
 }
 
 CarControl
-SimpleDriver::wDrive(CarState &cs)
+SimpleDriver::wDrive(CarState cs)
 {
 	// check if car is currently stuck
 	if ( fabs(cs.getAngle()) > stuckAngle )
@@ -203,6 +314,7 @@ SimpleDriver::wDrive(CarState &cs)
     	// if not stuck reset stuck counter
         stuck = 0;
     }
+
 
 	// after car is stuck for a while apply recovering policy
     if (stuck > stuckTime)
@@ -237,7 +349,6 @@ SimpleDriver::wDrive(CarState &cs)
         int gear = getGear(cs);
         // compute steering
         float steer = getSteer(cs);
-        
 
         // normalize steering
         if (steer < -1)
@@ -271,6 +382,7 @@ SimpleDriver::wDrive(CarState &cs)
 float
 SimpleDriver::filterABS(CarState &cs,float brake)
 {
+
 	// convert speed to m/s
 	float speed = cs.getSpeedX() / 3.6;
 	// when spedd lower than min speed for abs do nothing
@@ -283,9 +395,10 @@ SimpleDriver::filterABS(CarState &cs,float brake)
     {
         slip += cs.getWheelSpinVel(i) * wheelRadius[i];
     }
+
     // slip is the difference between actual speed of car and average speed of wheels
     slip = speed - slip/4.0f;
-    // when slip too high applu ABS
+    // when slip too high apply ABS
     if (slip > absSlip)
     {
         brake = brake - (slip - absSlip)/absRange;
@@ -301,22 +414,12 @@ SimpleDriver::filterABS(CarState &cs,float brake)
 void
 SimpleDriver::onShutdown()
 {
-    if(side_pid!=NULL)
-    {
-        delete side_pid;
-        side_pid=NULL;
-    }
     cout << "Bye bye!" << endl;
 }
 
 void
 SimpleDriver::onRestart()
 {
-    if(side_pid!=NULL)
-    {
-        delete side_pid;
-        side_pid=NULL;
-    }
     cout << "Restarting the race!" << endl;
 }
 

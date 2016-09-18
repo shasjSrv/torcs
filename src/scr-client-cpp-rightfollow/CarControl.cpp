@@ -17,7 +17,6 @@
 
 // meta-command value for race restart
 int CarControl::META_RESTART=1;
-int CarControl::META_STATIC=2;
 
 CarControl::CarControl(float accel, float brake, int gear, float steer, float clutch, int focus, int meta)
 {

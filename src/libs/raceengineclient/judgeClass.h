@@ -146,11 +146,11 @@ private:
 	tCarElt					*targetCar;
 	std::vector<LengthInfo>	m_distances;
 	//According to our time is per 0.5s to record 1 time ,so our condition is that the car should follow the target car 2 times.
-	const int				m_condition = 2;							
+	const int				m_condition = 5;							
 	//The max judge times in our judgement config file's name
 	const char*				m_judgeNum = "judge pot num";
 	//The angle we consider that is suitable in follow action.
-	const double			m_angle = 3.1415926/9;
+	const double			m_angle = 3.1415926/18;
 	//The distance we design that should judge the action whether start or end.
 	const int				m_safeDistance = 50;
 	//The time that overtaking target car which using the queckest speed to take.  

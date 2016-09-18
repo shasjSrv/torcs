@@ -476,7 +476,9 @@ drive(int index, tCarElt* car, tSituation *s)
 
     string stateString;
 
-    stateString =  SimpleParser::stringify("angle", angle);
+	if(index ==0 || index == 2 || index == 3 || index ==4 ){    
+		stateString =  SimpleParser::stringify("angle", angle);
+	}
     stateString += SimpleParser::stringify("curLapTime", float(car->_curLapTime));
     if (getDamageLimit())
 	    stateString += SimpleParser::stringify("damage", car->_dammage);

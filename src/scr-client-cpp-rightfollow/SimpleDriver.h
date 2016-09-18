@@ -23,7 +23,6 @@
 #include "CarControl.h"
 #include "SimpleParser.h"
 #include "WrapperBaseDriver.h"
-#include "PidControl.h"
 
 #define PI 3.14159265
 
@@ -34,10 +33,10 @@ class SimpleDriver : public WrapperBaseDriver
 public:
 	
 	// Constructor
-	SimpleDriver(double p, double i, double d) {stuck=0;clutch=0.0;arg_d=d;arg_i=i;arg_p=p;side_pid=NULL;}
+	SimpleDriver(){stuck=0;clutch=0.0;stuckBrake=0;miniDistance=0;};
 
 	// SimpleDriver implements a simple and heuristic controller for driving
-	virtual CarControl wDrive(CarState &cs);
+	virtual CarControl wDrive(CarState cs);
 
 	// Print a shutdown message 
 	virtual void onShutdown();
@@ -48,11 +47,10 @@ public:
 	// Initialization of the desired angles for the rangefinders
 	virtual void init(float *angles);
 
-private:	
-	double arg_p, arg_i, arg_d;
-	PidControl *side_pid;
+private:
 	
 	/* Gear Changing Constants*/
+	
 	// RPM values to change gear 
 	static const int gearUp[6];
 	static const int gearDown[6];
@@ -63,6 +61,8 @@ private:
 	static const int stuckTime;
 	// When car angle w.r.t. track axis is grather tan stuckAngle, the car is probably stuck
 	static const float stuckAngle;
+	// 当车靠近或远离跟车目标的时间
+	static const int stuckBrakeTime;
 	
 	/* Steering constants*/
 	
@@ -111,11 +111,21 @@ private:
 	// current clutch
 	float clutch;
 
+	// counter of brake
+	int stuckBrake;
+
+	// 最小距离
+	float miniDistance;
+
 	// Solves the gear changing subproblems
 	int getGear(CarState &cs);
 
 	// Solves the steering subproblems
 	float getSteer(CarState &cs);
+
+	//calculate targetAngle
+	void calLAngle(float rxS, float cS, float sxS, CarState &cs, float &targetAngle);
+	void calRAngle(float rxS, float cS, float sxS, CarState &cs, float &targetAngle);
 	
 	// Solves the gear changing subproblems
 	float getAccel(CarState &cs);

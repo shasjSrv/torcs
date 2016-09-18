@@ -26,6 +26,7 @@
 #include <cassert>
 #include "SimpleParser.h"
 
+using namespace std;
 
 class CarState
 {
@@ -50,12 +51,8 @@ private:
         float trackPos;
         float wheelSpinVel[4];
         float z;
-        float posX;
-        float posY;
-        float posZ;
-        float maxAccel;
-        float maxSteer;          //rad 21度
-        float L;
+        
+
 public:
 	
 		CarState(){};
@@ -142,20 +139,7 @@ public:
 
         void setZ(float z);
 
-        float getPosX();
-        void setPosX(float x);
-        float getPosY();
-        void setPosY(float y);
-        float getPosZ();
-        void setPosZ(float z);
-        
-        float getMaxAccel();
-        void setMaxAccel(float maxAccel);
-        float getMaxSteer();
-        void setMaxSteer(float maxSteer);
-        
-        float getL();
-        void setL(float L);
+
 };
 
 #endif /*CARSTATE_H_*/

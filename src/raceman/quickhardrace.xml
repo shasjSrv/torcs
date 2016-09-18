@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Quick Advance Race">
+<params name="Quick Advanced Race">
   <section name="Header">
-    <attstr name="name" val="Quick Advance Race"/>
-    <attstr name="description" val="Quick Advance Race"/>
+    <attstr name="name" val="Quick Advanced Race"/>
+    <attstr name="description" val="Quick Advanced Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Quick Advance Race"/>
+      <attstr name="name" val="Quick Advanced Race"/>
     </section>
 
   </section>
 
-  <section name="Quick Advance Race">
+  <section name="Quick Advanced Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>

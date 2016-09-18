@@ -29,19 +29,19 @@ class CarControl
 private:
 
         // Accelerate command [0,1]
-        float accel;           //加速
+        float accel;
 
         // Brake command [
-        float brake;           //刹车
+        float brake;
 
         // Gear command
-        int gear;              //齿轮、档
+        int gear;
         
         // Steering command [-1,1]
-        float steer;           //控制、方向
+        float steer;
         
         // Clutch command [0,1]
-        float clutch;          //离合
+        float clutch;
 
         // meta-command
         int meta;
@@ -95,7 +95,6 @@ public:
         // meta-command value for race restart
         static int META_RESTART;
 
-        static int META_STATIC;
 };
 
 #endif /*CARCONTROL_H_*/
