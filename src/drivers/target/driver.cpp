@@ -145,6 +145,11 @@ void Driver::initTrack(tTrack* t, void *carHandle, void **carParmHandle, tSituat
 			LIMITED_SPEED = TRACK_LIMIT_SPEED[i];
 			printf("route_offset: %f,LIMITED_SPEED: %f\n",route_offset,LIMITED_SPEED);
 		}
+		else
+		{
+			route_offset = 0.5;
+			LIMITED_SPEED = 99;
+		}
 	}
 }
 
