@@ -65,7 +65,7 @@
       <attstr name="module" val="target"/>
     </section>
     <section name="2">
-      <attnum name="idx" val="4"/>
+      <attnum name="idx" val="3"/>
       <attstr name="module" val="scr_server"/>
     </section>
 
