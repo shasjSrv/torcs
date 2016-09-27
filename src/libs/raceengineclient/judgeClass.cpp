@@ -97,7 +97,7 @@ void DefaultJudge::showlable(void *rmScrHdle,int x8,int x9,int y)
         GfuiLabelCreateEx(rmScrHdle, "Score",       m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HC_VB, 0);
     }
     else{
-        GfuiLabelCreateEx(rmScrHdle, "Penalty",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
+        GfuiLabelCreateEx(rmScrHdle, "Vaildtime",   m_fgcolor, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0); 
     }
 }
 

@@ -15,10 +15,10 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="Follow Race">
+<params name="2.Follow Race">
   <section name="Header">
-    <attstr name="name" val="Follow Race"/>
-    <attstr name="description" val="Follow Race"/>
+    <attstr name="name" val="2.Follow Race"/>
+    <attstr name="description" val="2.Follow Race"/>
     <attnum name="priority" val="10"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="Follow Race"/>
+      <attstr name="name" val="2.Follow Race"/>
     </section>
 
   </section>
 
-  <section name="Follow Race">
+  <section name="2.Follow Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -83,7 +83,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="Follow Race"/>
+      <attstr name="race" val="2.Follow Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>

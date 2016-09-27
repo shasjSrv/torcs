@@ -484,12 +484,14 @@ drive(int index, tCarElt* car, tSituation *s)
 	    stateString += SimpleParser::stringify("damage", car->_dammage);
     else
 	    stateString += SimpleParser::stringify("damage", car->_fakeDammage);
-    stateString += SimpleParser::stringify("distFromStart", car->race.distFromStartLine);
-    stateString += SimpleParser::stringify("distRaced", distRaced[index]);
-    stateString += SimpleParser::stringify("fuel", car->_fuel);
-    stateString += SimpleParser::stringify("gear", car->_gear);
-    stateString += SimpleParser::stringify("lastLapTime", float(car->_lastLapTime));
 	if(index ==0 || index == 2 || index == 3 || index ==4 ){
+		stateString += SimpleParser::stringify("distFromStart", car->race.distFromStartLine);
+		stateString += SimpleParser::stringify("distRaced", distRaced[index]);
+	}
+    stateString += SimpleParser::stringify("fuel", car->_fuel);
+	if(index ==0 || index == 2 || index == 3 || index ==4 ){
+		stateString += SimpleParser::stringify("gear", car->_gear);
+		stateString += SimpleParser::stringify("lastLapTime", float(car->_lastLapTime));
 		stateString += SimpleParser::stringify("opponents", oppSensorOut, 36);
 		stateString += SimpleParser::stringify("racePos", car->race.pos);
 		stateString += SimpleParser::stringify("rpm", car->_enginerpm*10);
