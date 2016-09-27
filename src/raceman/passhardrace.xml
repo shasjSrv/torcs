@@ -15,11 +15,11 @@
 <!DOCTYPE params SYSTEM "params.dtd">
 
 
-<params name="3.Overtake Race">
+<params name="Overtake Race">
   <section name="Header">
-    <attstr name="name" val="3.Overtake Race"/>
-    <attstr name="description" val="3.Overtake Race"/>
-    <attnum name="priority" val="10"/>
+    <attstr name="name" val="Overtake Race"/>
+    <attstr name="description" val="Overtake Race"/>
+    <attnum name="priority" val="12"/>
     <attstr name="menu image" val="data/img/splash-qr.png"/>
   </section>
 
@@ -34,12 +34,12 @@
 
   <section name="Races">
     <section name="1">
-      <attstr name="name" val="3.Overtake Race"/>
+      <attstr name="name" val="Overtake Race"/>
     </section>
 
   </section>
 
-  <section name="3.Overtake Race">
+  <section name="Overtake Race">
     <attnum name="distance" unit="km" val="0"/>
     <attstr name="type" val="race"/>
     <attstr name="starting order" val="drivers list"/>
@@ -83,7 +83,7 @@
 
     <section name="3">
       <attstr name="type" val="race config"/>
-      <attstr name="race" val="3.Overtake Race"/>
+      <attstr name="race" val="Overtake Race"/>
       <section name="Options">
         <section name="1">
           <attstr name="type" val="race length"/>

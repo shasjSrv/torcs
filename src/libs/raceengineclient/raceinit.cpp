@@ -257,6 +257,7 @@ reSortRacemanList(tFList **racemanList)
 	head = *racemanList;
 	cur = head;
 	while (cur->next != head) {
+		std::cout<<GfParmGetNum(cur->userData, RM_SECT_HEADER, RM_ATTR_PRIO, NULL, 10000)<<std::endl;
 		if (GfParmGetNum(cur->userData, RM_SECT_HEADER, RM_ATTR_PRIO, NULL, 10000) >
 			GfParmGetNum(cur->next->userData, RM_SECT_HEADER, RM_ATTR_PRIO, NULL, 10000)) {
 			/* swap cur and cur->next */
