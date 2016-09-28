@@ -91,4 +91,8 @@
 
   </section>
 
+  <section name="Judge">
+    <attstr name="judge name" val=""/>
+    <attnum name="MaxTime" val="300"/>
+  </section>
 </params>

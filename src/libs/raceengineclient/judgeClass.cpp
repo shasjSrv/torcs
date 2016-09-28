@@ -55,6 +55,7 @@ DefaultJudge::DefaultJudge(tRmInfo *ReInfo):
 	
 	m_nCar = ReInfo->s->_ncars;
 	m_curTime = GfTimeClock();
+	m_maxTime = GfParmGetNum(ReInfo->params, RE_SECT_JUDGE, "MaxTime", NULL, 0);
 }
 
 DefaultJudge::~DefaultJudge()
@@ -67,7 +68,7 @@ void DefaultJudge::judge(tCarElt *car)
 {
 	if(m_nCar >= 1){
 		cout<<"CurTime:"<<GfTimeClock() - m_curTime<<endl;
-		if(s->cars[0] && GfTimeClock() - m_curTime > 31){
+		if(s->cars[0] && GfTimeClock() - m_curTime >= m_maxTime){
 			cout<<"time out!"<<endl;
 			s->cars[0]->_state |= RM_CAR_STATE_FINISH;
 			s->cars[0]->_curTime = GfTimeClock() - m_curTime;

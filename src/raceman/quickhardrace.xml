@@ -92,6 +92,7 @@
   <!-- fixed    :2016.07.19 -->
   <!-- fun      :use to chose which judgement -->
   <section name="Judge">
-    <attstr name="judge name" val="LimitSensorJudge"/>
+    <attstr name="judge name" val=""/>
+    <attnum name="MaxTime" val="300"/>
   </section>
 </params>

@@ -45,6 +45,7 @@ protected:
 	std::ofstream	m_outfile;
 	int				m_nCar;
 	double			m_curTime;
+	int				m_maxTime; 
 	const int				m_fullScore = 100;			//the full score in our judgement
 	const float		m_min = 1.0f;					//the min distance to target driver.
 	const float		m_max = 300.0f;					//the max distance to target driver.
