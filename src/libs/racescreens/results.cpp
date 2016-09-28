@@ -321,10 +321,10 @@ static void rmRaceResults(void *prevHdle, tRmInfo *info, int start,Judge * Rjudg
 			snprintf(buf, BUFSIZE, "%d", (int)(GfParmGetNum(results, path, RE_ATTR_NB_PIT_STOPS, NULL, 0)));
 			GfuiLabelCreate(rmScrHdle, buf, GFUI_FONT_MEDIUM_C,
 				x8, y, GFUI_ALIGN_HC_VB, 0);
-			GfTime2Str(timefmt, TIMEFMTSIZE,GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) -  GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
+			GfTime2Str(timefmt, TIMEFMTSIZE,GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
 			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
 		}else if (paramNum == 1){
-			GfTime2Str(timefmt, TIMEFMTSIZE,GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0) -  GfParmGetNum(results, path, RE_ATTR_PENALTYTIME, NULL, 0), 0);
+			GfTime2Str(timefmt, TIMEFMTSIZE,GfParmGetNum(results, path, RE_ATTR_TIME, NULL, 0), 0);
 			GfuiLabelCreate(rmScrHdle, timefmt, GFUI_FONT_MEDIUM_C, x9, y, GFUI_ALIGN_HR_VB, 0);
 		}
 				

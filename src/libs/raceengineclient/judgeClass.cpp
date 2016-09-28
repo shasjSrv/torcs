@@ -65,6 +65,22 @@ DefaultJudge::~DefaultJudge()
 
 void DefaultJudge::judge(tCarElt *car)
 {
+	if(m_nCar >= 1){
+		cout<<"CurTime:"<<GfTimeClock() - m_curTime<<endl;
+		if(s->cars[0] && GfTimeClock() - m_curTime > 31){
+			cout<<"time out!"<<endl;
+			s->cars[0]->_state |= RM_CAR_STATE_FINISH;
+			s->cars[0]->_curTime = GfTimeClock() - m_curTime;
+			//ReInfo->_reRunning = 0;
+			/*int mode = ReRaceEnd();*/
+			//if (mode & RM_NEXT_STEP) {
+				//ReInfo->_reState = RE_STATE_POST_RACE;
+			//} else if (mode & RM_NEXT_RACE) {
+				//ReInfo->_reState = RE_STATE_RACE_START;
+			/*}*/
+
+		}
+	}
 }
 
 void DefaultJudge::figurOut(tCarElt *car)
