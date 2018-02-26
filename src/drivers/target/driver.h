@@ -21,6 +21,7 @@
 #define _DRIVER_H_
 
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <cstring>
 #include <math.h>

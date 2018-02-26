@@ -245,17 +245,19 @@ void Driver::drive(tSituation *s)
 				look_distance = MIN(OVERTAKE_BACKHEAD_LOOK,2*d);
 				catchdist = opponent->getCatchDist();
 			
-	//			printf("ocar_speed: %f mycar_speed: %f\n",opponent->getSpeed(),car->_speed_x);
-	//			printf("distance: %f, location: %f, d: %f \n",distance,location,d);
+				printf("ocar_speed: %f mycar_speed: %f\n",opponent->getSpeed(),car->_speed_x);
+				printf("distance: %f, location: %f, d: %f \n",distance,location,d);
 					
-				if(distance<0 && location>0 && d<0 && distance>look_distance)
+				if(distance<0 && location>-0.1 && d<0 && distance>look_distance)
 				{
 					f_close = true;
 
 					time_t t;
 					time(&t);
 					int sr= (int)(fabs(distance)*1000) + t;
-					
+				
+					std::cout<<"distance: "<<distance<<" d-Margin: "<<d-TRACKSIDE_CHANGE_MARGIN<<std::endl;
+
 					if(trackside!= 1 && distance<d-TRACKSIDE_CHANGE_MARGIN)
 					{
 						srand(sr);
